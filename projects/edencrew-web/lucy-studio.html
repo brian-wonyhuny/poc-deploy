@@ -4,1603 +4,576 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lucy Studio — Visual Flutter Builder</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@900&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --p: #8361FF;
-    --p2: #A688FF;
-    --bg: #080808;
-    --bg2: #0F0F0F;
-    --bg3: #161616;
-    --wh: #F0EDE8;
-    --wh2: rgba(240,237,232,0.7);
-    --wh3: rgba(240,237,232,0.35);
-    --bdr: rgba(240,237,232,0.08);
-    --bdr2: rgba(131,97,255,0.4);
-    --sidebar-w: 220px;
-    --header-h: 60px;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--wh);
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-  }
-
-  /* ── GNB ── */
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: var(--header-h);
-    background: rgba(8,8,8,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--bdr);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 32px;
-    z-index: 100;
-  }
-
-  .gnb-logo {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 900;
-    font-size: 17px;
-    color: var(--wh);
-    text-decoration: none;
-    letter-spacing: -0.3px;
-  }
-
-  .gnb-logo span { color: var(--p); }
-
-  nav.gnb-links {
-    display: flex;
-    align-items: center;
-    gap: 28px;
-  }
-
-  nav.gnb-links a {
-    color: var(--wh2);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: color .2s;
-  }
-
-  nav.gnb-links a:hover,
-  nav.gnb-links a.active { color: var(--wh); }
-
-  .gnb-ctas {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .btn-dl {
-    background: var(--p);
-    color: #fff;
-    padding: 7px 18px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: opacity .2s;
-  }
-
-  .btn-dl:hover { opacity: .85; }
-
-  .btn-contact {
-    border: 1px solid var(--bdr2);
-    color: var(--wh);
-    padding: 7px 18px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: border-color .2s;
-  }
-
-  .btn-contact:hover { border-color: var(--p); }
-
-  /* ── LAYOUT ── */
-  .page-wrap {
-    display: flex;
-    padding-top: var(--header-h);
-    min-height: 100vh;
-  }
-
-  /* ── SIDEBAR ── */
-  aside.sidebar {
-    width: var(--sidebar-w);
-    position: sticky;
-    top: var(--header-h);
-    height: calc(100vh - var(--header-h));
-    overflow-y: auto;
-    padding: 36px 0 36px 32px;
-    flex-shrink: 0;
-    border-right: 1px solid var(--bdr);
-  }
-
-  aside.sidebar::-webkit-scrollbar { width: 3px; }
-  aside.sidebar::-webkit-scrollbar-thumb { background: var(--bdr2); border-radius: 2px; }
-
-  .sidebar-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--wh3);
-    margin-bottom: 14px;
-  }
-
-  .sidebar-nav {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .sidebar-nav a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--wh2);
-    text-decoration: none;
-    transition: all .18s;
-    border: 1px solid transparent;
-  }
-
-  .sidebar-nav a:hover {
-    color: var(--wh);
-    background: rgba(240,237,232,0.04);
-  }
-
-  .sidebar-nav a.active {
-    color: var(--p2);
-    background: rgba(131,97,255,0.1);
-    border-color: rgba(131,97,255,0.2);
-  }
-
-  .sidebar-nav .nav-icon {
-    font-size: 14px;
-    width: 18px;
-    text-align: center;
-    opacity: .7;
-  }
-
-  .sidebar-dl {
-    margin-top: 32px;
-    padding-right: 20px;
-  }
-
-  .sidebar-dl a {
-    display: block;
-    background: var(--p);
-    color: #fff;
-    text-align: center;
-    padding: 10px;
-    border-radius: 7px;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: opacity .2s;
-  }
-
-  .sidebar-dl a:hover { opacity: .85; }
-
-  /* ── MAIN CONTENT ── */
-  main {
-    flex: 1;
-    min-width: 0;
-  }
-
-  /* ── HERO ── */
-  .hero {
-    padding: 100px 80px 80px;
-    border-bottom: 1px solid var(--bdr);
-  }
-
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--p2);
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-
-  .hero-eyebrow::before {
-    content: '';
-    width: 20px;
-    height: 1px;
-    background: var(--p2);
-  }
-
-  .hero h1 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 900;
-    font-size: clamp(40px, 5vw, 68px);
-    line-height: 1.05;
-    letter-spacing: -1.5px;
-    color: var(--wh);
-    margin-bottom: 20px;
-    max-width: 700px;
-  }
-
-  .hero h1 em {
-    color: var(--p);
-    font-style: normal;
-  }
-
-  .hero-sub {
-    font-size: 17px;
-    color: var(--wh2);
-    max-width: 540px;
-    margin-bottom: 36px;
-    line-height: 1.65;
-  }
-
-  .hero-ctas {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 64px;
-  }
-
-  .hero-ctas .btn-dl {
-    padding: 12px 28px;
-    font-size: 14px;
-    border-radius: 8px;
-  }
-
-  .hero-ctas .btn-contact {
-    padding: 12px 28px;
-    font-size: 14px;
-    border-radius: 8px;
-  }
-
-  .hero-img {
-    width: 100%;
-    max-width: 960px;
-    border-radius: 12px;
-    border: 1px solid var(--bdr);
-    overflow: hidden;
-    background: var(--bg3);
-    aspect-ratio: 16/9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .hero-img-inner {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #0F0F18 0%, #0D0D14 40%, #0A0A12 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Studio UI mockup */
-  .studio-mockup {
-    width: 90%;
-    height: 85%;
-    background: #111118;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.06);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  .sm-topbar {
-    height: 36px;
-    background: #0D0D15;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-
-  .sm-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .sm-dot.r { background: #FF5F56; }
-  .sm-dot.y { background: #FFBD2E; }
-  .sm-dot.g { background: #27C93F; }
-
-  .sm-tab {
-    margin-left: 12px;
-    font-size: 10px;
-    color: rgba(255,255,255,0.5);
-    background: rgba(131,97,255,0.15);
-    border: 1px solid rgba(131,97,255,0.25);
-    border-radius: 4px;
-    padding: 2px 8px;
-  }
-
-  .sm-body {
-    display: flex;
-    flex: 1;
-    min-height: 0;
-  }
-
-  .sm-left {
-    width: 140px;
-    flex-shrink: 0;
-    background: #0D0D15;
-    border-right: 1px solid rgba(255,255,255,0.05);
-    padding: 10px 8px;
-  }
-
-  .sm-section-label {
-    font-size: 8px;
-    color: rgba(255,255,255,0.3);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-    margin-top: 10px;
-  }
-
-  .sm-section-label:first-child { margin-top: 0; }
-
-  .sm-widget-row {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 3px;
-  }
-
-  .sm-widget {
-    flex: 1;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 4px;
-    height: 26px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-  }
-
-  .sm-widget-icon { font-size: 9px; opacity: 0.6; }
-  .sm-widget-name { font-size: 6px; color: rgba(255,255,255,0.4); }
-
-  .sm-canvas {
-    flex: 1;
-    background: #1A1A24;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .sm-phone {
-    width: 100px;
-    height: 180px;
-    background: #111118;
-    border-radius: 12px;
-    border: 2px solid rgba(131,97,255,0.5);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .sm-phone-top {
-    height: 20px;
-    background: #1A1A28;
-    display: flex;
-    align-items: center;
-    padding: 0 8px;
-    flex-shrink: 0;
-  }
-
-  .sm-phone-time { font-size: 6px; color: rgba(255,255,255,0.6); }
-
-  .sm-phone-content { flex: 1; padding: 6px; }
-
-  .sm-phone-card {
-    background: rgba(131,97,255,0.15);
-    border: 1px solid rgba(131,97,255,0.3);
-    border-radius: 4px;
-    padding: 5px 6px;
-    margin-bottom: 4px;
-  }
-
-  .sm-phone-card-title { font-size: 6px; color: rgba(255,255,255,0.8); margin-bottom: 2px; }
-  .sm-phone-card-val { font-size: 10px; font-weight: 700; color: #8361FF; }
-
-  .sm-right {
-    width: 160px;
-    flex-shrink: 0;
-    background: #0D0D15;
-    border-left: 1px solid rgba(255,255,255,0.05);
-    padding: 10px 10px;
-  }
-
-  .sm-prop-label {
-    font-size: 9px;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 4px;
-    margin-top: 10px;
-  }
-
-  .sm-prop-label:first-child { margin-top: 0; }
-
-  .sm-prop-row {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 4px;
-  }
-
-  .sm-prop-tab {
-    flex: 1;
-    height: 22px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 7px;
-    color: rgba(255,255,255,0.35);
-  }
-
-  .sm-prop-tab.active {
-    background: rgba(131,97,255,0.15);
-    border-color: rgba(131,97,255,0.35);
-    color: #A688FF;
-  }
-
-  .sm-prop-field {
-    width: 100%;
-    height: 22px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 3px;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    padding: 0 6px;
-    font-size: 7px;
-    color: rgba(255,255,255,0.3);
-  }
-
-  /* ── FEATURE SECTIONS ── */
-  section.feature {
-    padding: 96px 80px;
-    border-bottom: 1px solid var(--bdr);
-    scroll-margin-top: calc(var(--header-h) + 20px);
-  }
-
-  section.feature:nth-child(even) {
-    background: rgba(255,255,255,0.015);
-  }
-
-  .feature-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-    max-width: 1000px;
-  }
-
-  .feature-inner.reverse { direction: rtl; }
-  .feature-inner.reverse > * { direction: ltr; }
-
-  .feature-inner.full-width {
-    grid-template-columns: 1fr;
-    max-width: 100%;
-  }
-
-  .feature-eyebrow {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--p2);
-    margin-bottom: 14px;
-  }
-
-  .feature h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 900;
-    font-size: clamp(26px, 3vw, 38px);
-    line-height: 1.1;
-    letter-spacing: -0.8px;
-    color: var(--wh);
-    margin-bottom: 16px;
-  }
-
-  .feature h2 em {
-    color: var(--p);
-    font-style: normal;
-  }
-
-  .feature p {
-    color: var(--wh2);
-    font-size: 15px;
-    line-height: 1.75;
-    margin-bottom: 20px;
-  }
-
-  .feature-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 8px;
-  }
-
-  .feature-list li {
-    display: flex;
-    gap: 10px;
-    font-size: 14px;
-    color: var(--wh2);
-    align-items: flex-start;
-  }
-
-  .feature-list li::before {
-    content: '—';
-    color: var(--p);
-    flex-shrink: 0;
-    font-weight: 600;
-  }
-
-  /* Visual panels */
-  .panel {
-    background: var(--bg3);
-    border: 1px solid var(--bdr);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .panel-topbar {
-    background: #0D0D15;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    font-size: 11px;
-    color: rgba(255,255,255,0.4);
-  }
-
-  .panel-topbar .dot { width: 7px; height: 7px; border-radius: 50%; margin-right: 4px; }
-  .panel-topbar .dot.p { background: var(--p); }
-
-  /* Widget Grid panel */
-  .widget-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    padding: 20px;
-  }
-
-  .widget-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
-    padding: 14px 8px;
-    text-align: center;
-    transition: all .2s;
-    cursor: default;
-  }
-
-  .widget-card:hover {
-    background: rgba(131,97,255,0.08);
-    border-color: rgba(131,97,255,0.25);
-  }
-
-  .widget-card .wc-icon { font-size: 18px; margin-bottom: 6px; }
-  .widget-card .wc-name { font-size: 10px; color: var(--wh2); font-weight: 500; }
-
-  .widget-section-head {
-    padding: 10px 20px 4px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--wh3);
-  }
-
-  /* Animation panel */
-  .anim-panel {
-    padding: 20px;
-  }
-
-  .state-bar {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-  }
-
-  .state-chip {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: var(--wh2);
-    cursor: default;
-  }
-
-  .state-chip.active {
-    background: rgba(131,97,255,0.18);
-    border-color: rgba(131,97,255,0.4);
-    color: var(--p2);
-  }
-
-  .anim-track {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .anim-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .anim-label {
-    width: 70px;
-    font-size: 10px;
-    color: var(--wh3);
-    flex-shrink: 0;
-  }
-
-  .anim-bar-wrap {
-    flex: 1;
-    height: 20px;
-    background: rgba(255,255,255,0.03);
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .anim-bar {
-    height: 100%;
-    border-radius: 4px;
-    background: linear-gradient(90deg, rgba(131,97,255,0.5), rgba(131,97,255,0.2));
-    position: relative;
-  }
-
-  .anim-handle {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 8px;
-    height: 8px;
-    background: var(--p);
-    border-radius: 50%;
-  }
-
-  /* Figma import panel */
-  .figma-flow {
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-  }
-
-  .figma-box {
-    flex: 1;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
-    padding: 16px;
-    text-align: center;
-  }
-
-  .figma-box .fb-icon { font-size: 28px; margin-bottom: 6px; }
-  .figma-box .fb-label { font-size: 11px; color: var(--wh2); font-weight: 600; }
-  .figma-box .fb-sub { font-size: 10px; color: var(--wh3); margin-top: 3px; }
-
-  .figma-arrow {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    flex-shrink: 0;
-  }
-
-  .figma-arrow .fa-line {
-    width: 40px;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(131,97,255,0.3), rgba(131,97,255,0.8));
-    position: relative;
-  }
-
-  .figma-arrow .fa-line::after {
-    content: '▶';
-    position: absolute;
-    right: -6px;
-    top: -6px;
-    font-size: 9px;
-    color: var(--p);
-  }
-
-  .figma-arrow .fa-label { font-size: 9px; color: var(--p2); font-weight: 600; }
-
-  .figma-import-detail {
-    padding: 0 24px 20px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-
-  .import-item {
-    background: rgba(131,97,255,0.06);
-    border: 1px solid rgba(131,97,255,0.15);
-    border-radius: 8px;
-    padding: 10px;
-    text-align: center;
-  }
-
-  .import-item .ii-icon { font-size: 16px; margin-bottom: 4px; }
-  .import-item .ii-label { font-size: 10px; color: var(--wh2); }
-
-  /* Data binding panel */
-  .binding-panel {
-    padding: 20px;
-  }
-
-  .binding-diagram {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
-  .bind-node {
-    flex: 1;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 8px;
-    padding: 12px;
-    text-align: center;
-  }
-
-  .bind-node .bn-icon { font-size: 20px; margin-bottom: 4px; }
-  .bind-node .bn-label { font-size: 10px; font-weight: 600; color: var(--wh2); }
-  .bind-node .bn-sub { font-size: 9px; color: var(--wh3); margin-top: 2px; }
-
-  .bind-arrow {
-    font-size: 18px;
-    color: var(--p);
-    flex-shrink: 0;
-  }
-
-  .bind-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .bind-field {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 6px;
-    padding: 8px 12px;
-  }
-
-  .bind-field .bf-key {
-    font-size: 11px;
-    color: var(--p2);
-    font-weight: 600;
-    width: 80px;
-    flex-shrink: 0;
-  }
-
-  .bind-field .bf-val {
-    font-size: 11px;
-    color: var(--wh2);
-  }
-
-  .bind-field .bf-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--p);
-    flex-shrink: 0;
-    margin-left: auto;
-  }
-
-  /* Variables panel */
-  .vars-panel {
-    padding: 20px;
-  }
-
-  .var-group {
-    margin-bottom: 16px;
-  }
-
-  .var-group-label {
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--wh3);
-    margin-bottom: 8px;
-  }
-
-  .var-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 10px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 6px;
-    margin-bottom: 4px;
-  }
-
-  .var-swatch {
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
-    flex-shrink: 0;
-  }
-
-  .var-name { font-size: 11px; color: var(--wh2); flex: 1; }
-  .var-val { font-size: 10px; color: var(--wh3); font-family: monospace; }
-
-  /* Deploy panel */
-  .deploy-panel {
-    padding: 24px;
-  }
-
-  .deploy-steps {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-
-  .deploy-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    flex: 1;
-  }
-
-  .ds-circle {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(131,97,255,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    background: rgba(131,97,255,0.08);
-  }
-
-  .ds-circle.done {
-    border-color: var(--p);
-    background: rgba(131,97,255,0.2);
-  }
-
-  .ds-label { font-size: 9px; color: var(--wh3); text-align: center; }
-
-  .ds-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(131,97,255,0.5), rgba(131,97,255,0.2));
-    margin-bottom: 14px;
-  }
-
-  .deploy-log {
-    background: rgba(0,0,0,0.4);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 6px;
-    padding: 12px;
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    color: rgba(255,255,255,0.5);
-    line-height: 1.8;
-  }
-
-  .deploy-log .log-success { color: #27C93F; }
-  .deploy-log .log-info { color: var(--p2); }
-
-  /* Console panel */
-  .console-panel {
-    padding: 0;
-  }
-
-  .console-tabs {
-    display: flex;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .console-tab {
-    padding: 10px 16px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--wh3);
-    border-bottom: 2px solid transparent;
-    cursor: default;
-  }
-
-  .console-tab.active {
-    color: var(--wh);
-    border-bottom-color: var(--p);
-  }
-
-  .console-body {
-    padding: 14px;
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    line-height: 1.9;
-    color: rgba(255,255,255,0.5);
-  }
-
-  .log-line { display: flex; gap: 8px; }
-  .log-line .time { color: var(--wh3); flex-shrink: 0; }
-  .log-line .level { flex-shrink: 0; font-weight: 700; }
-  .log-line .level.i { color: var(--p2); }
-  .log-line .level.e { color: #FF5F56; }
-  .log-line .level.s { color: #27C93F; }
-
-  /* ── CTA SECTION ── */
-  section.cta-section {
-    padding: 100px 80px;
-    text-align: center;
-  }
-
-  .cta-section h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 900;
-    font-size: clamp(30px, 4vw, 52px);
-    letter-spacing: -1px;
-    margin-bottom: 16px;
-  }
-
-  .cta-section h2 em { color: var(--p); font-style: normal; }
-
-  .cta-section p {
-    color: var(--wh2);
-    font-size: 16px;
-    max-width: 480px;
-    margin: 0 auto 36px;
-    line-height: 1.65;
-  }
-
-  .cta-btns {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .cta-btns .btn-dl {
-    padding: 14px 32px;
-    font-size: 15px;
-    border-radius: 8px;
-  }
-
-  .cta-btns .btn-contact {
-    padding: 14px 32px;
-    font-size: 15px;
-    border-radius: 8px;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--bdr);
-    padding: 40px 80px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-
-  .footer-logo {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 900;
-    font-size: 15px;
-    color: var(--wh);
-    text-decoration: none;
-  }
-
-  .footer-logo span { color: var(--p); }
-
-  .footer-links {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  .footer-links a {
-    font-size: 13px;
-    color: var(--wh3);
-    text-decoration: none;
-    transition: color .2s;
-  }
-
-  .footer-links a:hover { color: var(--wh2); }
-
-  .footer-copy {
-    font-size: 12px;
-    color: var(--wh3);
-  }
-
-  /* ── Intersection Observer active state ── */
-  @media (max-width: 900px) {
-    .page-wrap { flex-direction: column; }
-    aside.sidebar { display: none; }
-    .hero { padding: 60px 32px; }
-    section.feature { padding: 64px 32px; }
-    .feature-inner { grid-template-columns: 1fr; gap: 40px; }
-    .feature-inner.reverse { direction: ltr; }
-    footer { padding: 32px; }
-    section.cta-section { padding: 64px 32px; }
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --p:     #8361FF;
+  --p-lt:  rgba(131,97,255,.15);
+  --p-bdr: rgba(131,97,255,.3);
+  --bg:    #0B0D12;
+  --bg2:   #111318;
+  --bg3:   #161921;
+  --bdr:   rgba(255,255,255,.07);
+  --mid:   rgba(255,255,255,.42);
+  --dim:   rgba(255,255,255,.18);
+  --wh:    #fff;
+  --footer:#070910;
+  --nav-h: 54px;
+  --sb-w:  240px;
+}
+
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--wh); -webkit-font-smoothing:antialiased; }
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  height:var(--nav-h); padding:0 48px;
+  display:flex; align-items:center; justify-content:space-between;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--bdr);
+}
+.nav-logo { display:flex; align-items:center; gap:9px; text-decoration:none; font-size:15px; font-weight:700; color:var(--wh); }
+.nav-links { display:flex; gap:28px; list-style:none; }
+.nav-links a { font-size:13px; font-weight:500; color:var(--mid); text-decoration:none; transition:color .15s; }
+.nav-links a:hover, .nav-links a.on { color:var(--wh); }
+.nav-right { display:flex; gap:8px; align-items:center; }
+.btn-plain { font-size:13px; font-weight:500; color:var(--mid); text-decoration:none; padding:7px 14px; border-radius:7px; transition:all .15s; }
+.btn-plain:hover { color:var(--wh); background:rgba(128,128,128,.12); }
+.btn-fill { font-size:13px; font-weight:600; color:#fff; background:var(--p); padding:8px 18px; border-radius:7px; text-decoration:none; transition:opacity .15s; }
+.btn-fill:hover { opacity:.85; }
+
+/* ── HERO ── */
+.hero {
+  padding-top:var(--nav-h);
+  text-align:center;
+  padding-bottom:0;
+  border-bottom:1px solid var(--bdr);
+}
+.hero-inner { padding:80px 48px 0; }
+.hero-tag { display:inline-flex; align-items:center; gap:8px; font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); margin-bottom:22px; }
+.hero-tag::before { content:''; width:20px; height:1px; background:var(--dim); }
+.hero h1 { font-size:clamp(42px,5.5vw,68px); font-weight:900; font-family:'Montserrat',sans-serif; line-height:1.02; letter-spacing:-.035em; color:var(--wh); margin-bottom:20px; }
+.hero h1 em { color:var(--p); font-style:normal; }
+.hero-sub { font-size:18px; color:var(--mid); line-height:1.6; max-width:480px; margin:0 auto 38px; }
+.hero-btns { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:64px; }
+.cta-dl { display:inline-flex; align-items:center; gap:8px; font-size:15px; font-weight:600; color:#fff; background:var(--p); padding:13px 28px; border-radius:10px; text-decoration:none; transition:opacity .15s; box-shadow:0 0 32px rgba(131,97,255,.35); }
+.cta-dl:hover { opacity:.85; }
+.cta-ghost { font-size:15px; font-weight:500; color:var(--mid); padding:13px 22px; border-radius:10px; border:1.5px solid var(--bdr); text-decoration:none; transition:all .15s; }
+.cta-ghost:hover { color:var(--wh); border-color:rgba(128,128,128,.35); }
+
+/* Hero screenshot */
+.hero-shot {
+  max-width:1100px;
+  margin:0 auto;
+  border-radius:16px 16px 0 0;
+  overflow:hidden;
+  border:1px solid var(--bdr);
+  border-bottom:none;
+  box-shadow:0 -4px 0 var(--p), 0 0 0 1px var(--bdr), 0 -40px 80px rgba(131,97,255,.08);
+}
+.hero-shot img { display:block; width:100%; height:auto; }
+
+/* ── PRODUCT LAYOUT ── */
+.product-wrap {
+  display:flex;
+  position:relative;
+}
+
+/* ── SIDEBAR ── */
+aside.prod-sidebar {
+  width:var(--sb-w);
+  flex-shrink:0;
+  position:sticky;
+  top:var(--nav-h);
+  height:calc(100vh - var(--nav-h));
+  overflow-y:auto;
+  padding:40px 0 40px 40px;
+  border-right:1px solid var(--bdr);
+}
+aside.prod-sidebar::-webkit-scrollbar { width:0; }
+
+.sb-label {
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--dim);
+  margin-bottom:16px;
+}
+
+.sb-nav { list-style:none; display:flex; flex-direction:column; gap:2px; }
+
+.sb-nav a {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 14px 9px 10px;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:500;
+  color:var(--mid);
+  text-decoration:none;
+  transition:all .18s;
+  border-left:2px solid transparent;
+}
+.sb-nav a:hover { color:var(--wh); background:rgba(255,255,255,.04); }
+.sb-nav a.active { color:var(--wh); background:var(--p-lt); border-left-color:var(--p); }
+.sb-nav .sb-icon { font-size:13px; width:20px; text-align:center; flex-shrink:0; }
+
+.sb-cta { margin-top:36px; padding-right:24px; }
+.sb-cta a {
+  display:block; text-align:center;
+  background:var(--p); color:#fff;
+  font-size:13px; font-weight:600;
+  padding:10px; border-radius:8px;
+  text-decoration:none; transition:opacity .15s;
+}
+.sb-cta a:hover { opacity:.85; }
+
+/* ── SECTIONS ── */
+main.prod-main { flex:1; min-width:0; }
+
+section.feat {
+  padding:80px 64px;
+  border-bottom:1px solid var(--bdr);
+  scroll-margin-top:calc(var(--nav-h) + 1px);
+}
+section.feat:nth-child(even) { background:var(--bg2); }
+
+.feat-tag {
+  font-size:10px; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--dim);
+  margin-bottom:14px; display:block;
+}
+
+.feat h2 {
+  font-family:'Montserrat',sans-serif;
+  font-weight:900;
+  font-size:clamp(28px,3.2vw,42px);
+  line-height:1.08;
+  letter-spacing:-.02em;
+  color:var(--wh);
+  margin-bottom:14px;
+}
+.feat h2 em { color:var(--p); font-style:normal; }
+
+.feat-desc {
+  font-size:16px;
+  color:var(--mid);
+  line-height:1.72;
+  max-width:640px;
+  margin-bottom:20px;
+}
+
+.feat-bullets {
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  margin-bottom:40px;
+  max-width:640px;
+}
+.feat-bullets li {
+  display:flex; gap:10px;
+  font-size:14px; color:var(--mid);
+}
+.feat-bullets li::before {
+  content:'';
+  width:4px; height:4px;
+  border-radius:50%;
+  background:var(--p);
+  flex-shrink:0;
+  margin-top:8px;
+}
+
+/* Screenshot display */
+.feat-shot {
+  width:100%;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid var(--bdr);
+  background:var(--bg3);
+  box-shadow:0 24px 80px rgba(0,0,0,.5), 0 0 0 1px var(--bdr);
+}
+.feat-shot img {
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+/* Two-column variant for some sections */
+.feat-cols {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:32px;
+  margin-top:0;
+}
+
+/* ── INTEGRATION STRIP ── */
+.int-section {
+  padding:72px 48px;
+  text-align:center;
+  background:var(--bg2);
+  border-bottom:1px solid var(--bdr);
+}
+.int-section h2 { font-size:28px; font-weight:900; font-family:'Montserrat',sans-serif; letter-spacing:-.015em; margin-bottom:8px; }
+.int-section p { font-size:15px; color:var(--mid); margin-bottom:36px; }
+.int-grid { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+.int-chip {
+  display:flex; align-items:center; gap:7px;
+  padding:8px 16px; border-radius:8px;
+  border:1px solid var(--bdr); background:var(--bg3);
+  font-size:13px; font-weight:500; color:var(--mid);
+  transition:all .15s;
+}
+.int-chip:hover { border-color:var(--p-bdr); color:var(--wh); }
+.int-chip span { font-size:16px; }
+
+/* ── CTA ── */
+.cta-section {
+  padding:100px 48px;
+  text-align:center;
+  background:var(--bg);
+}
+.cta-section h2 { font-size:clamp(32px,4vw,52px); font-weight:900; font-family:'Montserrat',sans-serif; letter-spacing:-.025em; margin-bottom:14px; line-height:1.1; }
+.cta-section h2 em { color:var(--p); font-style:normal; }
+.cta-section p { font-size:17px; color:var(--mid); margin-bottom:40px; }
+.cta-btns { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+
+/* ── FOOTER ── */
+footer {
+  background:var(--footer);
+  border-top:1px solid var(--bdr);
+  padding:56px 48px 0;
+}
+.footer-top {
+  display:grid;
+  grid-template-columns:260px repeat(4,1fr);
+  gap:40px;
+  padding-bottom:48px;
+  border-bottom:1px solid var(--bdr);
+}
+.footer-brand-logo { display:flex; align-items:center; gap:8px; font-size:15px; font-weight:700; color:var(--wh); margin-bottom:14px; }
+.footer-brand-desc { font-size:13px; color:var(--mid); line-height:1.65; max-width:200px; }
+.footer-col h4 { font-size:12px; font-weight:700; color:var(--wh); margin-bottom:14px; }
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:9px; }
+.footer-col ul a { font-size:13px; color:var(--mid); text-decoration:none; transition:color .15s; }
+.footer-col ul a:hover { color:var(--wh); }
+.footer-bottom { display:flex; align-items:center; justify-content:space-between; padding:20px 0 24px; }
+.footer-copy { font-size:12px; color:var(--dim); }
 </style>
 </head>
 <body>
 
-<!-- GNB -->
-<header>
-  <a class="gnb-logo" href="edencrew-home.html">Eden<span>Crew</span></a>
-  <nav class="gnb-links">
-    <a href="#">Lucy Studio</a>
-    <a href="platform.html">Lucy Platform</a>
-    <a href="#">Pricing</a>
-    <a href="#">Resources</a>
-  </nav>
-  <div class="gnb-ctas">
-    <a class="btn-contact" href="#">Contact Sales</a>
-    <a class="btn-dl" href="#">Download Studio</a>
+<!-- NAV -->
+<nav>
+  <a href="edencrew-home.html" class="nav-logo">
+    <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M68.334 29.1576C68.334 31.4587 66.4685 33.3242 64.1673 33.3242C61.8661 33.3242 60.0006 31.4587 60.0006 29.1576C60.0006 26.8564 61.8661 24.9909 64.1673 24.9909C66.4685 24.9909 68.334 26.8564 68.334 29.1576Z" fill="#FDBA00"/>
+      <path d="M81.6673 59.9909V80.8242C81.6673 86.6576 76.8757 91.6576 70.834 91.6576H61.6673V84.9909H70.834C73.1257 84.9909 75.0006 83.1159 75.0006 80.8242V59.1576C75.0006 54.1576 79.1673 49.9909 84.1673 49.9909C85.4066 49.9909 89.5272 49.9909 91.6673 49.9909V51.6576C91.0423 51.6576 90.6259 51.6576 90.0007 51.6576C85.4173 51.6576 81.6673 55.4076 81.6673 59.9909Z" fill="#E54C5B"/>
+      <path d="M16.6673 39.9909V19.1576C16.6673 13.3242 21.459 8.32422 27.5006 8.32422H35.0006C35.0006 24.7333 35.0006 28.1159 35.0006 49.9909C35.0006 49.9909 10.4741 49.9909 8.33398 49.9909C8.33398 49.3659 8.33398 48.7409 8.33398 48.3242C12.8838 48.3242 16.6673 44.5742 16.6673 39.9909Z" fill="#70CCDA"/>
+      <path d="M35.0006 8.33908V49.9909L53.334 49.9909V19.1576C53.334 16.8659 55.209 14.9909 57.5006 14.9909L61.6673 14.9909V8.32422C53.1205 8.35674 43.5476 8.33908 35.0006 8.33908Z" fill="#26B083"/>
+      <path d="M81.6673 39.9909V19.1576C81.6673 13.3242 76.8757 8.32422 70.834 8.32422H61.6673V14.9909L70.834 14.9909C73.1257 14.9909 75.0006 16.8659 75.0006 19.1576V40.8242C75.0006 45.8242 79.1673 49.9909 84.1673 49.9909C85.4066 49.9909 89.5272 49.9909 91.6673 49.9909V48.3242C91.0423 48.3242 90.6259 48.3242 90.0007 48.3242C85.4173 48.3242 81.6673 44.5742 81.6673 39.9909Z" fill="#FDBA00"/>
+      <path d="M16.6673 59.9909V80.8242C16.6673 86.6576 21.459 91.6576 27.5006 91.6576H35.0006C35.0006 75.2485 35.0006 71.8659 35.0006 49.9909C35.0006 49.9909 10.4741 49.9909 8.33398 49.9909C8.33398 50.6159 8.33398 51.2409 8.33398 51.6576C12.8838 51.6576 16.6673 55.4552 16.6673 59.9909Z" fill="#36AEF8"/>
+      <path d="M35.0006 91.6576H42.5006C48.5423 91.6576 53.334 86.6576 53.334 80.8242V49.9909L35.0006 49.9909V91.6576Z" fill="#5A56B9"/>
+    </svg>
+    Lucy Studio
+  </a>
+  <ul class="nav-links">
+    <li><a href="lucy-studio.html" class="on">Lucy Studio</a></li>
+    <li><a href="platform.html">Lucy Platform</a></li>
+    <li><a href="#">Pricing</a></li>
+    <li><a href="#">Resources</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#" class="btn-plain">Log in</a>
+    <a href="#" class="btn-fill">Download Studio</a>
   </div>
-</header>
+</nav>
 
-<div class="page-wrap">
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Lucy Studio</div>
+    <h1>Build <em>Flutter apps</em><br>without writing a line</h1>
+    <p class="hero-sub">A professional-grade visual editor for Flutter. Design, bind data, animate states, and deploy — all from one desktop workspace.</p>
+    <div class="hero-btns">
+      <a href="#" class="cta-dl">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Studio — Free
+      </a>
+      <a href="#" class="cta-ghost">Contact Sales</a>
+    </div>
+  </div>
+  <div class="hero-shot" style="margin:0 48px;">
+    <img src="assets/studio/All plates and panels unfolded.png" alt="Lucy Studio editor layout">
+  </div>
+</section>
+
+<!-- PRODUCT: SIDEBAR + SECTIONS -->
+<div class="product-wrap">
 
   <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="sidebar-label">Lucy Studio</div>
-    <ul class="sidebar-nav" id="sidebarNav">
-      <li><a href="#overview" class="active"><span class="nav-icon">◻</span>Overview</a></li>
-      <li><a href="#widgets"><span class="nav-icon">⊞</span>Widget Library</a></li>
-      <li><a href="#animation"><span class="nav-icon">◈</span>Animation & States</a></li>
-      <li><a href="#figma"><span class="nav-icon">✦</span>Figma Import</a></li>
-      <li><a href="#databinding"><span class="nav-icon">⇄</span>Data Binding</a></li>
-      <li><a href="#variables"><span class="nav-icon">◆</span>Variables</a></li>
-      <li><a href="#pages"><span class="nav-icon">⊟</span>Pages & Navigation</a></li>
-      <li><a href="#deploy"><span class="nav-icon">↑</span>OTA Deploy</a></li>
-      <li><a href="#console"><span class="nav-icon">▶</span>Console & Debug</a></li>
+  <aside class="prod-sidebar">
+    <div class="sb-label">Features</div>
+    <ul class="sb-nav" id="sbNav">
+      <li><a href="#visual-editor" class="active"><span class="sb-icon">◻</span>Visual Editor</a></li>
+      <li><a href="#widget-library"><span class="sb-icon">⊞</span>Widget Library</a></li>
+      <li><a href="#animation"><span class="sb-icon">◈</span>Animation & States</a></li>
+      <li><a href="#figma-import"><span class="sb-icon">✦</span>Figma Import</a></li>
+      <li><a href="#data-binding"><span class="sb-icon">⇄</span>Data Binding</a></li>
+      <li><a href="#variables"><span class="sb-icon">◆</span>Variables</a></li>
+      <li><a href="#pages"><span class="sb-icon">⊟</span>Pages & Navigation</a></li>
+      <li><a href="#ota-deploy"><span class="sb-icon">↑</span>OTA Deploy</a></li>
+      <li><a href="#console"><span class="sb-icon">▶</span>Console & Debug</a></li>
     </ul>
-    <div class="sidebar-dl">
+    <div class="sb-cta">
       <a href="#">Download Studio</a>
     </div>
   </aside>
 
-  <!-- Main -->
-  <main>
+  <!-- Main content -->
+  <main class="prod-main">
 
-    <!-- Hero -->
-    <section class="hero" id="overview">
-      <div class="hero-eyebrow">Lucy Studio</div>
-      <h1>Build <em>Flutter apps</em><br>without writing a line</h1>
-      <p class="hero-sub">A professional-grade visual editor for Flutter. Design, bind data, animate states, and deploy — all from one desktop workspace.</p>
-      <div class="hero-ctas">
-        <a class="btn-dl" href="#">Download Studio — Free</a>
-        <a class="btn-contact" href="#">Contact Sales</a>
+    <!-- 01 Visual Editor -->
+    <section class="feat" id="visual-editor">
+      <span class="feat-tag">Visual Editor</span>
+      <h2>Three-panel workspace,<br><em>zero boilerplate</em></h2>
+      <p class="feat-desc">Lucy Studio gives you a Figma-like editing experience that outputs real Flutter code. Left panel for widgets, center canvas for live preview, right panel for properties and data binding.</p>
+      <ul class="feat-bullets">
+        <li>Left panel — widget library organized by category</li>
+        <li>Center canvas — device frame with real-time rendering</li>
+        <li>Right panel — Property inspector &amp; Data binding tab</li>
+        <li>Multi-device preview: phone, tablet, responsive</li>
+      </ul>
+      <div class="feat-shot">
+        <img src="assets/studio/Animation mode - All plates and panels unfolded.png" alt="Lucy Studio full editor layout with all panels open">
       </div>
+    </section>
 
-      <!-- Studio mockup -->
-      <div class="hero-img">
-        <div class="hero-img-inner">
-          <div class="studio-mockup">
-            <div class="sm-topbar">
-              <div class="sm-dot r"></div>
-              <div class="sm-dot y"></div>
-              <div class="sm-dot g"></div>
-              <div class="sm-tab">Project name &rsaquo; Page name</div>
-              <div style="margin-left:auto;display:flex;gap:8px;">
-                <div style="width:60px;height:18px;background:rgba(131,97,255,0.25);border-radius:20px;border:1px solid rgba(131,97,255,0.5);"></div>
-              </div>
-            </div>
-            <div class="sm-body">
-              <!-- Left: Widgets -->
-              <div class="sm-left">
-                <div class="sm-section-label">Layouts</div>
-                <div class="sm-widget-row">
-                  <div class="sm-widget"><div class="sm-widget-icon">⊞</div><div class="sm-widget-name">Row</div></div>
-                  <div class="sm-widget"><div class="sm-widget-icon">⊟</div><div class="sm-widget-name">Column</div></div>
-                  <div class="sm-widget"><div class="sm-widget-icon">▣</div><div class="sm-widget-name">Stack</div></div>
-                </div>
-                <div class="sm-widget-row">
-                  <div class="sm-widget"><div class="sm-widget-icon">⊠</div><div class="sm-widget-name">Grid</div></div>
-                  <div class="sm-widget"><div class="sm-widget-icon">≡</div><div class="sm-widget-name">ListView</div></div>
-                  <div class="sm-widget"><div class="sm-widget-icon">□</div><div class="sm-widget-name">Card</div></div>
-                </div>
-                <div class="sm-section-label">Contents</div>
-                <div class="sm-widget-row">
-                  <div class="sm-widget"><div class="sm-widget-icon">T</div><div class="sm-widget-name">Text</div></div>
-                  <div class="sm-widget"><div class="sm-widget-icon">🖼</div><div class="sm-widget-name">Image</div></div>
-                  <div class="sm-widget"><div class="sm-widget-icon">⏺</div><div class="sm-widget-name">Button</div></div>
-                </div>
-              </div>
-              <!-- Center: Canvas -->
-              <div class="sm-canvas">
-                <div class="sm-phone">
-                  <div class="sm-phone-top"><span class="sm-phone-time">9:41</span></div>
-                  <div class="sm-phone-content">
-                    <div class="sm-phone-card">
-                      <div class="sm-phone-card-title">총 자산</div>
-                      <div class="sm-phone-card-val">₩ 1,234</div>
-                    </div>
-                    <div style="height:40px;background:rgba(131,97,255,0.1);border-radius:4px;margin-bottom:4px;"></div>
-                    <div style="height:12px;background:rgba(255,255,255,0.04);border-radius:3px;margin-bottom:3px;"></div>
-                    <div style="height:12px;background:rgba(255,255,255,0.04);border-radius:3px;width:70%;"></div>
-                  </div>
-                </div>
-              </div>
-              <!-- Right: Property -->
-              <div class="sm-right">
-                <div class="sm-prop-row">
-                  <div class="sm-prop-tab active">Property</div>
-                  <div class="sm-prop-tab">Data</div>
-                </div>
-                <div class="sm-prop-label">Layout</div>
-                <div class="sm-prop-field">id</div>
-                <div class="sm-prop-field">Visible ●</div>
-                <div class="sm-prop-label">Stack</div>
-                <div class="sm-prop-field">Alignment</div>
-                <div class="sm-prop-field">Fit: loose</div>
-                <div class="sm-prop-label">Size</div>
-                <div class="sm-prop-row">
-                  <div class="sm-prop-tab">W</div>
-                  <div class="sm-prop-tab">H</div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <!-- 02 Widget Library -->
+    <section class="feat" id="widget-library">
+      <span class="feat-tag">Widget Library</span>
+      <h2>Every Flutter widget,<br><em>ready to drop</em></h2>
+      <p class="feat-desc">20+ production-ready widgets organized into Layouts, Contents, and Dividers. From simple Text and Image to complex TDTable, DragList, and NestedScroll — no code needed for most UI patterns.</p>
+      <ul class="feat-bullets">
+        <li>Layout primitives: Row, Column, Stack, Grid, ListView, PageView</li>
+        <li>Advanced layouts: TDTable, TDGrid, DragList, NestedScroll, Masonry</li>
+        <li>Content widgets: Text, TextField, Image, SVG, Button, Checkbox</li>
+        <li>Responsive helpers: Safe Area, VSplit, HSplit, Wrap</li>
+      </ul>
+      <div class="feat-cols">
+        <div class="feat-shot">
+          <img src="assets/studio/Widgets.png" alt="Lucy Studio widget library panel">
+        </div>
+        <div class="feat-shot">
+          <img src="assets/studio/Widgets tree _ select form, widget, component, board.png" alt="Widget tree panel">
         </div>
       </div>
     </section>
 
-    <!-- 01 Widget Library -->
-    <section class="feature" id="widgets">
-      <div class="feature-inner">
-        <div class="feature-text">
-          <div class="feature-eyebrow">Widget Library</div>
-          <h2>Every building block<br>you <em>actually need</em></h2>
-          <p>20+ production-ready Flutter widgets organized by category. From layout primitives to complex interactive components — no custom code required for most UI patterns.</p>
-          <ul class="feature-list">
-            <li>Row, Column, Stack, Grid, ListView, PageView — full layout system</li>
-            <li>TDTable, TDGrid, DragList for data-heavy interfaces</li>
-            <li>NestedScroll, MasonryGrid for advanced scroll patterns</li>
-            <li>Safe Area, VSplit, HSplit for responsive device handling</li>
-          </ul>
+    <!-- 03 Animation & States -->
+    <section class="feat" id="animation">
+      <span class="feat-tag">Animation &amp; States</span>
+      <h2>State-machine driven<br><em>animation editor</em></h2>
+      <p class="feat-desc">Define multiple visual states per widget — Default, Hover, Pressed, Error, Loading — and set transition animations between them without writing a single setState.</p>
+      <ul class="feat-bullets">
+        <li>Named state groups: define unlimited states per widget</li>
+        <li>Timeline-based transitions — duration, curve, delay per property</li>
+        <li>Condition-based state switching linked to data or user gestures</li>
+        <li>Full animation mode — boards, components, and interactions</li>
+      </ul>
+      <div class="feat-shot">
+        <img src="assets/studio/Animation mode - All plates and panels unfolded.png" alt="Animation mode with state transition panel">
+      </div>
+    </section>
+
+    <!-- 04 Figma Import -->
+    <section class="feat" id="figma-import">
+      <span class="feat-tag">Figma Import</span>
+      <h2>From <em>Figma</em> to Flutter<br>in minutes</h2>
+      <p class="feat-desc">Lucy Studio bridges the design-to-development gap. Install the Figma Color Importer plugin, copy JSON from Figma, and paste directly into Lucy Studio. Colors, tokens, pages, icons — all imported instantly.</p>
+      <ul class="feat-bullets">
+        <li>Figma Color Importer plugin — 3-step setup</li>
+        <li>Light / Dark mode color variables imported simultaneously</li>
+        <li>Pages, icons, and component references synchronized</li>
+        <li>Token names auto-mapped to Lucy variable names</li>
+      </ul>
+      <div class="feat-shot">
+        <img src="assets/studio/Variables Color _ Figma Importer Paste.png" alt="Figma Color Importer paste interface">
+      </div>
+    </section>
+
+    <!-- 05 Data Binding -->
+    <section class="feat" id="data-binding">
+      <span class="feat-tag">Data Binding</span>
+      <h2>Connect UI to <em>real data</em><br>without code</h2>
+      <p class="feat-desc">Bind any widget property directly to an API endpoint, data provider, or app variable. Configure data sources, set call parameters, and map response fields to widget properties — entirely visually.</p>
+      <ul class="feat-bullets">
+        <li>Contents Datasource — API endpoint per widget with call configuration</li>
+        <li>Provider Instance — shared data providers reused across pages</li>
+        <li>Data Set — custom static or mock datasets for prototyping</li>
+        <li>Drag-and-drop field mapping from response JSON to widget properties</li>
+      </ul>
+      <div class="feat-shot">
+        <img src="assets/studio/Data Binding default.png" alt="Data Binding panel with field mapping">
+      </div>
+    </section>
+
+    <!-- 06 Variables -->
+    <section class="feat" id="variables">
+      <span class="feat-tag">Variables</span>
+      <h2>Design tokens <em>built in</em><br>to every project</h2>
+      <p class="feat-desc">Manage app-wide variables and color tokens in one centralized panel. Changes propagate instantly to every widget that references them — the same token system as your Figma file.</p>
+      <ul class="feat-bullets">
+        <li>Color Variables with full Light / Dark mode support</li>
+        <li>App Variables — String, Boolean, Number, List scopes</li>
+        <li>Page-scoped or global across the entire project</li>
+        <li>Import from Figma or define from scratch</li>
+      </ul>
+      <div class="feat-cols">
+        <div class="feat-shot">
+          <img src="assets/studio/Variables Color _ Default.png" alt="Color variables panel">
         </div>
-        <div class="panel">
-          <div class="panel-topbar">
-            <span class="dot p"></span>Widgets
-          </div>
-          <div class="widget-section-head">Layouts</div>
-          <div class="widget-grid">
-            <div class="widget-card"><div class="wc-icon">⊞</div><div class="wc-name">Row</div></div>
-            <div class="widget-card"><div class="wc-icon">⊟</div><div class="wc-name">Column</div></div>
-            <div class="widget-card"><div class="wc-icon">▣</div><div class="wc-name">Stack</div></div>
-            <div class="widget-card"><div class="wc-icon">≋</div><div class="wc-name">Wrap</div></div>
-            <div class="widget-card"><div class="wc-icon">⊠</div><div class="wc-name">Grid</div></div>
-            <div class="widget-card"><div class="wc-icon">≡</div><div class="wc-name">ListView</div></div>
-            <div class="widget-card"><div class="wc-icon">⧈</div><div class="wc-name">PageView</div></div>
-            <div class="widget-card"><div class="wc-icon">□</div><div class="wc-name">Card</div></div>
-          </div>
-          <div class="widget-section-head">Contents</div>
-          <div class="widget-grid">
-            <div class="widget-card"><div class="wc-icon">T</div><div class="wc-name">Text</div></div>
-            <div class="widget-card"><div class="wc-icon">▤</div><div class="wc-name">TextField</div></div>
-            <div class="widget-card"><div class="wc-icon">🖼</div><div class="wc-name">Image</div></div>
-            <div class="widget-card"><div class="wc-icon">⏺</div><div class="wc-name">Button</div></div>
-          </div>
+        <div class="feat-shot">
+          <img src="assets/studio/App Variables - Default.png" alt="App variables panel">
         </div>
       </div>
     </section>
 
-    <!-- 02 Animation & States -->
-    <section class="feature" id="animation">
-      <div class="feature-inner reverse">
-        <div class="feature-text">
-          <div class="feature-eyebrow">Animation & States</div>
-          <h2>State-machine driven<br><em>animation editor</em></h2>
-          <p>Define multiple visual states for any widget — default, hover, pressed, error, loading — and set transition animations between them visually. No setState boilerplate.</p>
-          <ul class="feature-list">
-            <li>State group editor with named states per widget</li>
-            <li>Timeline-based transition settings per property</li>
-            <li>Condition-based state switching (data binding aware)</li>
-            <li>Link state transitions to user gestures</li>
-          </ul>
-        </div>
-        <div class="panel">
-          <div class="panel-topbar">
-            <span class="dot p"></span>State Transition
-          </div>
-          <div class="anim-panel">
-            <div class="state-bar">
-              <div class="state-chip active">Default</div>
-              <div class="state-chip">Hover</div>
-              <div class="state-chip">Pressed</div>
-              <div class="state-chip">Error</div>
-              <div class="state-chip" style="border-style:dashed;opacity:.5;">+ Add State</div>
-            </div>
-            <div style="font-size:10px;color:var(--wh3);margin-bottom:10px;font-weight:600;letter-spacing:.5px;">TRANSITION TIMELINE</div>
-            <div class="anim-track">
-              <div class="anim-row">
-                <div class="anim-label">Opacity</div>
-                <div class="anim-bar-wrap"><div class="anim-bar" style="width:65%"><div class="anim-handle"></div></div></div>
-              </div>
-              <div class="anim-row">
-                <div class="anim-label">Scale</div>
-                <div class="anim-bar-wrap"><div class="anim-bar" style="width:40%"><div class="anim-handle"></div></div></div>
-              </div>
-              <div class="anim-row">
-                <div class="anim-label">Color</div>
-                <div class="anim-bar-wrap"><div class="anim-bar" style="width:80%"><div class="anim-handle"></div></div></div>
-              </div>
-              <div class="anim-row">
-                <div class="anim-label">Translate Y</div>
-                <div class="anim-bar-wrap"><div class="anim-bar" style="width:55%"><div class="anim-handle"></div></div></div>
-              </div>
-              <div class="anim-row">
-                <div class="anim-label">Border</div>
-                <div class="anim-bar-wrap" style="opacity:.3;"><div class="anim-bar" style="width:30%"><div class="anim-handle"></div></div></div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <!-- 07 Pages & Navigation -->
+    <section class="feat" id="pages">
+      <span class="feat-tag">Pages &amp; Navigation</span>
+      <h2>Multi-page apps with<br><em>zero routing code</em></h2>
+      <p class="feat-desc">Organize your app's screens in a hierarchical folder tree. Set navigation actions on any widget — push, replace, pop — and Lucy handles Flutter routing under the hood.</p>
+      <ul class="feat-bullets">
+        <li>Folder-based page tree for complex multi-screen flows</li>
+        <li>Named route management with parameter passing</li>
+        <li>Widget tree view per page for quick inspection</li>
+        <li>Recent pages panel for fast context switching</li>
+      </ul>
+      <div class="feat-shot">
+        <img src="assets/studio/Pages _ move folder or page.png" alt="Pages navigation panel with folder structure">
       </div>
     </section>
 
-    <!-- 03 Figma Import -->
-    <section class="feature" id="figma">
-      <div class="feature-inner">
-        <div class="feature-text">
-          <div class="feature-eyebrow">Figma Import</div>
-          <h2>From <em>Figma</em> to<br>Flutter in minutes</h2>
-          <p>Lucy Studio bridges the design-to-development gap. Import color variables, design tokens, component structures, and icons directly from your Figma files — keeping design and code in sync.</p>
-          <ul class="feature-list">
-            <li>Figma Color Importer plugin — paste JSON to sync color variables</li>
-            <li>Import pages, icons, and component references</li>
-            <li>Two-mode color system (Light / Dark) fully supported</li>
-            <li>Design token names mapped to Lucy variable names automatically</li>
-          </ul>
-        </div>
-        <div class="panel">
-          <div class="panel-topbar">
-            <span class="dot p"></span>Figma Color Importer
-          </div>
-          <div class="figma-flow">
-            <div class="figma-box">
-              <div class="fb-icon">🎨</div>
-              <div class="fb-label">Figma</div>
-              <div class="fb-sub">Color Variables</div>
-            </div>
-            <div class="figma-arrow">
-              <div class="fa-line"></div>
-              <div class="fa-label">JSON</div>
-            </div>
-            <div class="figma-box">
-              <div class="fb-icon" style="font-size:22px;">{ }</div>
-              <div class="fb-label">Lucy Studio</div>
-              <div class="fb-sub">Variables Panel</div>
-            </div>
-          </div>
-          <div class="figma-import-detail">
-            <div class="import-item"><div class="ii-icon">🎨</div><div class="ii-label">Colors</div></div>
-            <div class="import-item"><div class="ii-icon">📄</div><div class="ii-label">Pages</div></div>
-            <div class="import-item"><div class="ii-icon">⬡</div><div class="ii-label">Icons</div></div>
-            <div class="import-item"><div class="ii-icon">⊡</div><div class="ii-label">Components</div></div>
-          </div>
-        </div>
+    <!-- 08 OTA Deploy -->
+    <section class="feat" id="ota-deploy">
+      <span class="feat-tag">OTA Deploy</span>
+      <h2>Push updates <em>instantly</em><br>without app store review</h2>
+      <p class="feat-desc">Deploy UI changes directly from Lucy Studio to production devices via Lucy's OTA infrastructure. No recompile. No app store wait. Configure your deploy target, hit upload, and users see the update in seconds.</p>
+      <ul class="feat-bullets">
+        <li>One-click deploy to Lucy Deploy server from inside Studio</li>
+        <li>Target specific environments: dev, staging, production</li>
+        <li>Deploy Uploader Settings — server IP, credentials, sync options</li>
+        <li>Rollback to any previous deployment at any time</li>
+      </ul>
+      <div class="feat-shot">
+        <img src="assets/studio/Deploy Uploader Settings.png" alt="Deploy Uploader Settings panel">
       </div>
     </section>
 
-    <!-- 04 Data Binding -->
-    <section class="feature" id="databinding">
-      <div class="feature-inner reverse">
-        <div class="feature-text">
-          <div class="feature-eyebrow">Data Binding</div>
-          <h2>Connect UI to <em>real data</em><br>without code</h2>
-          <p>Bind any widget property directly to a data provider, API response, or app variable. Define data sources, configure call parameters, and map response fields — all visually.</p>
-          <ul class="feature-list">
-            <li>Contents Datasource — API endpoint configuration per widget</li>
-            <li>Provider Instance — shared data providers across pages</li>
-            <li>Data Set — custom static or mock datasets for prototyping</li>
-            <li>Drag-and-drop field mapping from response to widget properties</li>
-          </ul>
-        </div>
-        <div class="panel">
-          <div class="panel-topbar">
-            <span class="dot p"></span>Data Binding
-          </div>
-          <div class="binding-panel">
-            <div class="binding-diagram">
-              <div class="bind-node">
-                <div class="bn-icon">🔌</div>
-                <div class="bn-label">Data Provider</div>
-                <div class="bn-sub">REST / GraphQL</div>
-              </div>
-              <div class="bind-arrow">⇄</div>
-              <div class="bind-node" style="border-color:rgba(131,97,255,0.3);background:rgba(131,97,255,0.06);">
-                <div class="bn-icon">⊡</div>
-                <div class="bn-label">Widget</div>
-                <div class="bn-sub">Text / Image / List</div>
-              </div>
-            </div>
-            <div class="bind-fields">
-              <div class="bind-field">
-                <div class="bf-key">$.name</div>
-                <div class="bf-val">→ Text.content</div>
-                <div class="bf-dot"></div>
-              </div>
-              <div class="bind-field">
-                <div class="bf-key">$.price</div>
-                <div class="bf-val">→ Text.content</div>
-                <div class="bf-dot"></div>
-              </div>
-              <div class="bind-field">
-                <div class="bf-key">$.image_url</div>
-                <div class="bf-val">→ Image.src</div>
-                <div class="bf-dot"></div>
-              </div>
-              <div class="bind-field" style="opacity:.4;border-style:dashed;">
-                <div class="bf-key">+ Add</div>
-                <div class="bf-val">field mapping</div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <!-- 09 Console & Debug -->
+    <section class="feat" id="console">
+      <span class="feat-tag">Console &amp; Debug</span>
+      <h2>Full visibility <em>inside<br>the editor</em></h2>
+      <p class="feat-desc">Lucy Studio's built-in console surfaces Studio logs and App logs side by side. Trace data binding calls, inspect widget state changes, and catch runtime errors without ever leaving your workspace.</p>
+      <ul class="feat-bullets">
+        <li>Studio Log — editor-level events, build steps, deploy status</li>
+        <li>App Log — runtime Flutter output from connected device or emulator</li>
+        <li>Click any log entry to jump to the originating widget</li>
+        <li>Filter by level: Info, Warning, Error, Success</li>
+      </ul>
+      <div class="feat-shot">
+        <img src="assets/studio/Status bar - unfold _ Console tab.png" alt="Status bar with console log tab open">
       </div>
     </section>
-
-    <!-- 05 Variables -->
-    <section class="feature" id="variables">
-      <div class="feature-inner">
-        <div class="feature-text">
-          <div class="feature-eyebrow">Variables</div>
-          <h2>Design tokens <em>built in</em><br>to every project</h2>
-          <p>Manage app-wide variables and color tokens in one place. Changes propagate instantly across every widget that references them — the same token system as your Figma file.</p>
-          <ul class="feature-list">
-            <li>Color Variables with Light / Dark mode support</li>
-            <li>App Variables — strings, booleans, numbers, lists</li>
-            <li>Scoped per page or global across the project</li>
-            <li>Import from Figma or define from scratch</li>
-          </ul>
-        </div>
-        <div class="panel">
-          <div class="panel-topbar">
-            <span class="dot p"></span>Variables
-          </div>
-          <div class="vars-panel">
-            <div class="var-group">
-              <div class="var-group-label">Color — Light Mode</div>
-              <div class="var-row"><div class="var-swatch" style="background:#FFFFFF;"></div><div class="var-name">color.background</div><div class="var-val">#FFFFFF</div></div>
-              <div class="var-row"><div class="var-swatch" style="background:#111111;"></div><div class="var-name">color.text.primary</div><div class="var-val">#111111</div></div>
-              <div class="var-row"><div class="var-swatch" style="background:#8361FF;"></div><div class="var-name">color.brand</div><div class="var-val">#8361FF</div></div>
-              <div class="var-row"><div class="var-swatch" style="background:#F5F5F5;"></div><div class="var-name">color.surface</div><div class="var-val">#F5F5F5</div></div>
-            </div>
-            <div class="var-group">
-              <div class="var-group-label">App Variables</div>
-              <div class="var-row"><div style="width:14px;font-size:10px;color:var(--p2);">S</div><div class="var-name">user.name</div><div class="var-val">String</div></div>
-              <div class="var-row"><div style="width:14px;font-size:10px;color:#27C93F;">B</div><div class="var-name">isLoggedIn</div><div class="var-val">Boolean</div></div>
-              <div class="var-row"><div style="width:14px;font-size:10px;color:#FFBD2E;">N</div><div class="var-name">cartCount</div><div class="var-val">Number</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 06 Pages & Navigation -->
-    <section class="feature" id="pages">
-      <div class="feature-inner reverse">
-        <div class="feature-text">
-          <div class="feature-eyebrow">Pages & Navigation</div>
-          <h2>Multi-page apps<br>with <em>zero routing code</em></h2>
-          <p>Organize your app's pages in a folder tree. Set navigation actions on any widget — push, replace, pop — and Lucy handles the Flutter routing under the hood.</p>
-          <ul class="feature-list">
-            <li>Folder-based page tree for complex multi-screen apps</li>
-            <li>Named route management with parameter passing</li>
-            <li>Page-level widget tree view for quick inspection</li>
-            <li>Dark/Home/Scroll, Login flows, Searching — all in one project</li>
-          </ul>
-        </div>
-        <div class="panel">
-          <div class="panel-topbar">
-            <span class="dot p"></span>Pages
-          </div>
-          <div style="padding:16px;">
-            <div style="display:flex;flex-direction:column;gap:3px;">
-              <div style="display:flex;align-items:center;gap:6px;padding:6px 8px;background:rgba(131,97,255,0.12);border:1px solid rgba(131,97,255,0.25);border-radius:5px;">
-                <span style="font-size:10px;color:var(--p2);">▼</span>
-                <span style="font-size:11px;color:var(--wh);font-weight:600;">📁 Dark</span>
-              </div>
-              <div style="padding-left:16px;display:flex;flex-direction:column;gap:3px;">
-                <div style="display:flex;align-items:center;gap:6px;padding:5px 8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:5px;"><span style="font-size:10px;opacity:.4;">▶</span><span style="font-size:11px;color:var(--wh2);">🗋 Home / scroll</span><span style="margin-left:auto;font-size:9px;color:var(--wh3);">now</span></div>
-                <div style="display:flex;align-items:center;gap:6px;padding:5px 8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:5px;"><span style="font-size:10px;opacity:.4;">▶</span><span style="font-size:11px;color:var(--wh2);">🗋 login / inputs</span><span style="margin-left:auto;font-size:9px;color:var(--wh3);">1h ago</span></div>
-                <div style="display:flex;align-items:center;gap:6px;padding:5px 8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:5px;"><span style="font-size:10px;opacity:.4;">▶</span><span style="font-size:11px;color:var(--wh2);">🗋 Searching / result</span><span style="margin-left:auto;font-size:9px;color:var(--wh3);">5m ago</span></div>
-                <div style="display:flex;align-items:center;gap:6px;padding:5px 8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:5px;"><span style="font-size:10px;opacity:.4;">▶</span><span style="font-size:11px;color:var(--wh2);">🗋 login / code / error</span><span style="margin-left:auto;font-size:9px;color:var(--wh3);">20s ago</span></div>
-              </div>
-              <div style="display:flex;align-items:center;gap:6px;padding:6px 8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:5px;">
-                <span style="font-size:10px;opacity:.4;">▶</span>
-                <span style="font-size:11px;color:var(--wh2);">📁 Light</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:6px;padding:6px 8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:5px;cursor:default;opacity:.5;border-style:dashed;">
-                <span style="font-size:10px;">+</span>
-                <span style="font-size:11px;color:var(--wh3);">New Page</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 07 OTA Deploy -->
-    <section class="feature" id="deploy">
-      <div class="feature-inner">
-        <div class="feature-text">
-          <div class="feature-eyebrow">OTA Deploy</div>
-          <h2>Push updates <em>instantly</em><br>without app store review</h2>
-          <p>Deploy UI changes directly from Lucy Studio to production devices via Lucy's OTA infrastructure. No recompile. No app store wait. Your users see the update in real time.</p>
-          <ul class="feature-list">
-            <li>One-click deploy from Studio to Lucy Deploy server</li>
-            <li>Target specific environments (dev / staging / production)</li>
-            <li>Deploy Uploader Settings — configure target IP and credentials</li>
-            <li>Rollback to any prior deployment instantly</li>
-          </ul>
-        </div>
-        <div class="panel">
-          <div class="panel-topbar">
-            <span class="dot p"></span>Deploy Uploader
-          </div>
-          <div class="deploy-panel">
-            <div class="deploy-steps">
-              <div class="deploy-step">
-                <div class="ds-circle done">✓</div>
-                <div class="ds-label">Build</div>
-              </div>
-              <div class="ds-line"></div>
-              <div class="deploy-step">
-                <div class="ds-circle done">✓</div>
-                <div class="ds-label">Package</div>
-              </div>
-              <div class="ds-line"></div>
-              <div class="deploy-step">
-                <div class="ds-circle done" style="animation: pulse 1.5s infinite;">↑</div>
-                <div class="ds-label">Upload</div>
-              </div>
-              <div class="ds-line" style="opacity:.3;"></div>
-              <div class="deploy-step">
-                <div class="ds-circle" style="opacity:.4;">◎</div>
-                <div class="ds-label">Live</div>
-              </div>
-            </div>
-            <div class="deploy-log">
-              <div class="log-line"><span class="time">09:42:01</span><span class="level s">[SUCCESS]</span> Build completed — 1,248 widgets compiled</div>
-              <div class="log-line"><span class="time">09:42:03</span><span class="level i">[INFO]</span> Packaging assets...</div>
-              <div class="log-line"><span class="time">09:42:04</span><span class="level i">[INFO]</span> Connecting to deploy server 192.168.1.10</div>
-              <div class="log-line"><span class="time">09:42:05</span><span class="level s">[SUCCESS]</span> Authentication OK</div>
-              <div class="log-line"><span class="time">09:42:06</span><span class="level i">[INFO]</span> Uploading bundle... 68%</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 08 Console & Debug -->
-    <section class="feature" id="console">
-      <div class="feature-inner reverse">
-        <div class="feature-text">
-          <div class="feature-eyebrow">Console & Debug</div>
-          <h2>Full visibility <em>inside<br>the editor</em></h2>
-          <p>Lucy Studio's built-in console surfaces Studio logs and App logs side by side. Trace data binding calls, inspect widget state changes, and catch runtime errors without leaving your workspace.</p>
-          <ul class="feature-list">
-            <li>Studio Log — editor-level events, build steps, deploy status</li>
-            <li>App Log — runtime Flutter logs from connected device or emulator</li>
-            <li>Filter by log level: Info, Warning, Error, Success</li>
-            <li>Click any log entry to jump to the originating widget</li>
-          </ul>
-        </div>
-        <div class="panel">
-          <div class="console-panel">
-            <div class="console-tabs">
-              <div class="console-tab active">Studio log</div>
-              <div class="console-tab">App log</div>
-            </div>
-            <div class="console-body">
-              <div class="log-line"><span class="time">09:41:58</span><span class="level i">[I]</span><span>Page loaded: Dark/Home/scroll</span></div>
-              <div class="log-line"><span class="time">09:41:59</span><span class="level s">[S]</span><span>Data provider connected: StockAPI</span></div>
-              <div class="log-line"><span class="time">09:42:00</span><span class="level i">[I]</span><span>Binding resolved: $.price → Text#priceLabel</span></div>
-              <div class="log-line"><span class="time">09:42:01</span><span class="level e">[E]</span><span>Image load failed: asset not found 'hero_bg.png'</span></div>
-              <div class="log-line"><span class="time">09:42:02</span><span class="level i">[I]</span><span>State transition: Default → Pressed (Button#ctaBtn)</span></div>
-              <div class="log-line"><span class="time">09:42:03</span><span class="level s">[S]</span><span>Widget tree refreshed: 48 nodes</span></div>
-              <div class="log-line"><span class="time">09:42:04</span><span class="level i">[I]</span><span>Navigation: push → Dark/login/inputs</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="cta-section">
-      <div class="hero-eyebrow" style="justify-content:center;margin-bottom:16px;">Get started today</div>
-      <h2>Ready to build<br><em>faster</em>?</h2>
-      <p>Download Lucy Studio free and start building Flutter apps visually. No credit card required.</p>
-      <div class="cta-btns">
-        <a class="btn-dl" href="#">Download Studio — Free</a>
-        <a class="btn-contact" href="#">Contact Sales</a>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-      <a class="footer-logo" href="edencrew-home.html">Eden<span>Crew</span></a>
-      <div class="footer-links">
-        <a href="#">Lucy Studio</a>
-        <a href="platform.html">Lucy Platform</a>
-        <a href="#">Pricing</a>
-        <a href="#">Resources</a>
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
-      </div>
-      <div class="footer-copy">© 2025 EdenCrew Inc.</div>
-    </footer>
 
   </main>
 </div>
 
-<script>
-  // Intersection Observer for sidebar active state
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.sidebar-nav a');
+<!-- CTA -->
+<section class="cta-section">
+  <div class="hero-tag" style="justify-content:center;margin-bottom:18px;">Get started today</div>
+  <h2>Ready to build <em>faster</em>?</h2>
+  <p>Download Lucy Studio free and start building Flutter apps visually.<br>No credit card required.</p>
+  <div class="cta-btns">
+    <a href="#" class="cta-dl">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download Studio — Free
+    </a>
+    <a href="#" class="cta-ghost">Contact Sales</a>
+  </div>
+</section>
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.getAttribute('id');
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === '#' + id) {
-            link.classList.add('active');
-          }
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-logo">
+        <svg width="22" height="22" viewBox="0 0 100 100" fill="none"><path d="M68.334 29.1576C68.334 31.4587 66.4685 33.3242 64.1673 33.3242C61.8661 33.3242 60.0006 31.4587 60.0006 29.1576C60.0006 26.8564 61.8661 24.9909 64.1673 24.9909C66.4685 24.9909 68.334 26.8564 68.334 29.1576Z" fill="#FDBA00"/><path d="M81.6673 59.9909V80.8242C81.6673 86.6576 76.8757 91.6576 70.834 91.6576H61.6673V84.9909H70.834C73.1257 84.9909 75.0006 83.1159 75.0006 80.8242V59.1576C75.0006 54.1576 79.1673 49.9909 84.1673 49.9909C85.4066 49.9909 89.5272 49.9909 91.6673 49.9909V51.6576C91.0423 51.6576 90.6259 51.6576 90.0007 51.6576C85.4173 51.6576 81.6673 55.4076 81.6673 59.9909Z" fill="#E54C5B"/><path d="M16.6673 39.9909V19.1576C16.6673 13.3242 21.459 8.32422 27.5006 8.32422H35.0006C35.0006 24.7333 35.0006 28.1159 35.0006 49.9909C35.0006 49.9909 10.4741 49.9909 8.33398 49.9909C8.33398 49.3659 8.33398 48.7409 8.33398 48.3242C12.8838 48.3242 16.6673 44.5742 16.6673 39.9909Z" fill="#70CCDA"/><path d="M35.0006 8.33908V49.9909L53.334 49.9909V19.1576C53.334 16.8659 55.209 14.9909 57.5006 14.9909L61.6673 14.9909V8.32422C53.1205 8.35674 43.5476 8.33908 35.0006 8.33908Z" fill="#26B083"/><path d="M81.6673 39.9909V19.1576C81.6673 13.3242 76.8757 8.32422 70.834 8.32422H61.6673V14.9909L70.834 14.9909C73.1257 14.9909 75.0006 16.8659 75.0006 19.1576V40.8242C75.0006 45.8242 79.1673 49.9909 84.1673 49.9909C85.4066 49.9909 89.5272 49.9909 91.6673 49.9909V48.3242C91.0423 48.3242 90.6259 48.3242 90.0007 48.3242C85.4173 48.3242 81.6673 44.5742 81.6673 39.9909Z" fill="#FDBA00"/><path d="M16.6673 59.9909V80.8242C16.6673 86.6576 21.459 91.6576 27.5006 91.6576H35.0006C35.0006 75.2485 35.0006 71.8659 35.0006 49.9909C35.0006 49.9909 10.4741 49.9909 8.33398 49.9909C8.33398 50.6159 8.33398 51.2409 8.33398 51.6576C12.8838 51.6576 16.6673 55.4552 16.6673 59.9909Z" fill="#36AEF8"/><path d="M35.0006 91.6576H42.5006C48.5423 91.6576 53.334 86.6576 53.334 80.8242V49.9909L35.0006 49.9909V91.6576Z" fill="#5A56B9"/></svg>
+        EdenCrew
+      </div>
+      <p class="footer-brand-desc">Visual Flutter development platform for teams and enterprises.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#">Lucy Studio</a></li>
+        <li><a href="#">Lucy Platform</a></li>
+        <li><a href="#">TeamCloud</a></li>
+        <li><a href="#">Lucy Deploy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="#">Docs</a></li>
+        <li><a href="#">Changelog</a></li>
+        <li><a href="#">History</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Clients</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 EdenCrew Inc. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+  const sections = document.querySelectorAll('section.feat[id], section#visual-editor');
+  const links = document.querySelectorAll('.sb-nav a');
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        links.forEach(l => {
+          l.classList.toggle('active', l.getAttribute('href') === '#' + id);
         });
       }
     });
-  }, {
-    rootMargin: '-20% 0px -60% 0px',
-    threshold: 0
-  });
+  }, { rootMargin: '-25% 0px -55% 0px' });
 
-  sections.forEach(s => observer.observe(s));
+  sections.forEach(s => io.observe(s));
 </script>
 
 </body>
