@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edencrew — The Platform & Solution Company</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+:root {
+  --p:    #8361FF;
+  --p-lt: rgba(131,97,255,.08);
+  --p-bdr:rgba(131,97,255,.18);
+  --bg:   #080808;
+  --bg2:  #0D0D0D;
+  --bg3:  #111111;
+  --bg4:  #161616;
+  --bdr:  rgba(255,255,255,.06);
+  --bdr2: rgba(255,255,255,.1);
+  --mid:  rgba(240,237,232,.45);
+  --dim:  rgba(240,237,232,.2);
+  --wh:   #F0EDE8;
+  --footer:#050505;
+}
+body.light {
+  --bg:   #F5F4F1; --bg2:#FFFFFF; --bg3:#EEEDE9; --bg4:#E6E5E0;
+  --bdr:  rgba(0,0,0,.07); --bdr2:rgba(0,0,0,.12);
+  --mid:  rgba(0,0,0,.5); --dim:rgba(0,0,0,.28);
+  --wh:   #111111; --footer:#E8E7E3;
+}
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--wh); -webkit-font-smoothing:antialiased; transition:background .25s,color .25s; }
+
+/* ── NAV (공통) ── */
+nav {
+  position:sticky; top:0; z-index:99;
+  height:54px; padding:0 48px;
+  display:flex; align-items:center; justify-content:space-between;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(16px); border-bottom:1px solid var(--bdr);
+}
+.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; font-size:15px; font-weight:700; color:var(--wh); }
+.nav-links { display:flex; gap:28px; list-style:none; }
+.nav-links a { font-size:13px; font-weight:500; color:var(--mid); text-decoration:none; transition:color .15s; }
+.nav-links a:hover,.nav-links a.on { color:var(--wh); }
+.nav-right { display:flex; gap:8px; align-items:center; }
+.btn-ghost { font-size:13px; font-weight:500; color:var(--mid); text-decoration:none; padding:7px 14px; border-radius:7px; transition:all .15s; }
+.btn-ghost:hover { color:var(--wh); background:rgba(255,255,255,.05); }
+.btn-fill { font-size:13px; font-weight:600; color:#fff; background:var(--p); padding:8px 18px; border-radius:7px; text-decoration:none; transition:all .15s; }
+.btn-fill:hover { opacity:.85; }
+
+/* ── HERO ── */
+.hero { padding:100px 48px 0; text-align:center; position:relative; overflow:hidden; }
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--p); margin-bottom:24px;
+}
+.hero-eyebrow::before,.hero-eyebrow::after { content:''; width:24px; height:1.5px; background:var(--p); }
+.hero h1 {
+  font-size:80px; font-weight:900; font-family:'Montserrat',sans-serif; line-height:1.02; letter-spacing:-.04em;
+  color:var(--wh); max-width:920px; margin:0 auto 24px;
+}
+.hero h1 em { color:var(--p); font-style:normal; }
+.hero-sub {
+  font-size:18px; color:var(--mid); line-height:1.65;
+  max-width:540px; margin:0 auto 40px; font-weight:400;
+}
+.hero-btns { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:72px; }
+.cta-primary {
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:15px; font-weight:600; color:#fff; background:var(--p);
+  padding:14px 32px; border-radius:10px; text-decoration:none;
+  transition:opacity .15s;
+}
+.cta-primary:hover { opacity:.85; }
+.cta-primary svg { width:15px; height:15px; fill:none; stroke:#fff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.cta-secondary {
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:15px; font-weight:500; color:var(--mid);
+  padding:14px 26px; border-radius:10px; border:1.5px solid var(--bdr);
+  text-decoration:none; transition:all .15s;
+}
+.cta-secondary:hover { color:var(--wh); border-color:rgba(128,128,128,.3); }
+
+/* 히어로 스크린샷 */
+.hero-visual {
+  max-width:1200px; margin:0 auto;
+  border-radius:18px 18px 0 0; overflow:hidden;
+  border:1px solid var(--bdr); border-bottom:none;
+  box-shadow:0 -2px 0 var(--p), 0 24px 60px rgba(0,0,0,.6);
+  background:var(--bg3);
+}
+.hero-visual-bar {
+  background:#070910; height:36px; display:flex; align-items:center;
+  padding:0 16px; gap:7px; border-bottom:1px solid var(--bdr);
+}
+.hv-dot { width:11px; height:11px; border-radius:50%; }
+.hero-visual-bar-title { flex:1; text-align:center; font-size:11px; color:var(--dim); font-weight:500; }
+.hero-mockup {
+  display:grid; grid-template-columns:1fr 1fr 1fr;
+  gap:1px; background:var(--bdr); min-height:460px;
+}
+.hm-col { background:var(--bg2); padding:28px; position:relative; overflow:hidden; }
+.hm-col-label { font-size:13px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--dim); margin-bottom:16px; }
+.hm-chip { display:inline-flex; align-items:center; gap:8px; background:transparent; border:1px solid var(--p-bdr); border-radius:8px; padding:8px 14px; font-size:14px; font-weight:600; color:var(--p); margin-bottom:10px; }
+.hm-bar { height:4px; background:var(--p-lt); border-radius:2px; margin-bottom:8px; }
+.hm-stat { padding:16px 0; border-bottom:1px solid var(--bdr); }
+.hm-stat-n { font-size:48px; font-weight:900; font-family:'Montserrat',sans-serif; color:var(--wh); letter-spacing:-.04em; line-height:1; }
+.hm-stat-n em { color:var(--p); font-style:normal; }
+.hm-stat-l { font-size:15px; color:var(--mid); margin-top:8px; font-weight:400; }
+.hm-flow { display:flex; flex-direction:column; gap:8px; margin-top:4px; }
+.hm-flow-item { display:flex; align-items:center; gap:8px; }
+.hm-flow-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.hm-flow-text { font-size:15px; color:var(--mid); }
+.hm-flow-arrow { font-size:16px; color:var(--p); margin-left:auto; }
+
+/* ── METRICS ── */
+.metrics { background:var(--bg2); border-top:1px solid var(--bdr); }
+.metrics-inner {
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(5,1fr);
+  gap:1px; background:var(--bdr);
+}
+.metric { background:var(--bg2); padding:40px 32px; text-align:center; transition:background .25s; }
+.metric:hover { background:var(--bg4); }
+.metric-n { font-size:52px; font-weight:900; font-family:'Montserrat',sans-serif; letter-spacing:-.04em; color:var(--wh); line-height:1; margin-bottom:8px; }
+.metric-n em { color:var(--p); font-style:normal; }
+.metric-l { font-size:13px; color:var(--mid); font-weight:500; line-height:1.5; }
+.metric-s { font-size:10px; color:var(--dim); margin-top:4px; }
+
+/* ── SECTION COMMON ── */
+.section { padding:96px 48px; }
+.section.alt { background:var(--bg2); }
+.section-eyebrow { font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:12px; }
+.section-title { font-size:52px; font-weight:900; font-family:'Montserrat',sans-serif; letter-spacing:-.025em; color:var(--wh); margin-bottom:16px; line-height:1.08; }
+.section-desc { font-size:18px; color:var(--mid); line-height:1.65; max-width:560px; margin-bottom:60px; }
+.section-inner { max-width:1200px; margin:0 auto; }
+
+/* ── PLATFORM CARDS ── */
+.platform-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.plat-card {
+  border-radius:16px; overflow:hidden;
+  border:1px solid var(--bdr); background:var(--bg3);
+  transition:border-color .2s, transform .2s, box-shadow .2s;
+  text-decoration:none; display:flex; flex-direction:column;
+}
+.plat-card:hover { border-color:var(--bdr2); box-shadow:0 12px 40px rgba(0,0,0,.4); transform:translateY(-2px); }
+.plat-card-top { padding:28px 28px 20px; flex:1; }
+.plat-card-badge {
+  display:inline-block; font-size:9px; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--dim); background:transparent;
+  border:1px solid var(--bdr2); border-radius:4px; padding:3px 8px; margin-bottom:14px;
+}
+.plat-card-title { font-size:26px; font-weight:900; font-family:'Inter',sans-serif; color:var(--wh); margin-bottom:12px; }
+.plat-card-desc { font-size:16px; color:var(--mid); line-height:1.65; }
+.plat-card-bottom {
+  padding:16px 28px; border-top:1px solid var(--bdr);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.plat-card:hover .plat-card-link { opacity:1; color:var(--p); }
+.plat-card:hover .plat-card-arrow { opacity:1; color:var(--p); }
+.plat-card-link { font-size:13px; font-weight:600; color:var(--wh); opacity:.6; }
+.plat-card-arrow { font-size:16px; color:var(--wh); opacity:.4; }
+.plat-card-features { display:flex; flex-direction:column; gap:8px; margin-top:16px; }
+.plat-card-feat { display:flex; align-items:center; gap:8px; font-size:14px; color:var(--mid); }
+.plat-card-feat::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--p); flex-shrink:0; }
+
+/* ── MARQUEE ── */
+.marquee-section { padding:56px 0; background:var(--bg3); border-top:1px solid var(--bdr); border-bottom:1px solid var(--bdr); overflow:hidden; }
+.marquee-label { text-align:center; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:28px; }
+.marquee-track { display:flex; gap:0; animation:marquee 28s linear infinite; width:max-content; }
+.marquee-track:hover { animation-play-state:paused; }
+.marquee-item {
+  display:flex; align-items:center; gap:8px;
+  padding:0 44px; border-right:1px solid var(--bdr);
+  font-size:16px; font-weight:600; color:var(--mid); white-space:nowrap;
+  transition:color .15s;
+}
+.marquee-item:hover { color:var(--wh); opacity:.9; }
+.marquee-tag { font-size:9px; font-weight:500; color:var(--dim); background:var(--bdr); border-radius:3px; padding:2px 5px; margin-left:4px; }
+@keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+/* ── WORKFLOW ── */
+.workflow-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:0; background:var(--bdr); border-radius:16px; overflow:hidden; }
+.wf-step { background:var(--bg3); padding:28px 22px; text-align:center; position:relative; transition:background .15s; }
+.wf-step:hover { background:var(--bg4); }
+.wf-step-num { font-size:9px; font-weight:700; color:var(--dim); letter-spacing:.1em; margin-bottom:14px; }
+.wf-step-icon { font-size:28px; margin-bottom:12px; }
+.wf-step-title { font-size:15px; font-weight:700; color:var(--wh); margin-bottom:8px; line-height:1.3; }
+.wf-step-desc { font-size:13px; color:var(--mid); line-height:1.6; }
+.wf-arrow { position:absolute; right:-12px; top:50%; transform:translateY(-50%); z-index:1; width:24px; height:24px; background:var(--bg4); border:1px solid var(--bdr2); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; color:var(--dim); }
+
+/* ── DIFFERENCE ── */
+.diff-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.diff-col { border-radius:16px; padding:36px 32px; border:1px solid var(--bdr); }
+.diff-col.old { background:var(--bg3); border-color:var(--bdr); }
+.diff-col.new { background:var(--bg3); border-color:var(--bdr2); }
+.diff-col-label { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:20px; }
+.diff-col.old .diff-col-label { color:var(--dim); }
+.diff-col.new .diff-col-label { color:var(--wh); opacity:.5; }
+.diff-col-title { font-size:22px; font-weight:900; font-family:'Inter',sans-serif; color:var(--wh); margin-bottom:22px; line-height:1.25; }
+.diff-items { display:flex; flex-direction:column; gap:12px; }
+.diff-item { display:flex; align-items:flex-start; gap:10px; font-size:16px; color:var(--mid); line-height:1.6; }
+.diff-item::before { font-size:14px; flex-shrink:0; margin-top:1px; }
+.diff-col.old .diff-item::before { content:'✕'; color:rgba(255,255,255,.2); }
+.diff-col.new .diff-item::before { content:'✓'; color:var(--p); }
+
+/* ── CLIENTS ── */
+.clients-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
+.client-card {
+  background:var(--bg3); border:1px solid var(--bdr); border-radius:12px;
+  padding:24px 20px; text-align:center; transition:all .2s;
+}
+.client-card:hover { border-color:var(--bdr2); background:var(--bg4); }
+.client-name { font-size:16px; font-weight:600; color:var(--wh); margin-bottom:4px; }
+.client-type { font-size:12px; color:var(--dim); }
+.client-country { font-size:10px; font-weight:600; color:var(--p); letter-spacing:.06em; opacity:.8; }
+.clients-global { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.client-card.global { background:var(--bg4); border-color:var(--bdr2); }
+
+/* ── CERTIFICATIONS ── */
+.cert-row { display:flex; gap:12px; flex-wrap:wrap; }
+.cert-badge {
+  display:flex; align-items:center; gap:8px;
+  background:var(--bg3); border:1px solid var(--bdr); border-radius:10px;
+  padding:12px 18px; font-size:12px; font-weight:600; color:var(--mid);
+}
+.cert-badge-icon { font-size:18px; }
+
+/* ── FINAL CTA ── */
+.final-cta { padding:120px 48px; text-align:center; background:var(--bg); }
+.final-cta h2 { font-size:64px; font-weight:900; font-family:'Montserrat',sans-serif; letter-spacing:-.035em; color:var(--wh); line-height:1.06; margin-bottom:18px; }
+.final-cta h2 em { color:var(--p); font-style:normal; }
+.final-cta p { font-size:19px; color:var(--mid); margin-bottom:48px; }
+.final-cta-btns { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+
+/* ── FOOTER (공통) ── */
+footer { background:var(--footer); border-top:1px solid var(--bdr); padding:56px 48px 0; transition:background .25s; }
+.footer-top { display:grid; grid-template-columns:280px repeat(4,1fr); gap:40px; padding-bottom:48px; border-bottom:1px solid var(--bdr); }
+.footer-brand-name { display:flex; align-items:center; gap:8px; font-size:15px; font-weight:700; color:var(--wh); margin-bottom:12px; }
+.footer-brand-desc { font-size:13px; color:var(--mid); line-height:1.65; max-width:220px; margin-bottom:16px; }
+.footer-cert { display:flex; gap:6px; flex-wrap:wrap; }
+.footer-cert-tag { font-size:10px; font-weight:600; color:var(--dim); background:rgba(255,255,255,.04); border:1px solid var(--bdr); border-radius:4px; padding:3px 7px; }
+.footer-col h4 { font-size:12px; font-weight:700; color:var(--wh); margin-bottom:14px; letter-spacing:.02em; }
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:9px; }
+.footer-col ul a { font-size:13px; color:var(--mid); text-decoration:none; transition:color .15s; }
+.footer-col ul a:hover { color:var(--wh); }
+.footer-bottom { display:flex; align-items:center; justify-content:space-between; padding:20px 0 24px; }
+.footer-social { display:flex; gap:16px; }
+.footer-social a { color:var(--dim); transition:color .15s; display:flex; align-items:center; }
+.footer-social a:hover { color:var(--mid); }
+.footer-social svg { width:20px; height:20px; }
+.footer-copy { font-size:12px; color:var(--dim); }
+.footer-right { display:flex; align-items:center; gap:16px; }
+.footer-theme { display:flex; gap:4px; }
+.theme-btn { background:none; border:none; cursor:pointer; color:var(--dim); padding:5px; border-radius:6px; display:flex; align-items:center; transition:all .15s; }
+.theme-btn:hover { color:var(--mid); background:rgba(128,128,128,.1); }
+.theme-btn.active { color:var(--wh); background:rgba(128,128,128,.15); }
+.theme-btn svg { width:18px; height:18px; }
+.lang-sel { appearance:none; background:none; border:none; outline:none; font-size:12px; font-family:'Inter',sans-serif; color:var(--dim); cursor:pointer; }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="/" class="nav-logo">
+    <!-- 이든크루 컬러 심볼 -->
+    <svg width="22" height="23" viewBox="0 0 68 72" fill="none"><circle cx="38" cy="38" r="8" fill="#EC7425"/><path d="M37.7388 60.8721C44.0022 60.8721 49.6687 58.3085 53.7674 54.1602C54.5791 53.5123 55.7122 51.9889 55.7122 51.9889C57.4119 50.2749 59.1116 50.2749 61.0002 51.608L66.8803 56.9847C68.3733 58.4902 68.3732 60.7664 66.8803 62.2719C66.8803 62.2719 66.1826 63.3042 64.0169 65.3683C61.3497 68.0304 59.2045 69.8466 55.7122 71.6037C54.2014 72.3639 52.731 71.9846 51.5574 70.842C47.9692 67.0332 43.0852 64.748 37.771 64.748C32.1054 64.748 27.5728 67.0332 23.9846 70.842C22.9459 71.9846 21.3406 72.3654 19.8298 71.6037C7.5542 64.748 0 51.9477 0 38.0546C0 17.0389 16.8975 0 37.7388 0C48.1576 0 57.5904 4.25876 64.4204 11.1459L64.394 11.1726C65.7577 12.5439 66.6001 14.4409 66.6001 16.536C66.6001 20.7224 63.2342 24.1165 59.0826 24.1165C57.0049 24.1165 55.1236 23.267 53.7636 21.8919L53.7372 21.9185C49.6422 17.7893 43.9871 15.2371 37.7388 15.2371C25.2423 15.2371 15.1106 25.4535 15.1106 38.0546C15.1106 50.6557 25.2423 60.8721 37.7388 60.8721Z" fill="#EC7425"/></svg>
+    Edencrew
+  </a>
+  <ul class="nav-links">
+    <li><a href="lucy-studio-v5.html">Lucy Studio</a></li>
+    <li><a href="/platform">Platform</a></li>
+    <li><a href="/pricing">Pricing</a></li>
+    <li><a href="/resources">Resources</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#" class="btn-ghost">Log in</a>
+    <a href="lucy-studio-v5.html" class="btn-fill">Download Studio</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-content">
+  <h1 id="heroTitle" aria-label="Turn project experience into platform assets"></h1>
+  <p class="hero-sub">Edencrew builds Lucy Platform —<br>from Figma design to live deployment across every platform.</p>
+  <div class="hero-btns">
+    <a href="lucy-studio-v5.html" class="cta-primary">
+      <svg viewBox="0 0 15 15"><path d="M7.5 1v8M4 6l3.5 3.5L11 6M1 12h13"/></svg>
+      Download Lucy Studio
+    </a>
+    <a href="#contact" class="cta-secondary">Contact Sales →</a>
+  </div>
+
+  <!-- 히어로 목업 -->
+  <div class="hero-visual">
+    <div class="hero-visual-bar">
+      <div class="hv-dot" style="background:#FF5F57"></div>
+      <div class="hv-dot" style="background:#FFBD2E"></div>
+      <div class="hv-dot" style="background:#28CA41"></div>
+      <span class="hero-visual-bar-title">Lucy Platform — Design · Build · Deploy · Run</span>
+    </div>
+    <div class="hero-mockup">
+      <!-- BUILD -->
+      <div class="hm-col">
+        <div class="hm-col-label">BUILD — Lucy Studio</div>
+        <div class="hm-chip">
+          <svg width="10" height="10" viewBox="0 0 100 100" fill="none"><path d="M35 8v42l18-0V19c0-2.3 1.9-4.2 4.2-4.2l4.2 0V8C53 8.03 43.5 8 35 8z" fill="#26B083"/><path d="M68 30V19c0-5.8-4.8-10.8-10.8-10.8H50v6.7l8.3 0c2.3 0 4.2 1.9 4.2 4.2V41c0 5 4.2 9.2 9.2 9.2 1.2 0 5.3 0 7.5 0v-1.7c-.6 0-1 0-1.7 0-4.6 0-8.3-3.8-8.3-8.3z" fill="#FDBA00"/><path d="M17 40V19c0-5.8 4.8-10.8 10.8-10.8h7.5c0 16.4 0 19.8 0 41.7 0 0-24.5 0-26.7 0 0-.6 0-1.2 0-1.7 4.6 0 8.3-3.7 8.3-8.3z" fill="#70CCDA"/><path d="M17 60V81c0 5.8 4.8 10.8 10.8 10.8H35c0-16.4 0-19.8 0-41.7 0 0-24.5 0-26.7 0 0 .6 0 1.2 0 1.7 4.6 0 8.3 3.7 8.3 8.3z" fill="#36AEF8"/><path d="M35 92H43c6 0 10.8-5 10.8-10.8V50l-18 0V92z" fill="#5A56B9"/><path d="M68 30c0 0 0 28.4 0 30 0 5 4.2 9.2 9.2 9.2 1.2 0 5.3 0 7.5 0v1.7c-.6 0-1 0-1.7 0-4.6 0-8.3 3.7-8.3 8.3V81c0 5.8-4.8 10.8-10.8 10.8H50V85H58c2.3 0 4.2-1.9 4.2-4.2V59c0-5-4.2-9.2-9.2-9.2 1.2 0-2.9 0-5.2 0V50l5.7 0c0-1.7 0-21.7 0-21.7z" fill="#E54C5B"/></svg>
+          WYSIWYG Editor
+        </div>
+        <div style="height:8px"></div>
+        <div class="hm-flow">
+          <div class="hm-flow-item"><div class="hm-flow-dot" style="background:#0D99FF"></div><span class="hm-flow-text">Figma Import</span><span class="hm-flow-arrow">→</span></div>
+          <div class="hm-flow-item"><div class="hm-flow-dot" style="background:#8361FF"></div><span class="hm-flow-text">Logic (JS)</span></div>
+          <div class="hm-flow-item"><div class="hm-flow-dot" style="background:#36AEF8"></div><span class="hm-flow-text">Runtime (SDUI)</span></div>
+        </div>
+        <div style="margin-top:16px;padding:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;">
+          <div style="font-size:13px;color:var(--wh);font-weight:700;margin-bottom:8px;opacity:.7;">ZERO TRANSLATION LOSS</div>
+          <div style="height:1px;background:rgba(255,255,255,.15);border-radius:1px;"></div>
+        </div>
+      </div>
+      <!-- PLATFORM OVERVIEW -->
+      <div class="hm-col">
+        <div class="hm-col-label">PLATFORM — Lucy Ecosystem</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:rgba(131,97,255,.08);border:1px solid var(--p-bdr);border-radius:8px;padding:10px 12px;">
+            <div style="font-size:15px;font-weight:700;color:var(--p);margin-bottom:6px;">Lucy Studio</div>
+            <div style="font-size:14px;color:var(--mid);">Design · Logic · Runtime IDE</div>
+          </div>
+          <div style="background:rgba(54,174,248,.08);border:1px solid rgba(54,174,248,.25);border-radius:8px;padding:10px 12px;">
+            <div style="font-size:15px;font-weight:700;color:#36AEF8;margin-bottom:6px;">Lucy SDK</div>
+            <div style="font-size:14px;color:var(--mid);">Flutter Multi-platform Runtime</div>
+          </div>
+          <div style="background:rgba(38,176,131,.08);border:1px solid rgba(38,176,131,.25);border-radius:8px;padding:10px 12px;">
+            <div style="font-size:15px;font-weight:700;color:#26B083;margin-bottom:6px;">Lucy TeamCloud</div>
+            <div style="font-size:14px;color:var(--mid);">Collaboration · RBAC · Version</div>
+          </div>
+          <div style="background:rgba(229,76,91,.08);border:1px solid rgba(229,76,91,.25);border-radius:8px;padding:10px 12px;">
+            <div style="font-size:15px;font-weight:700;color:#E54C5B;margin-bottom:6px;">Lucy Deploy</div>
+            <div style="font-size:14px;color:var(--mid);">OTA · No Store Review</div>
+          </div>
+          <div style="background:rgba(253,186,0,.08);border:1px solid rgba(253,186,0,.25);border-radius:8px;padding:10px 12px;">
+            <div style="font-size:15px;font-weight:700;color:#FDBA00;margin-bottom:6px;">LAMP</div>
+            <div style="font-size:14px;color:var(--mid);">Server-side · Real-time Data</div>
+          </div>
+        </div>
+      </div>
+      <!-- METRICS PREVIEW -->
+      <div class="hm-col">
+        <div class="hm-col-label">RESULTS — Proven Impact</div>
+        <div class="hm-stat">
+          <div class="hm-stat-n"><em>40</em>%↓</div>
+          <div class="hm-stat-l">Development time reduction</div>
+        </div>
+        <div class="hm-stat">
+          <div class="hm-stat-n"><em>60</em>%↓</div>
+          <div class="hm-stat-l">Annual operating cost savings</div>
+        </div>
+        <div class="hm-stat">
+          <div class="hm-stat-n"><em>10</em>+</div>
+          <div class="hm-stat-l">Major clients across 4 countries</div>
+        </div>
+        <div style="margin-top:14px;padding:10px 12px;background:rgba(78,203,113,.06);border:1px solid rgba(78,203,113,.2);border-radius:8px;">
+          <div style="font-size:13px;font-weight:700;color:#4ECB71;margin-bottom:8px;">MWC 2026 SHOWCASED</div>
+          <div style="font-size:14px;color:var(--mid);">Global enterprise standard</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- ── LUCY PLATFORM ── -->
+<section class="section alt">
+  <div class="section-inner">
+    <div class="section-eyebrow">Lucy Platform</div>
+    <h2 class="section-title">One platform.<br>The entire lifecycle.</h2>
+    <p class="section-desc">From design to deployment — Build, Run, Manage, Ship, and Operate without switching tools or teams.</p>
+    <div class="platform-grid">
+      <!-- Studio -->
+      <div class="plat-card">
+        <div class="plat-card-top">
+          <div class="plat-card-badge">BUILD</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <svg width="28" height="28" viewBox="0 0 100 100" fill="none"><path d="M68.3 29.2C68.3 31.5 66.5 33.3 64.2 33.3C61.9 33.3 60 31.5 60 29.2C60 26.9 61.9 25 64.2 25C66.5 25 68.3 26.9 68.3 29.2Z" fill="#FDBA00"/><path d="M81.7 60V80.8C81.7 86.7 76.9 91.7 70.8 91.7H61.7V85H70.8C73.1 85 75 83.1 75 80.8V59.2C75 54.2 79.2 50 84.2 50C85.4 50 89.5 50 91.7 50V51.7C91.1 51.7 90.6 51.7 90 51.7C85.4 51.7 81.7 55.4 81.7 60Z" fill="#E54C5B"/><path d="M16.7 40V19.2C16.7 13.3 21.5 8.3 27.5 8.3H35C35 24.7 35 28.1 35 50C35 50 10.5 50 8.3 50C8.3 49.4 8.3 48.7 8.3 48.3C12.9 48.3 16.7 44.6 16.7 40Z" fill="#70CCDA"/><path d="M35 8.3V50L53.3 50V19.2C53.3 16.9 55.2 15 57.5 15L61.7 15V8.3C53.1 8.4 43.5 8.3 35 8.3Z" fill="#26B083"/><path d="M81.7 40V19.2C81.7 13.3 76.9 8.3 70.8 8.3H61.7V15L70.8 15C73.1 15 75 16.9 75 19.2V40.8C75 45.8 79.2 50 84.2 50C85.4 50 89.5 50 91.7 50V48.3C91.1 48.3 90.6 48.3 90 48.3C85.4 48.3 81.7 44.6 81.7 40Z" fill="#FDBA00"/><path d="M16.7 60V80.8C16.7 86.7 21.5 91.7 27.5 91.7H35C35 75.2 35 71.9 35 50C35 50 10.5 50 8.3 50C8.3 50.6 8.3 51.2 8.3 51.7C12.9 51.7 16.7 55.5 16.7 60Z" fill="#36AEF8"/><path d="M35 91.7H42.5C48.5 91.7 53.3 86.7 53.3 80.8V50L35 50V91.7Z" fill="#5A56B9"/></svg>
+            <div class="plat-card-title">Lucy Studio</div>
+          </div>
+          <div class="plat-card-desc">The all-in-one IDE for cross-platform app development. Design, logic, and runtime in a single environment.</div>
+
+        </div>
+        <div class="plat-card-bottom">
+          <span class="plat-card-link">Download Studio ↓</span>
+          <span class="plat-card-arrow">↓</span>
+        </div>
+      </div>
+      <!-- SDK + TeamCloud -->
+      <div class="plat-card">
+        <div class="plat-card-top">
+          <div class="plat-card-badge">RUN · MANAGE</div>
+          <div class="plat-card-title">Lucy SDK &amp; TeamCloud</div>
+          <div class="plat-card-desc">Flutter-based multi-platform runtime that powers your app on iOS, Android, Web, and Desktop. Collaborate with RBAC, version control, and real-time co-editing.</div>
+
+        </div>
+        <div class="plat-card-bottom">
+          <span class="plat-card-link">Explore Platform</span>
+          <span class="plat-card-arrow">→</span>
+        </div>
+      </div>
+      <!-- Deploy + LAMP -->
+      <div class="plat-card">
+        <div class="plat-card-top">
+          <div class="plat-card-badge">SHIP · LIVE</div>
+          <div class="plat-card-title">Lucy Deploy &amp; LAMP</div>
+          <div class="plat-card-desc">OTA deployment without app store reviews. Server-side LAMP engine connects to financial ledger servers and delivers real-time data to your app.</div>
+
+        </div>
+        <div class="plat-card-bottom">
+          <span class="plat-card-link">Explore Platform</span>
+          <span class="plat-card-arrow">→</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-eyebrow">How It Works</div>
+    <h2 class="section-title">5 steps → 3 steps</h2>
+    <p class="section-desc">UI implementation and OS-specific development — the two stages that consumed 80% of time and cost — are absorbed by Lucy Runtime.</p>
+    <div class="workflow-grid">
+      <div class="wf-step">
+        <div class="wf-step-num">01</div>
+        <div class="wf-step-icon">🎨</div>
+        <div class="wf-step-title">Figma Import</div>
+        <div class="wf-step-desc">Pixel-perfect design assets imported directly. Zero translation loss.</div>
+        <div class="wf-arrow">→</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-step-num">02</div>
+        <div class="wf-step-icon">⚡</div>
+        <div class="wf-step-title">Build in Studio</div>
+        <div class="wf-step-desc">Data binding, JS logic, animations — all in one IDE.</div>
+        <div class="wf-arrow">→</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-step-num">03</div>
+        <div class="wf-step-icon">🚀</div>
+        <div class="wf-step-title">OTA Deploy</div>
+        <div class="wf-step-desc">Ship to all platforms instantly. No app store review.</div>
+        <div class="wf-arrow">→</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-step-num">04</div>
+        <div class="wf-step-icon">📱</div>
+        <div class="wf-step-title">Runtime &amp; SDUI</div>
+        <div class="wf-step-desc">JSON-driven UI. Server controls the app in real time.</div>
+        <div class="wf-arrow">→</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-step-num">05</div>
+        <div class="wf-step-icon">🔄</div>
+        <div class="wf-step-title">Live Update</div>
+        <div class="wf-step-desc">Update screens and logic without resubmitting to stores.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CLIENT MARQUEE ── -->
+<div class="marquee-section">
+  <div class="marquee-label">Trusted by leading financial institutions</div>
+  <div class="marquee-track">
+    <div class="marquee-item">NH투자증권 <span class="marquee-tag">MTS·HTS·WTS</span></div>
+    <div class="marquee-item">신한투자증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">한국투자증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">SBI Securities <span class="marquee-tag">Japan</span></div>
+    <div class="marquee-item">현대차증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">DB금융투자 <span class="marquee-tag">Finance</span></div>
+    <div class="marquee-item">LS증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">NH Korindo <span class="marquee-tag">Indonesia</span></div>
+    <div class="marquee-item">유안타증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">교보증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">우리투자증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">Tara Advisors <span class="marquee-tag">USA</span></div>
+    <!-- 반복 -->
+    <div class="marquee-item">NH투자증권 <span class="marquee-tag">MTS·HTS·WTS</span></div>
+    <div class="marquee-item">신한투자증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">한국투자증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">SBI Securities <span class="marquee-tag">Japan</span></div>
+    <div class="marquee-item">현대차증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">DB금융투자 <span class="marquee-tag">Finance</span></div>
+    <div class="marquee-item">LS증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">NH Korindo <span class="marquee-tag">Indonesia</span></div>
+    <div class="marquee-item">유안타증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">교보증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">우리투자증권 <span class="marquee-tag">Securities</span></div>
+    <div class="marquee-item">Tara Advisors <span class="marquee-tag">USA</span></div>
+  </div>
+</div>
+
+<!-- ── THE EDENCREW DIFFERENCE ── -->
+<section class="section alt">
+  <div class="section-inner">
+    <div class="section-eyebrow">The Edencrew Difference</div>
+    <h2 class="section-title">What others miss.<br>What we do differently.</h2>
+    <p class="section-desc">Most development approaches create complexity at every handoff. Edencrew eliminates the handoffs entirely.</p>
+    <div class="diff-grid">
+      <div class="diff-col old">
+        <div class="diff-col-label">Conventional Approach</div>
+        <div class="diff-col-title">Separate teams, repeated work, mounting costs</div>
+        <div class="diff-items">
+          <div class="diff-item">Separate dev team needed per channel (iOS, Android, Web, Desktop)</div>
+          <div class="diff-item">Design reimplemented from scratch by developers</div>
+          <div class="diff-item">Financial &amp; enterprise domain requires separate upskilling</div>
+          <div class="diff-item">Relationship ends after project delivery</div>
+          <div class="diff-item">Tech stack without a proprietary platform</div>
+          <div class="diff-item">App store review delays every update (days to weeks)</div>
+        </div>
+      </div>
+      <div class="diff-col new">
+        <div class="diff-col-label">Edencrew &amp; Lucy Platform</div>
+        <div class="diff-col-title">One codebase, one platform, continuous operation</div>
+        <div class="diff-items">
+          <div class="diff-item">Single codebase handles all channels simultaneously</div>
+          <div class="diff-item">Zero Translation — design is execution, no reimplementation</div>
+          <div class="diff-item">10+ years of financial domain expertise built into the platform</div>
+          <div class="diff-item">Continuous operation and scaling via Lucy Platform</div>
+          <div class="diff-item">Lucy — a platform we build and operate ourselves</div>
+          <div class="diff-item">OTA deployment ships UI + logic updates within hours</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CLIENTS ── -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-eyebrow">Clients</div>
+    <h2 class="section-title">Who we work with</h2>
+    <p class="section-desc">Domestic and global enterprise clients across finance, public sector, and beyond. Some references under NDA.</p>
+    <div style="margin-bottom:14px;font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;">Domestic</div>
+    <div class="clients-grid" style="margin-bottom:24px;">
+      <div class="client-card"><div class="client-name">NH투자증권</div><div class="client-type">MTS · HTS · WTS Integration</div></div>
+      <div class="client-card"><div class="client-name">신한투자증권</div><div class="client-type">Mobile Trading System</div></div>
+      <div class="client-card"><div class="client-name">한국투자증권</div><div class="client-type">Cross-platform Trading</div></div>
+      <div class="client-card"><div class="client-name">현대차증권</div><div class="client-type">Mobile Trading System</div></div>
+      <div class="client-card"><div class="client-name">DB금융투자</div><div class="client-type">Financial Platform</div></div>
+      <div class="client-card"><div class="client-name">LS증권</div><div class="client-type">Trading System</div></div>
+      <div class="client-card"><div class="client-name">유안타증권</div><div class="client-type">Mobile Trading System</div></div>
+      <div class="client-card"><div class="client-name">교보증권</div><div class="client-type">Financial Platform</div></div>
+      <div class="client-card"><div class="client-name">우리투자증권</div><div class="client-type">Trading System</div></div>
+      <div class="client-card" style="opacity:.4;border-style:dashed;"><div class="client-name">+ More</div><div class="client-type">Under NDA</div></div>
+    </div>
+    <div style="margin-bottom:14px;font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;">Global</div>
+    <div class="clients-global">
+      <div class="client-card global"><div class="client-country">Japan</div><div class="client-name">SBI Securities</div><div class="client-type">Cross-platform Trading System</div></div>
+      <div class="client-card global"><div class="client-country">Indonesia</div><div class="client-name">NH Korindo</div><div class="client-type">Mobile Trading Platform</div></div>
+      <div class="client-card global"><div class="client-country">USA</div><div class="client-name">Tara Advisors</div><div class="client-type">Financial Platform</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section class="section alt">
+  <div class="section-inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;">
+      <div>
+        <div class="section-eyebrow">About Edencrew</div>
+        <h2 class="section-title" style="margin-bottom:20px;">Building the platform that builds everything.</h2>
+        <p style="font-size:16px;color:var(--mid);line-height:1.7;margin-bottom:28px;">Edencrew is a Platform &amp; Solution Company founded in 2015. We combine financial-grade stability with Flutter-based productivity to integrate the entire app development lifecycle through Lucy Platform.</p>
+        <p style="font-size:16px;color:var(--mid);line-height:1.7;margin-bottom:36px;">We don't just deliver projects — we design sustainable operating structures. Every engagement deepens the platform, compounding value for every client that follows.</p>
+        <div class="cert-row">
+          <div class="cert-badge"><div class="cert-badge-icon">🏅</div>MAINBiz</div>
+          <div class="cert-badge"><div class="cert-badge-icon">🔬</div>INNOBIZ</div>
+          <div class="cert-badge"><div class="cert-badge-icon">🚀</div>Venture Enterprise</div>
+          <div class="cert-badge"><div class="cert-badge-icon">🌐</div>MWC 2026</div>
+        </div>
+      </div>
+      <div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="background:var(--bg3);border:1px solid var(--bdr);border-radius:12px;padding:24px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-bottom:10px;">IT Professionals</div>
+            <div style="font-size:36px;font-weight:900;font-family:'Montserrat',sans-serif;color:var(--wh);letter-spacing:-.03em;">90.9%</div>
+            <div style="font-size:13px;color:var(--mid);margin-top:6px;">of the entire team</div>
+          </div>
+          <div style="background:var(--bg3);border:1px solid var(--bdr);border-radius:12px;padding:24px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-bottom:10px;">Domain Experience</div>
+            <div style="font-size:36px;font-weight:900;font-family:'Montserrat',sans-serif;color:var(--wh);letter-spacing:-.03em;">10+ <span style="font-size:20px;font-weight:700;font-family:'Inter',sans-serif;">yrs</span></div>
+            <div style="font-size:13px;color:var(--mid);margin-top:6px;">in securities & finance</div>
+          </div>
+          <div style="background:var(--bg3);border:1px solid var(--bdr);border-radius:12px;padding:24px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-bottom:10px;">Global Reach</div>
+            <div style="font-size:36px;font-weight:900;font-family:'Montserrat',sans-serif;color:var(--wh);letter-spacing:-.03em;">4 <span style="font-size:20px;font-weight:700;font-family:'Inter',sans-serif;">countries</span></div>
+            <div style="font-size:13px;color:var(--mid);margin-top:6px;">Korea · Japan · Indonesia · USA</div>
+          </div>
+          <div style="background:var(--bg4);border:1px solid var(--bdr2);border-radius:12px;padding:24px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-bottom:10px;">Global Showcase</div>
+            <div style="font-size:28px;font-weight:900;font-family:'Montserrat',sans-serif;color:var(--wh);letter-spacing:-.02em;">MWC</div>
+            <div style="font-size:13px;color:var(--mid);margin-top:6px;">Barcelona 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ── -->
+<div class="final-cta" id="contact">
+  <h2>Start building with<br><em>Lucy Platform</em></h2>
+  <p>Download Lucy Studio for free, or talk to us about enterprise deployment.</p>
+  <div class="final-cta-btns">
+    <a href="lucy-studio-v5.html" class="cta-primary">
+      <svg viewBox="0 0 15 15"><path d="M7.5 1v8M4 6l3.5 3.5L11 6M1 12h13"/></svg>
+      Download Lucy Studio
+    </a>
+    <a href="mailto:contact@edencrew.com" class="cta-secondary">Contact Sales →</a>
+  </div>
+</div>
+
+<!-- ── FOOTER (공통) ── -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">
+        <svg width="20" height="21" viewBox="0 0 68 72" fill="none"><circle cx="38" cy="38" r="8" fill="#EC7425"/><path d="M37.7 60.9C44 60.9 49.7 58.3 53.8 54.2C54.6 53.5 55.7 52 55.7 52C57.4 50.3 59.1 50.3 61 51.6L66.9 57C68.4 58.5 68.4 60.8 66.9 62.3C66.9 62.3 66.2 63.3 64 65.4C61.3 68 59.2 69.8 55.7 71.6C54.2 72.4 52.7 72 51.6 70.8C48 67 43.1 64.7 37.8 64.7C32.1 64.7 27.6 67 24 70.8C23 72 21.3 72.4 19.8 71.6C7.6 64.7 0 52 0 38.1C0 17 16.9 0 37.7 0C48.2 0 57.6 4.3 64.4 11.1L64.4 11.2C65.8 12.5 66.6 14.4 66.6 16.5C66.6 20.7 63.2 24.1 59.1 24.1C57 24.1 55.1 23.3 53.8 21.9L53.7 21.9C49.6 17.8 44 15.2 37.7 15.2C25.2 15.2 15.1 25.5 15.1 38.1C15.1 50.7 25.2 60.9 37.7 60.9Z" fill="#EC7425"/></svg>
+        Edencrew
+      </div>
+      <div class="footer-brand-desc">Turn project experience into platform assets. Platform &amp; Solution Company since 2015.</div>
+      <div class="footer-cert">
+        <span class="footer-cert-tag">MAINBiz</span>
+        <span class="footer-cert-tag">INNOBIZ</span>
+        <span class="footer-cert-tag">Venture</span>
+        <span class="footer-cert-tag">MWC 2026</span>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Lucy Studio</h4>
+      <ul>
+        <li><a href="#">Download</a></li>
+        <li><a href="#">Release Notes</a></li>
+        <li><a href="#">Editor</a></li>
+        <li><a href="#">Logic</a></li>
+        <li><a href="#">Runtime</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <ul>
+        <li><a href="#">Overview</a></li>
+        <li><a href="#">Lucy SDK</a></li>
+        <li><a href="#">TeamCloud</a></li>
+        <li><a href="#">Deploy</a></li>
+        <li><a href="#">LAMP</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="#">Docs</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Changelog</a></li>
+        <li><a href="#">Downloads</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Clients</a></li>
+        <li><a href="#">IR</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-social">
+      <a href="#" title="Edencrew">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12.95 3C16.85 3 19.04 5.19 19.66 5.79C20 6.14 20.22 6.61 20.22 7.13C20.22 8.18 19.37 9.03 18.32 9.03C17.8 9.03 17.32 8.81 16.98 8.47C16.82 8.31 15.33 6.81 12.95 6.81C9.8 6.81 7.24 9.36 7.24 12.51C7.24 15.66 9.79 18.22 12.94 18.22C14.67 18.22 16.43 17.39 17.47 15.99C17.9 15.57 18.33 15.57 18.81 15.9L20.29 17.25C20.67 17.62 20.67 18.19 20.29 18.57C19.52 19.57 18.47 20.33 17.47 20.9C17.09 21.09 16.72 21 16.43 20.71C15.52 19.76 14.29 19.19 12.95 19.19C11.52 19.19 10.38 19.76 9.48 20.71C9.21 21 8.81 21.09 8.43 20.9C5.33 19.19 3.43 15.99 3.43 12.51C3.43 7.26 7.7 3 12.95 3Z" fill="currentColor"/><path d="M12.95 10.62C14 10.62 14.86 11.47 14.86 12.52C14.86 13.58 14 14.43 12.95 14.43C11.9 14.43 11.05 13.58 11.05 12.52C11.05 11.47 11.9 10.62 12.95 10.62Z" fill="currentColor"/></svg>
+      </a>
+      <a href="#" title="Lucy Studio">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18.84 18.66V14.16C18.84 13.17 19.65 12.36 20.64 12.36H21V11.64H20.64C19.65 11.64 18.84 10.83 18.84 9.84V5.34C18.84 4.08 17.81 3 16.5 3H7.14C5.84 3 4.8 4.08 4.8 5.34V9.84C4.8 10.83 3.98 11.64 3 11.64V12.36C3.98 12.36 4.8 13.18 4.8 14.16V18.66C4.8 19.92 5.84 21 7.14 21H10.38C11.69 21 12.72 19.92 12.72 18.66V5.34C12.72 4.85 13.13 4.44 13.62 4.44L16.5 4.44C16.99 4.44 17.4 4.85 17.4 5.34V10.02C17.4 11.1 18.3 12 19.38 12C18.3 12 17.4 12.9 17.4 13.98V18.66C17.4 19.16 16.99 19.56 16.5 19.56H14.52V21H16.5C17.81 21 18.84 19.92 18.84 18.66Z" fill="currentColor"/><circle cx="15.06" cy="7.5" r="0.9" fill="currentColor"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@lucystudioworld" title="YouTube">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M17.5 6.5s-.2-1.3-.8-1.9c-.7-.8-1.5-.8-1.9-.8C12.6 3.7 10 3.7 10 3.7s-2.6 0-4.8.1c-.4 0-1.2.1-1.9.8-.6.6-.8 1.9-.8 1.9S2.3 7.9 2.3 9.3v1.3c0 1.4.2 2.8.2 2.8s.2 1.3.8 1.9c.7.8 1.7.7 2.1.8C6.7 16.3 10 16.3 10 16.3s2.6 0 4.8-.2c.4 0 1.2-.1 1.9-.8.6-.6.8-1.9.8-1.9s.2-1.4.2-2.8V9.3c0-1.4-.2-2.8-.2-2.8zM8.3 12.3V7.7l5.2 2.3-5.2 2.3z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/lucy_studio_world" title="Instagram">
+        <svg viewBox="0 0 20 20" fill="none" width="20" height="20"><rect x="3" y="3" width="14" height="14" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="3.5" stroke="currentColor" stroke-width="1.5"/><circle cx="14.5" cy="5.5" r="1" fill="currentColor"/></svg>
+      </a>
+    </div>
+    <span class="footer-copy">© 2026 Edencrew Inc. · Seoul, Korea</span>
+    <div class="footer-right">
+      <select class="lang-sel" onchange="location.href=this.value">
+        <option value="/en">English</option>
+        <option value="/ko">한국어</option>
+        <option value="/ja">日本語</option>
+      </select>
+      <div class="footer-theme">
+        <button class="theme-btn active" id="btn-dark"   onclick="setTheme('dark')"   title="Dark">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M17.3 13.3A7 7 0 016.7 2.7a7 7 0 1010.6 10.6z"/></svg>
+        </button>
+        <button class="theme-btn" id="btn-system" onclick="setTheme('system')" title="System">
+          <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 18h6M10 15v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <button class="theme-btn" id="btn-light"  onclick="setTheme('light')"  title="Light">
+          <svg viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="10" r="4"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.9 4.9l1.4 1.4M13.7 13.7l1.4 1.4M4.9 15.1l1.4-1.4M13.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<style>
+.ec-line {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 99px;
+}
+.ec-li
+<style>
+.hero-content { position:relative; z-index:1; width:100%; }
+#heroCanvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  display: block;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+#tc {
+  display: inline-block;
+  width: 3px; height: .82em;
+  background: #8361FF;
+  border-radius: 2px;
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: tcB 1s step-end infinite;
+}
+@keyframes tcB { 50% { opacity: 0; } }
+</style>
+
+<script>
+(function() {
+
+  /* ── MORPH LINES ── */
+  var canvas = document.getElementById('heroCanvas');
+  if (canvas) {
+    var ctx = canvas.getContext('2d');
+    var W, H, t = 0;
+
+    function resize() {
+      var section = canvas.closest('section') || canvas.parentElement;
+      W = canvas.width  = section.offsetWidth  || window.innerWidth;
+      H = canvas.height = section.offsetHeight || window.innerHeight;
+    }
+    // hero 렌더 후 실행
+    setTimeout(resize, 50);
+    window.addEventListener('resize', resize);
+
+    var LINES = [
+      { y:.15, amp1:65, amp2:30, amp3:20, f1:.9,  f2:1.4, f3:.5,  s:.011, ph:0.0, alpha:.10, w:1.2, col:'131,97,255' },
+      { y:.28, amp1:50, amp2:40, amp3:15, f1:1.1, f2:.8,  f3:.7,  s:.014, ph:1.2, alpha:.08, w:1.0, col:'160,130,255' },
+      { y:.42, amp1:80, amp2:25, amp3:30, f1:.7,  f2:1.2, f3:.9,  s:.009, ph:0.5, alpha:.14, w:1.6, col:'131,97,255' },
+      { y:.56, amp1:45, amp2:55, amp3:10, f1:1.3, f2:.6,  f3:1.1, s:.016, ph:2.1, alpha:.09, w:1.0, col:'100,70,220'  },
+      { y:.70, amp1:70, amp2:35, amp3:25, f1:.8,  f2:1.0, f3:.6,  s:.012, ph:1.7, alpha:.11, w:1.3, col:'131,97,255' },
+      { y:.83, amp1:40, amp2:45, amp3:20, f1:1.0, f2:.9,  f3:1.3, s:.013, ph:0.9, alpha:.07, w:0.9, col:'160,130,255' },
+    ];
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      t += 1;
+
+      for (var i = 0; i < LINES.length; i++) {
+        var l = LINES[i];
+        var baseY = H * l.y;
+        var SEGS = 80;
+
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(' + l.col + ',' + l.alpha + ')';
+        ctx.lineWidth = l.w;
+        ctx.lineJoin = 'round';
+
+        var pts = [];
+        for (var j = 0; j <= SEGS; j++) {
+          var x = (W / SEGS) * j;
+          var y = baseY
+            + Math.sin(j * 0.08 * l.f1 + t * l.s + l.ph)       * l.amp1
+            + Math.sin(j * 0.13 * l.f2 + t * l.s * 1.3 + l.ph) * l.amp2
+            + Math.cos(j * 0.05 * l.f3 + t * l.s * .7)          * l.amp3;
+          pts.push({ x: x, y: y });
+        }
+
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (var k = 1; k < pts.length - 1; k++) {
+          var mx = (pts[k].x + pts[k+1].x) / 2;
+          var my = (pts[k].y + pts[k+1].y) / 2;
+          ctx.quadraticCurveTo(pts[k].x, pts[k].y, mx, my);
+        }
+        ctx.lineTo(pts[pts.length-1].x, pts[pts.length-1].y);
+        ctx.stroke();
+      }
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+
+  /* ── TYPING ── */
+  var el = document.getElementById('heroTitle');
+  if (el) {
+    var cur = document.createElement('span');
+    cur.id = 'tc';
+
+    var p0 = 'Turn project experience';
+    var p1 = 'into ';
+    var p2 = 'platform assets';
+    var lens = [p0.length, p1.length, p2.length];
+    var pi = 0, ci = 0, done = 0;
+
+    function render() {
+      el.innerHTML = '';
+      if (done > 0) {
+        el.appendChild(document.createTextNode(p0));
+        el.appendChild(document.createElement('br'));
+      }
+      if (done > 1) {
+        el.appendChild(document.createTextNode(p1));
+      }
+      if (done > 2) {
+        var em = document.createElement('em');
+        em.textContent = p2;
+        el.appendChild(em);
+        el.appendChild(cur);
+        return;
+      }
+      if (pi === 0 && done === 0) {
+        el.appendChild(document.createTextNode(p0.slice(0, ci)));
+      } else if (pi === 1 && done === 1) {
+        el.appendChild(document.createTextNode(p1.slice(0, ci)));
+      } else if (pi === 2 && done === 2) {
+        var em2 = document.createElement('em');
+        em2.textContent = p2.slice(0, ci);
+        el.appendChild(em2);
+      }
+      el.appendChild(cur);
+    }
+
+    function type() {
+      if (pi >= 3) {
+        setTimeout(function() { cur.remove(); }, 3000);
+        return;
+      }
+      ci++;
+      if (ci > lens[pi]) {
+        done++;
+        pi++; ci = 0;
+        render();
+        setTimeout(type, pi === 1 ? 420 : 80);
+        return;
+      }
+      render();
+      setTimeout(type, Math.random() * 55 + 85);
+    }
+
+    el.appendChild(cur);
+    setTimeout(type, 700);
+  }
+
+})();
+</script>
+<script>
+function setTheme(mode) {
+  document.body.classList.remove('light');
+  if (mode === 'light') {
+    document.body.classList.add('light');
+  } else if (mode === 'system' && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    document.body.classList.add('light');
+  }
+  localStorage.setItem('theme', mode);
+  document.querySelectorAll('.theme-btn').forEach(function(b) { b.classList.remove('active'); });
+  var btn = document.getElementById('btn-' + mode);
+  if (btn) btn.classList.add('active');
+}
+(function() {
+  var t = localStorage.getItem('theme') || 'dark';
+  setTheme(t);
+  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function() {
+    if (localStorage.getItem('theme') === 'system') setTheme('system');
+  });
+})();
+</script>
+</body>
+</html>

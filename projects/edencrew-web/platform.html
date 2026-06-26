@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform — Edencrew</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+:root {
+  --p:    #8361FF;
+  --p-lt: rgba(131,97,255,.08);
+  --p-bdr:rgba(131,97,255,.18);
+  --bg:   #080808;
+  --bg2:  #0D0D0D;
+  --bg3:  #111111;
+  --bg4:  #161616;
+  --bdr:  rgba(255,255,255,.06);
+  --bdr2: rgba(255,255,255,.1);
+  --mid:  rgba(240,237,232,.45);
+  --dim:  rgba(240,237,232,.2);
+  --wh:   #F0EDE8;
+  --footer:#050505;
+}
+body.light {
+  --bg:#F5F4F1; --bg2:#FFFFFF; --bg3:#EEEDE9; --bg4:#E6E5E0;
+  --bdr:rgba(0,0,0,.07); --bdr2:rgba(0,0,0,.12);
+  --mid:rgba(0,0,0,.5); --dim:rgba(0,0,0,.28);
+  --wh:#111111; --footer:#E8E7E3;
+}
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--wh); -webkit-font-smoothing:antialiased; transition:background .25s,color .25s; }
+
+/* ── NAV ── */
+nav {
+  position:sticky; top:0; z-index:99;
+  height:54px; padding:0 48px;
+  display:flex; align-items:center; justify-content:space-between;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(16px); border-bottom:1px solid var(--bdr);
+}
+.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; font-size:15px; font-weight:700; color:var(--wh); }
+.logo-mark { width:28px; height:28px; background:var(--p); border-radius:7px; display:flex; align-items:center; justify-content:center; }
+.logo-mark svg { width:16px; height:16px; fill:#fff; }
+.nav-links { display:flex; gap:28px; list-style:none; }
+.nav-links a { font-size:13px; font-weight:500; color:var(--mid); text-decoration:none; transition:color .15s; }
+.nav-links a:hover,.nav-links a.on { color:var(--wh); }
+.nav-right { display:flex; gap:8px; align-items:center; }
+.btn-ghost { font-size:13px; font-weight:500; color:var(--mid); text-decoration:none; padding:7px 14px; border-radius:7px; transition:all .15s; }
+.btn-ghost:hover { color:var(--wh); background:rgba(255,255,255,.05); }
+.btn-fill { font-size:13px; font-weight:600; color:#fff; background:var(--p); padding:8px 18px; border-radius:7px; text-decoration:none; transition:all .15s; }
+.btn-fill:hover { opacity:.85; }
+
+/* ── HERO ── */
+.hero {
+  padding:100px 48px 80px; text-align:center;
+  position:relative; overflow:hidden;
+}
+.hero::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(131,97,255,.12) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--p); margin-bottom:24px;
+}
+.hero-eyebrow::before,.hero-eyebrow::after { content:''; width:24px; height:1.5px; background:var(--p); }
+.hero h1 {
+  font-size:76px; font-weight:900; font-family:'Montserrat',sans-serif;
+  line-height:1.02; letter-spacing:-.04em;
+  color:var(--wh); max-width:900px; margin:0 auto 24px;
+}
+.hero h1 em { color:var(--p); font-style:normal; }
+.hero-sub {
+  font-size:18px; color:var(--mid); line-height:1.65;
+  max-width:560px; margin:0 auto 40px; font-weight:400;
+}
+.hero-btns { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:72px; }
+.cta-primary {
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:15px; font-weight:600; color:#fff; background:var(--p);
+  padding:14px 32px; border-radius:10px; text-decoration:none; transition:opacity .15s;
+}
+.cta-primary:hover { opacity:.85; }
+.cta-secondary {
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:15px; font-weight:500; color:var(--mid);
+  padding:14px 26px; border-radius:10px; border:1.5px solid var(--bdr);
+  text-decoration:none; transition:all .15s;
+}
+.cta-secondary:hover { color:var(--wh); border-color:rgba(128,128,128,.3); }
+
+/* ── SECTION COMMON ── */
+.section { padding:96px 48px; }
+.section.alt { background:var(--bg2); }
+.section-inner { max-width:1200px; margin:0 auto; }
+.section-eyebrow { font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:12px; }
+.section-title { font-size:52px; font-weight:900; font-family:'Montserrat',sans-serif; letter-spacing:-.025em; color:var(--wh); margin-bottom:16px; line-height:1.08; }
+.section-desc { font-size:18px; color:var(--mid); line-height:1.65; max-width:560px; margin-bottom:60px; }
+
+/* ── PAIN / SOLUTION 2-COL ── */
+.split-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
+.split-left {}
+.split-right { display:flex; flex-direction:column; gap:12px; }
+.pain-card {
+  border-radius:14px; padding:24px 26px;
+  border:1px solid var(--bdr); background:var(--bg3);
+  display:flex; gap:16px; align-items:flex-start;
+}
+.pain-card.resolved { border-color:var(--p-bdr); background:var(--p-lt); }
+.pain-icon { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:16px; }
+.pain-icon.red { background:rgba(255,80,80,.1); }
+.pain-icon.green { background:rgba(131,97,255,.15); }
+.pain-card-title { font-size:15px; font-weight:700; color:var(--wh); margin-bottom:6px; }
+.pain-card-desc { font-size:14px; color:var(--mid); line-height:1.6; }
+
+/* ── WORKFLOW STRIP ── */
+.workflow-outer {
+  max-width:1200px; margin:0 auto;
+  background:var(--bdr); border-radius:18px; overflow:hidden;
+  display:grid; grid-template-columns:repeat(6,1fr); gap:1px;
+}
+.wf-step {
+  background:var(--bg3); padding:32px 20px; text-align:center;
+  position:relative; transition:background .15s;
+}
+.wf-step:hover { background:var(--bg4); }
+.wf-step-num { font-size:9px; font-weight:700; color:var(--dim); letter-spacing:.1em; margin-bottom:14px; }
+.wf-step-icon { font-size:26px; margin-bottom:12px; line-height:1; }
+.wf-step-title { font-size:14px; font-weight:700; color:var(--wh); margin-bottom:6px; }
+.wf-step-tool {
+  font-size:11px; font-weight:700; color:var(--p);
+  background:var(--p-lt); border:1px solid var(--p-bdr);
+  border-radius:5px; padding:3px 8px; display:inline-block; margin-top:4px;
+}
+.wf-step-desc { font-size:12px; color:var(--mid); line-height:1.5; margin-top:8px; }
+
+/* ── ARCHITECTURE DIAGRAM ── */
+.arch-diagram {
+  max-width:1200px; margin:0 auto;
+  border:1px solid var(--bdr); border-radius:18px; overflow:hidden;
+  background:var(--bg3);
+}
+.arch-header {
+  padding:20px 28px; border-bottom:1px solid var(--bdr);
+  display:flex; align-items:center; gap:12px;
+}
+.arch-header-dot { width:9px; height:9px; border-radius:50%; }
+.arch-header-title { font-size:12px; font-weight:600; color:var(--dim); margin-left:4px; }
+.arch-body { display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--bdr); }
+.arch-col { background:var(--bg3); padding:24px 20px; }
+.arch-col-label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dim); margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--bdr); }
+.arch-item {
+  display:flex; align-items:center; gap:8px;
+  padding:9px 12px; border-radius:8px;
+  background:var(--bg4); border:1px solid var(--bdr);
+  margin-bottom:8px; font-size:13px; font-weight:600; color:var(--wh);
+  transition:border-color .15s;
+}
+.arch-item:hover { border-color:var(--bdr2); }
+.arch-item.accent { background:var(--p-lt); border-color:var(--p-bdr); color:var(--p); }
+.arch-item-dot { width:6px; height:6px; border-radius:50%; background:var(--dim); flex-shrink:0; }
+.arch-item.accent .arch-item-dot { background:var(--p); }
+.arch-item-sub { font-size:11px; color:var(--mid); font-weight:400; margin-left:auto; }
+
+/* ── PRODUCT SUITE ── */
+.products-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.prod-card {
+  border-radius:16px; overflow:hidden;
+  border:1px solid var(--bdr); background:var(--bg3);
+  transition:border-color .2s, transform .2s;
+  text-decoration:none; display:flex; flex-direction:column;
+}
+.prod-card:hover { border-color:var(--bdr2); transform:translateY(-2px); }
+.prod-card-top { padding:28px 28px 20px; flex:1; }
+.prod-tag {
+  display:inline-block; font-size:9px; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--dim);
+  border:1px solid var(--bdr2); border-radius:4px; padding:3px 8px; margin-bottom:14px;
+}
+.prod-card-icon { font-size:28px; margin-bottom:14px; line-height:1; }
+.prod-card-title { font-size:24px; font-weight:900; font-family:'Inter',sans-serif; color:var(--wh); margin-bottom:10px; }
+.prod-card-desc { font-size:15px; color:var(--mid); line-height:1.65; }
+.prod-feats { display:flex; flex-direction:column; gap:8px; margin-top:18px; }
+.prod-feat { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--mid); }
+.prod-feat::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--p); flex-shrink:0; }
+.prod-card-bottom {
+  padding:14px 28px; border-top:1px solid var(--bdr);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.prod-card-link { font-size:13px; font-weight:600; color:var(--wh); opacity:.5; }
+.prod-card:hover .prod-card-link { opacity:1; color:var(--p); }
+.prod-card-arrow { font-size:16px; color:var(--wh); opacity:.3; }
+.prod-card:hover .prod-card-arrow { opacity:1; color:var(--p); }
+
+/* LAMP card spans full width */
+.prod-card.full {
+  grid-column:1 / -1;
+  flex-direction:row;
+  align-items:center;
+}
+.prod-card.full .prod-card-top { padding:28px 36px; flex:1; }
+.prod-card.full .lamp-features { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; padding:28px 36px 28px 0; flex:1; }
+.lamp-feat-item {
+  border-radius:10px; padding:16px 18px;
+  border:1px solid var(--bdr); background:var(--bg4);
+}
+.lamp-feat-item-title { font-size:13px; font-weight:700; color:var(--wh); margin-bottom:4px; }
+.lamp-feat-item-desc { font-size:12px; color:var(--mid); line-height:1.5; }
+
+/* ── METRICS STRIP ── */
+.metrics-strip {
+  border-top:1px solid var(--bdr); border-bottom:1px solid var(--bdr);
+  background:var(--bg2);
+}
+.metrics-strip-inner {
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:1px; background:var(--bdr);
+}
+.metric-cell { background:var(--bg2); padding:36px 32px; text-align:center; }
+.metric-n { font-size:48px; font-weight:900; font-family:'Montserrat',sans-serif; letter-spacing:-.04em; color:var(--wh); line-height:1; margin-bottom:8px; }
+.metric-n em { color:var(--p); font-style:normal; }
+.metric-l { font-size:13px; color:var(--mid); font-weight:500; }
+.metric-s { font-size:10px; color:var(--dim); margin-top:4px; }
+
+/* ── USE CASES ── */
+.usecases-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.uc-card {
+  border-radius:14px; padding:28px;
+  border:1px solid var(--bdr); background:var(--bg3);
+  transition:border-color .2s;
+}
+.uc-card:hover { border-color:var(--bdr2); }
+.uc-icon { font-size:28px; margin-bottom:14px; line-height:1; }
+.uc-title { font-size:18px; font-weight:700; color:var(--wh); margin-bottom:10px; }
+.uc-desc { font-size:14px; color:var(--mid); line-height:1.65; margin-bottom:16px; }
+.uc-tags { display:flex; flex-wrap:wrap; gap:6px; }
+.uc-tag {
+  font-size:11px; font-weight:600; color:var(--p);
+  background:var(--p-lt); border:1px solid var(--p-bdr);
+  border-radius:5px; padding:4px 9px;
+}
+
+/* ── INDUSTRIES ── */
+.industries-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.ind-card {
+  border-radius:12px; padding:24px 20px;
+  border:1px solid var(--bdr); background:var(--bg3);
+  text-align:center; transition:border-color .2s, background .2s;
+}
+.ind-card:hover { border-color:var(--bdr2); background:var(--bg4); }
+.ind-icon { font-size:32px; margin-bottom:12px; }
+.ind-title { font-size:15px; font-weight:700; color:var(--wh); margin-bottom:6px; }
+.ind-desc { font-size:13px; color:var(--mid); line-height:1.5; }
+.ind-badge {
+  display:inline-block; margin-top:10px;
+  font-size:10px; font-weight:700; color:var(--p);
+  background:var(--p-lt); border-radius:4px; padding:3px 7px;
+}
+
+/* ── CTA SECTION ── */
+.cta-section {
+  padding:96px 48px; text-align:center;
+  position:relative; overflow:hidden;
+}
+.cta-section::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse 70% 80% at 50% 50%, rgba(131,97,255,.1) 0%, transparent 70%);
+  pointer-events:none;
+}
+.cta-section-inner { max-width:640px; margin:0 auto; position:relative; }
+.cta-section h2 {
+  font-size:52px; font-weight:900; font-family:'Montserrat',sans-serif;
+  letter-spacing:-.03em; margin-bottom:16px; line-height:1.08;
+}
+.cta-section p { font-size:18px; color:var(--mid); line-height:1.65; margin-bottom:36px; }
+.cta-group { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+/* ── FOOTER ── */
+footer { background:var(--footer); border-top:1px solid var(--bdr); }
+.footer-inner { max-width:1200px; margin:0 auto; padding:48px 48px 32px; }
+.footer-top { display:grid; grid-template-columns:1fr repeat(3,auto); gap:48px; margin-bottom:48px; }
+.footer-brand-name { font-size:15px; font-weight:700; color:var(--wh); margin-bottom:6px; }
+.footer-brand-desc { font-size:13px; color:var(--dim); line-height:1.6; max-width:220px; }
+.footer-col-title { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dim); margin-bottom:14px; }
+.footer-links { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.footer-links a { font-size:13px; color:var(--mid); text-decoration:none; transition:color .15s; }
+.footer-links a:hover { color:var(--wh); }
+.footer-bottom { display:flex; align-items:center; justify-content:space-between; padding-top:24px; border-top:1px solid var(--bdr); }
+.footer-copy { font-size:12px; color:var(--dim); }
+.footer-theme { display:flex; gap:4px; }
+.theme-btn {
+  width:28px; height:28px; border-radius:7px; border:none; cursor:pointer;
+  background:transparent; color:var(--dim); display:flex; align-items:center; justify-content:center;
+  transition:all .15s;
+}
+.theme-btn svg { width:14px; height:14px; }
+.theme-btn:hover { background:var(--bdr); color:var(--mid); }
+.theme-btn.active { background:var(--bdr2); color:var(--wh); }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-logo" href="edencrew-home.html">
+    <div class="logo-mark">
+      <svg viewBox="0 0 16 16"><path d="M8 2L2 6v8h4v-5h4v5h4V6L8 2z"/></svg>
+    </div>
+    Edencrew
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" class="on">Platform</a></li>
+    <li><a href="#">Products</a></li>
+    <li><a href="#">Solutions</a></li>
+    <li><a href="#">References</a></li>
+    <li><a href="#">Company</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a class="btn-ghost" href="#">회사소개서</a>
+    <a class="btn-fill" href="#">도입 문의</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <p class="hero-eyebrow">Lucy Platform</p>
+  <h1>디자인이 들어가고<br><em>라이브 앱</em>이 나온다</h1>
+  <p class="hero-sub">금융권에서 검증된 Runtime 기반 크로스플랫폼 앱 실행 플랫폼 — MTS, HTS, WTS를 단일 코드와 단일 운영 구조로 통합합니다.</p>
+  <div class="hero-btns">
+    <a class="cta-primary" href="#">
+      도입 문의
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <a class="cta-secondary" href="#">제품 살펴보기</a>
+  </div>
+</section>
+
+<!-- ── METRICS ── -->
+<div class="metrics-strip">
+  <div class="metrics-strip-inner">
+    <div class="metric-cell">
+      <div class="metric-n">40<em>%</em></div>
+      <div class="metric-l">제작 기간 단축</div>
+      <div class="metric-s">당사 2025–2026 프로젝트 기준</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-n">60<em>%</em></div>
+      <div class="metric-l">연간 운영 비용 절감</div>
+      <div class="metric-s">범위에 따라 달라질 수 있음</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-n">10<em>+</em></div>
+      <div class="metric-l">년 엔터프라이즈 경험</div>
+      <div class="metric-s">금융·증권·글로벌 프로젝트</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-n">3<em>ch</em></div>
+      <div class="metric-l">MTS · HTS · WTS 동시 지원</div>
+      <div class="metric-s">단일 코드베이스</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROBLEM ── -->
+<section class="section">
+  <div class="section-inner">
+    <div class="split-grid">
+      <div class="split-left">
+        <p class="section-eyebrow">The Problem</p>
+        <h2 class="section-title">같은 화면을<br>세 번씩 만드는 구조</h2>
+        <p class="section-desc">증권사는 MTS, HTS, WTS를 별도 팀이 별도 코드로 개발합니다. 같은 기능을 세 번 만들고, 세 번 검증하고, 세 번 배포합니다.</p>
+      </div>
+      <div class="split-right">
+        <div class="pain-card">
+          <div class="pain-icon red">🔴</div>
+          <div>
+            <div class="pain-card-title">3개 채널 × 3개 팀 × 3개 코드베이스</div>
+            <div class="pain-card-desc">MTS · HTS · WTS 각각 독립 개발. 기능 하나 추가할 때마다 3배 공수가 발생합니다.</div>
+          </div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon red">🔴</div>
+          <div>
+            <div class="pain-card-title">채널별 보안 검증 반복</div>
+            <div class="pain-card-desc">금융 규제 대응, FIDO 인증, E2E 암호화를 각 채널에서 개별 구현하고 검증해야 합니다.</div>
+          </div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon red">🔴</div>
+          <div>
+            <div class="pain-card-title">배포 일정과 버전 충돌</div>
+            <div class="pain-card-desc">세 채널의 배포 주기가 달라 UI 일관성 유지와 동기화 비용이 급증합니다.</div>
+          </div>
+        </div>
+        <div class="pain-card resolved">
+          <div class="pain-icon green">✦</div>
+          <div>
+            <div class="pain-card-title">Lucy Platform의 답: 단일 코드 → 전 채널 동시 배포</div>
+            <div class="pain-card-desc">하나의 코드베이스, 하나의 Runtime, 하나의 배포 흐름으로 MTS·HTS·WTS를 운영합니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WORKFLOW ── -->
+<section class="section alt">
+  <div class="section-inner">
+    <p class="section-eyebrow">Design-to-Live Workflow</p>
+    <h2 class="section-title">Figma에서 시작해<br>라이브 앱으로 끝납니다</h2>
+    <p class="section-desc">Lucy Platform은 디자인부터 배포까지 하나의 흐름으로 연결됩니다.</p>
+    <div class="workflow-outer">
+      <div class="wf-step">
+        <div class="wf-step-num">01</div>
+        <div class="wf-step-icon">🎨</div>
+        <div class="wf-step-title">Figma Design</div>
+        <div class="wf-step-tool">Figma</div>
+        <div class="wf-step-desc">디자이너가 Figma에서 화면을 설계합니다</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-step-num">02</div>
+        <div class="wf-step-icon">⚡</div>
+        <div class="wf-step-title">Studio Import</div>
+        <div class="wf-step-tool">Lucy Studio</div>
+        <div class="wf-step-desc">Figma 컴포넌트를 Studio로 직접 임포트, WYSIWYG 편집</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-step-num">03</div>
+        <div class="wf-step-icon">⚙️</div>
+        <div class="wf-step-title">Logic &amp; SDK</div>
+        <div class="wf-step-tool">Lucy SDK</div>
+        <div class="wf-step-desc">JavaScript 비즈니스 로직과 Flutter/Impeller Runtime 연결</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-step-num">04</div>
+        <div class="wf-step-icon">🤝</div>
+        <div class="wf-step-title">Collaborate</div>
+        <div class="wf-step-tool">TeamCloud</div>
+        <div class="wf-step-desc">버전 관리, 브랜치, 리뷰·승인 워크플로우</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-step-num">05</div>
+        <div class="wf-step-icon">🚀</div>
+        <div class="wf-step-title">OTA Deploy</div>
+        <div class="wf-step-tool">Lucy Deploy</div>
+        <div class="wf-step-desc">OTA 업데이트로 앱스토어 없이 전 채널 동시 배포</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-step-num">06</div>
+        <div class="wf-step-icon">🛡️</div>
+        <div class="wf-step-title">Run &amp; Secure</div>
+        <div class="wf-step-tool">LAMP</div>
+        <div class="wf-step-desc">금융급 보안, 실시간 통신, 무중단 운영 엔진</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ARCHITECTURE ── -->
+<section class="section">
+  <div class="section-inner">
+    <p class="section-eyebrow">Architecture</p>
+    <h2 class="section-title">플랫폼 구조</h2>
+    <p class="section-desc" style="margin-bottom:36px;">Lucy Platform은 5개 제품이 하나의 흐름으로 연결된 통합 실행 환경입니다.</p>
+    <div class="arch-diagram">
+      <div class="arch-header">
+        <div class="arch-header-dot" style="background:#FF5F57"></div>
+        <div class="arch-header-dot" style="background:#FEBC2E"></div>
+        <div class="arch-header-dot" style="background:#28C840"></div>
+        <span class="arch-header-title">Lucy Platform — System Architecture</span>
+      </div>
+      <div class="arch-body">
+        <div class="arch-col">
+          <div class="arch-col-label">Design</div>
+          <div class="arch-item"><div class="arch-item-dot"></div> Figma</div>
+          <div class="arch-item accent"><div class="arch-item-dot"></div> Lucy Studio <span class="arch-item-sub">WYSIWYG</span></div>
+          <div class="arch-item"><div class="arch-item-dot"></div> JSON UI Layer</div>
+          <div class="arch-item"><div class="arch-item-dot"></div> JS Business Logic</div>
+        </div>
+        <div class="arch-col">
+          <div class="arch-col-label">Collaborate</div>
+          <div class="arch-item accent"><div class="arch-item-dot"></div> TeamCloud <span class="arch-item-sub">실시간</span></div>
+          <div class="arch-item"><div class="arch-item-dot"></div> Branch / Merge</div>
+          <div class="arch-item"><div class="arch-item-dot"></div> RBAC 권한</div>
+          <div class="arch-item"><div class="arch-item-dot"></div> Review / Approve</div>
+        </div>
+        <div class="arch-col">
+          <div class="arch-col-label">Deploy</div>
+          <div class="arch-item accent"><div class="arch-item-dot"></div> Lucy Deploy <span class="arch-item-sub">OTA</span></div>
+          <div class="arch-item"><div class="arch-item-dot"></div> Multi-Channel</div>
+          <div class="arch-item"><div class="arch-item-dot"></div> Target Release</div>
+          <div class="arch-item"><div class="arch-item-dot"></div> Rollback</div>
+        </div>
+        <div class="arch-col">
+          <div class="arch-col-label">Runtime</div>
+          <div class="arch-item accent"><div class="arch-item-dot"></div> Lucy SDK <span class="arch-item-sub">Runtime</span></div>
+          <div class="arch-item"><div class="arch-item-dot"></div> Flutter / Impeller</div>
+          <div class="arch-item"><div class="arch-item-dot"></div> MTS · HTS · WTS</div>
+          <div class="arch-item"><div class="arch-item-dot"></div> Mobile · Desktop · Web</div>
+        </div>
+        <div class="arch-col">
+          <div class="arch-col-label">Server</div>
+          <div class="arch-item accent"><div class="arch-item-dot"></div> LAMP for Lucy</div>
+          <div class="arch-item"><div class="arch-item-dot"></div> FIDO / E2E 보안</div>
+          <div class="arch-item"><div class="arch-item-dot"></div> WebSocket 실시간</div>
+          <div class="arch-item"><div class="arch-item-dot"></div> 원장 서버 연동</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRODUCTS ── -->
+<section class="section alt">
+  <div class="section-inner">
+    <p class="section-eyebrow">Product Suite</p>
+    <h2 class="section-title">5개 제품, 하나의 흐름</h2>
+    <p class="section-desc">설계부터 배포·운영까지, Lucy Platform의 각 제품이 역할을 나눠 전체 흐름을 완성합니다.</p>
+
+    <div class="products-grid">
+      <!-- Lucy Studio -->
+      <div class="prod-card">
+        <div class="prod-card-top">
+          <div class="prod-tag">Design · Build</div>
+          <div class="prod-card-icon">⚡</div>
+          <div class="prod-card-title">Lucy Studio</div>
+          <div class="prod-card-desc">Figma 컴포넌트를 그대로 임포트해 WYSIWYG으로 편집하고, JavaScript로 비즈니스 로직을 추가하는 앱 빌더입니다.</div>
+          <div class="prod-feats">
+            <div class="prod-feat">Figma 직접 임포트</div>
+            <div class="prod-feat">JSON UI · SDUI 기반</div>
+            <div class="prod-feat">JS 비즈니스 로직</div>
+            <div class="prod-feat">실시간 미리보기</div>
+          </div>
+        </div>
+        <div class="prod-card-bottom">
+          <span class="prod-card-link">자세히 보기</span>
+          <span class="prod-card-arrow">→</span>
+        </div>
+      </div>
+
+      <!-- Lucy SDK -->
+      <div class="prod-card">
+        <div class="prod-card-top">
+          <div class="prod-tag">Runtime · Engine</div>
+          <div class="prod-card-icon">⚙️</div>
+          <div class="prod-card-title">Lucy SDK</div>
+          <div class="prod-card-desc">Flutter/Impeller 기반 Runtime 엔진. 단일 코드로 MTS · HTS · WTS · Web · Desktop을 동시에 구동합니다.</div>
+          <div class="prod-feats">
+            <div class="prod-feat">Flutter / Impeller Runtime</div>
+            <div class="prod-feat">5개 채널 동시 지원</div>
+            <div class="prod-feat">금융급 성능·안정성</div>
+            <div class="prod-feat">OTA 업데이트 수신</div>
+          </div>
+        </div>
+        <div class="prod-card-bottom">
+          <span class="prod-card-link">자세히 보기</span>
+          <span class="prod-card-arrow">→</span>
+        </div>
+      </div>
+
+      <!-- TeamCloud -->
+      <div class="prod-card">
+        <div class="prod-card-top">
+          <div class="prod-tag">Collaborate</div>
+          <div class="prod-card-icon">🤝</div>
+          <div class="prod-card-title">Lucy TeamCloud</div>
+          <div class="prod-card-desc">실시간 협업, 버전 관리, 브랜치/머지, 역할별 권한, 리뷰·승인 워크플로우로 팀 전체가 하나의 소스를 관리합니다.</div>
+          <div class="prod-feats">
+            <div class="prod-feat">실시간 공동 편집</div>
+            <div class="prod-feat">브랜치 · 머지 · 버전</div>
+            <div class="prod-feat">RBAC 역할 권한</div>
+            <div class="prod-feat">리뷰 · 승인 흐름</div>
+          </div>
+        </div>
+        <div class="prod-card-bottom">
+          <span class="prod-card-link">자세히 보기</span>
+          <span class="prod-card-arrow">→</span>
+        </div>
+      </div>
+
+      <!-- Lucy Deploy -->
+      <div class="prod-card">
+        <div class="prod-card-top">
+          <div class="prod-tag">Deploy · OTA</div>
+          <div class="prod-card-icon">🚀</div>
+          <div class="prod-card-title">Lucy Deploy</div>
+          <div class="prod-card-desc">앱스토어 배포 없이 OTA로 전 채널을 동시에 업데이트. 타겟 배포·단계적 롤아웃·롤백을 단일 콘솔에서 제어합니다.</div>
+          <div class="prod-feats">
+            <div class="prod-feat">OTA 즉시 배포</div>
+            <div class="prod-feat">멀티채널 동시 릴리즈</div>
+            <div class="prod-feat">타겟 · 단계별 배포</div>
+            <div class="prod-feat">원클릭 롤백</div>
+          </div>
+        </div>
+        <div class="prod-card-bottom">
+          <span class="prod-card-link">자세히 보기</span>
+          <span class="prod-card-arrow">→</span>
+        </div>
+      </div>
+
+      <!-- 빈 카드 자리 — LAMP와 나란히 -->
+      <!-- LAMP spans remaining -->
+    </div>
+
+    <!-- LAMP full-width -->
+    <div style="margin-top:16px;">
+      <div class="prod-card full" style="flex-direction:row; align-items:stretch;">
+        <div class="prod-card-top" style="padding:32px 36px; flex:none; width:340px; border-right:1px solid var(--bdr);">
+          <div class="prod-tag">Server · Infrastructure</div>
+          <div class="prod-card-icon">🛡️</div>
+          <div class="prod-card-title">LAMP for Lucy</div>
+          <div class="prod-card-desc">Lucy Platform의 서버 사이드 운영 엔진. 금융급 보안, 실시간 통신, 무중단 운영을 담당합니다.</div>
+          <div style="margin-top:20px;">
+            <span class="prod-card-link" style="opacity:.5;">자세히 보기 →</span>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--bdr); flex:1;">
+          <div style="background:var(--bg3); padding:24px 20px;">
+            <div class="lamp-feat-item-title">FIDO · E2E 보안</div>
+            <div class="lamp-feat-item-desc" style="font-size:13px;color:var(--mid);line-height:1.5;margin-top:4px;">금융 규제 수준의 인증·암호화 대응</div>
+          </div>
+          <div style="background:var(--bg3); padding:24px 20px;">
+            <div class="lamp-feat-item-title">WebSocket 실시간</div>
+            <div class="lamp-feat-item-desc" style="font-size:13px;color:var(--mid);line-height:1.5;margin-top:4px;">호가·체결 실시간 스트리밍 처리</div>
+          </div>
+          <div style="background:var(--bg3); padding:24px 20px;">
+            <div class="lamp-feat-item-title">무중단 운영</div>
+            <div class="lamp-feat-item-desc" style="font-size:13px;color:var(--mid);line-height:1.5;margin-top:4px;">Zero-downtime 배포, 고가용성 구조</div>
+          </div>
+          <div style="background:var(--bg3); padding:24px 20px;">
+            <div class="lamp-feat-item-title">운영 콘솔</div>
+            <div class="lamp-feat-item-desc" style="font-size:13px;color:var(--mid);line-height:1.5;margin-top:4px;">LAMP Manager로 서버 상태 통합 모니터링</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── USE CASES ── -->
+<section class="section">
+  <div class="section-inner">
+    <p class="section-eyebrow">Use Cases</p>
+    <h2 class="section-title">어떤 상황에서<br>Lucy Platform이 답인가</h2>
+    <p class="section-desc">단순 개발 도구가 아닙니다. 금융 앱 운영의 구조적 문제를 해결하는 플랫폼입니다.</p>
+    <div class="usecases-grid">
+      <div class="uc-card">
+        <div class="uc-icon">📈</div>
+        <div class="uc-title">MTS · HTS · WTS 통합 재구축</div>
+        <div class="uc-desc">세 채널을 각각 운영하던 증권사가 단일 코드베이스로 전환해 개발·운영 비용을 동시에 줄입니다.</div>
+        <div class="uc-tags">
+          <span class="uc-tag">단일 코드</span>
+          <span class="uc-tag">OTA 배포</span>
+          <span class="uc-tag">채널 통합</span>
+        </div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-icon">🔄</div>
+        <div class="uc-title">레거시 앱 현대화</div>
+        <div class="uc-desc">노후화된 네이티브 앱이나 HTML5 기반 MTS를 Lucy Runtime으로 전환해 성능과 유지보수성을 동시에 확보합니다.</div>
+        <div class="uc-tags">
+          <span class="uc-tag">마이그레이션</span>
+          <span class="uc-tag">Runtime 전환</span>
+          <span class="uc-tag">성능 개선</span>
+        </div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-icon">🌏</div>
+        <div class="uc-title">글로벌 · 파트너 확장</div>
+        <div class="uc-desc">해외 법인이나 파트너사에 Lucy Platform 기반 화이트라벨 앱을 빠르게 공급합니다. OTA로 운영 부담 없이 지원.</div>
+        <div class="uc-tags">
+          <span class="uc-tag">화이트라벨</span>
+          <span class="uc-tag">글로벌</span>
+          <span class="uc-tag">파트너</span>
+        </div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-icon">⚡</div>
+        <div class="uc-title">빠른 제품 출시 (Time-to-Market)</div>
+        <div class="uc-desc">신규 증권 서비스나 이벤트성 기능을 OTA로 즉시 배포. 기획부터 라이브까지 기간을 40% 단축합니다.</div>
+        <div class="uc-tags">
+          <span class="uc-tag">OTA</span>
+          <span class="uc-tag">빠른 배포</span>
+          <span class="uc-tag">40% 단축</span>
+        </div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-icon">🔒</div>
+        <div class="uc-title">금융 보안 규제 대응</div>
+        <div class="uc-desc">FIDO 인증, E2E 암호화, 실시간 이상거래 탐지를 LAMP가 통합 제공. 금융당국 규제를 플랫폼 수준에서 대응합니다.</div>
+        <div class="uc-tags">
+          <span class="uc-tag">FIDO</span>
+          <span class="uc-tag">E2E</span>
+          <span class="uc-tag">규제 대응</span>
+        </div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-icon">🤝</div>
+        <div class="uc-title">디자인·개발 협업 체계 구축</div>
+        <div class="uc-desc">Figma → Studio → TeamCloud 흐름으로 디자이너와 개발자가 같은 소스를 기준으로 협업. 피드백 루프를 극적으로 단축합니다.</div>
+        <div class="uc-tags">
+          <span class="uc-tag">Figma 연동</span>
+          <span class="uc-tag">팀 협업</span>
+          <span class="uc-tag">버전 관리</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INDUSTRIES ── -->
+<section class="section alt">
+  <div class="section-inner">
+    <p class="section-eyebrow">Industries</p>
+    <h2 class="section-title">검증된 도메인,<br>확장하는 산업군</h2>
+    <p class="section-desc">금융에서 시작한 Lucy Platform의 기술은 엔터프라이즈 앱이 필요한 모든 산업으로 확장됩니다.</p>
+    <div class="industries-grid">
+      <div class="ind-card">
+        <div class="ind-icon">🏦</div>
+        <div class="ind-title">증권 · 금융</div>
+        <div class="ind-desc">MTS · HTS · WTS 통합, 금융 보안, 실시간 체결 처리</div>
+        <div class="ind-badge">Primary</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">🏭</div>
+        <div class="ind-title">제조 · 물류</div>
+        <div class="ind-desc">현장 운영 앱 현대화, 멀티 디바이스 지원</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">🏥</div>
+        <div class="ind-title">헬스케어</div>
+        <div class="ind-desc">보안 규정 대응, 복잡한 UI의 빠른 제작·배포</div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">🏛️</div>
+        <div class="ind-title">공공 · 금융 인프라</div>
+        <div class="ind-desc">장기 운영 안정성, 규제 환경 대응</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <div class="cta-section-inner">
+    <p class="section-eyebrow" style="text-align:center;">Ready to Transform</p>
+    <h2 class="section-title" style="font-size:52px; text-align:center;">Lucy Platform,<br>지금 도입 검토하세요</h2>
+    <p style="font-size:18px; color:var(--mid); line-height:1.65; margin-bottom:36px;">금융권에서 검증된 플랫폼을 귀사의 앱 운영 구조에 적용할 수 있는지 전문가와 직접 논의해보세요.</p>
+    <div class="cta-group">
+      <a class="cta-primary" href="#">
+        도입 문의
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a class="cta-secondary" href="#">회사소개서 요청</a>
+      <a class="cta-secondary" href="#">기술 미팅 신청</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">Edencrew</div>
+        <div class="footer-brand-desc">금융에서 검증된 Runtime 기반 크로스플랫폼 앱 실행 플랫폼 회사</div>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <ul class="footer-links">
+          <li><a href="#">Overview</a></li>
+          <li><a href="#">Architecture</a></li>
+          <li><a href="#">Lucy Studio</a></li>
+          <li><a href="#">Lucy SDK</a></li>
+          <li><a href="#">TeamCloud</a></li>
+          <li><a href="#">Lucy Deploy</a></li>
+          <li><a href="#">LAMP for Lucy</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Solutions</div>
+        <ul class="footer-links">
+          <li><a href="#">증권 거래 시스템</a></li>
+          <li><a href="#">앱 현대화</a></li>
+          <li><a href="#">글로벌 파트너</a></li>
+          <li><a href="#">References</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">회사소개서</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Edencrew Inc. All rights reserved.</span>
+      <div class="footer-theme">
+        <button class="theme-btn active" id="btn-dark" onclick="setTheme('dark')" title="Dark">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M17.3 13.3A7 7 0 016.7 2.7a7 7 0 1010.6 10.6z"/></svg>
+        </button>
+        <button class="theme-btn" id="btn-system" onclick="setTheme('system')" title="System">
+          <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 18h6M10 15v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <button class="theme-btn" id="btn-light" onclick="setTheme('light')" title="Light">
+          <svg viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="10" r="4"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.9 4.9l1.4 1.4M13.7 13.7l1.4 1.4M4.9 15.1l1.4-1.4M13.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function setTheme(t) {
+  const stored = t === 'system'
+    ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    : t;
+  document.body.classList.toggle('light', stored === 'light');
+  localStorage.setItem('ec-theme', t);
+  ['dark','system','light'].forEach(k => {
+    document.getElementById('btn-'+k)?.classList.toggle('active', k === t);
+  });
+}
+(function() {
+  const saved = localStorage.getItem('ec-theme') || 'dark';
+  setTheme(saved);
+})();
+</script>
+</body>
+</html>

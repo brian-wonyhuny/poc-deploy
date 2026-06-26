@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edencrew Web — Preview</title>
+<style>
+  body { font-family:sans-serif; max-width:640px; margin:60px auto; padding:0 20px; color:#333; background:#f9f9f9; }
+  h1 { font-size:1.2rem; color:#555; margin-bottom:6px; }
+  p { font-size:13px; color:#999; margin-bottom:28px; }
+  .list { display:flex; flex-direction:column; gap:10px; }
+  .item { display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #eee; border-radius:10px; padding:16px 20px; text-decoration:none; color:#111; transition:border-color .15s; }
+  .item:hover { border-color:#8361FF; }
+  .item-name { font-size:15px; font-weight:600; }
+  .item-desc { font-size:12px; color:#999; margin-top:2px; }
+  .badge { font-size:11px; font-weight:700; color:#8361FF; background:rgba(131,97,255,.1); border-radius:5px; padding:3px 8px; }
+</style>
+</head>
+<body>
+  <h1>Edencrew Web — 페이지 목록</h1>
+  <p>누리가 제작 중인 이든크루 공식 홈페이지 시안</p>
+  <div class="list">
+    <a class="item" href="edencrew-home.html">
+      <div>
+        <div class="item-name">Home</div>
+        <div class="item-desc">메인 홈페이지 — 히어로, 메트릭, 제품군, 워크플로우</div>
+      </div>
+      <span class="badge">✅ 완성</span>
+    </a>
+    <a class="item" href="lucy-studio-v5.html">
+      <div>
+        <div class="item-name">Lucy Studio</div>
+        <div class="item-desc">제품 소개 페이지 — Lucy Studio v5</div>
+      </div>
+      <span class="badge">✅ 완성</span>
+    </a>
+    <a class="item" href="platform.html">
+      <div>
+        <div class="item-name">Platform</div>
+        <div class="item-desc">Lucy Platform 소개 — 워크플로우, 아키텍처, 제품군, 유즈케이스</div>
+      </div>
+      <span class="badge">🆕 신규</span>
+    </a>
+  </div>
+</body>
+</html>
