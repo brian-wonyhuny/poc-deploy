@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edencrew 홈페이지 — 기능명세 맵</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0D0F14;--bg2:#111318;--bg3:#181B22;
+  --bdr:rgba(255,255,255,.07);--bdr2:rgba(255,255,255,.14);
+  --p:#8361FF;--p-lt:rgba(131,97,255,.15);--p-bdr:rgba(131,97,255,.4);
+  --wh:#F0EDE8;--mid:rgba(240,237,232,.5);--dim:rgba(240,237,232,.22);
+  --green:#34C759;--blue:#0A84FF;--orange:#FF9F0A;--pink:#FF375F;
+}
+html,body{width:100%;height:100%;overflow:hidden}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--wh);-webkit-font-smoothing:antialiased}
+
+/* TOPBAR */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:50px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+  background:color-mix(in srgb,var(--bg) 90%,transparent);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--bdr);
+}
+.tb-left{display:flex;align-items:center;gap:14px}
+.tb-logo{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--wh)}
+.tb-logo-dot{width:7px;height:7px;background:var(--p);border-radius:50%}
+.tb-sep{width:1px;height:16px;background:var(--bdr2)}
+.tb-tabs{display:flex;gap:2px}
+.tb-tab{
+  font-size:12.5px;font-weight:500;color:var(--mid);
+  padding:6px 14px;border-radius:6px;cursor:pointer;
+  transition:background .1s,color .1s;
+}
+.tb-tab:hover{color:var(--wh);background:rgba(255,255,255,.05)}
+.tb-tab.on{color:var(--wh);background:rgba(255,255,255,.07)}
+.tb-right{display:flex;gap:8px;align-items:center}
+.tb-hint{font-size:11px;color:var(--dim)}
+
+/* CANVAS AREA */
+#canvas-wrap{
+  position:fixed;top:50px;left:0;right:0;bottom:0;
+  overflow:hidden;cursor:grab;
+}
+#canvas-wrap.dragging{cursor:grabbing}
+canvas{display:block}
+
+/* LEGEND */
+.legend{
+  position:fixed;bottom:24px;left:24px;
+  background:var(--bg2);border:1px solid var(--bdr);
+  border-radius:10px;padding:14px 16px;
+  display:flex;flex-direction:column;gap:8px;
+  font-size:11.5px;
+}
+.legend-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:2px}
+.leg-row{display:flex;align-items:center;gap:8px;color:var(--mid)}
+.leg-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+
+/* CONTROLS */
+.controls{
+  position:fixed;bottom:24px;right:24px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.ctrl-btn{
+  width:34px;height:34px;
+  background:var(--bg2);border:1px solid var(--bdr);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:16px;color:var(--mid);
+  transition:border-color .1s,color .1s;
+}
+.ctrl-btn:hover{border-color:var(--bdr2);color:var(--wh)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-left">
+    <div class="tb-logo"><div class="tb-logo-dot"></div>Edencrew 홈페이지</div>
+    <div class="tb-sep"></div>
+    <div class="tb-tabs">
+      <div class="tb-tab">PRD</div>
+      <div class="tb-tab on">기능명세</div>
+      <div class="tb-tab">사이트맵</div>
+    </div>
+  </div>
+  <div class="tb-right">
+    <span class="tb-hint">스크롤로 확대/축소 · 드래그로 이동</span>
+  </div>
+</div>
+
+<div id="canvas-wrap">
+  <canvas id="c"></canvas>
+</div>
+
+<div class="legend">
+  <div class="legend-title">페이지 구분</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#8361FF"></div>Root</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#34C759"></div>완성 페이지</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#0A84FF"></div>미제작 페이지</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#FF9F0A"></div>공통 컴포넌트</div>
+</div>
+
+<div class="controls">
+  <div class="ctrl-btn" id="btn-in">+</div>
+  <div class="ctrl-btn" id="btn-out">−</div>
+  <div class="ctrl-btn" id="btn-reset" title="초기화">⌂</div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const wrap = document.getElementById('canvas-wrap');
+
+const TREE = {
+  id:'root', label:'Edencrew\n홈페이지', color:'#8361FF', textColor:'#fff',
+  children:[
+    {
+      id:'home', label:'Home', sub:'/', color:'#34C759', tag:'✅ 완성',
+      children:[
+        {id:'h1', label:'Hero', sub:'메인 헤드라인 + CTA 2개'},
+        {id:'h2', label:'Product Overview', sub:'Lucy Studio 가치 카드'},
+        {id:'h3', label:'Social Proof', sub:'수치 지표 · 로고 배너'},
+        {id:'h4', label:'Platform Teaser', sub:'플랫폼 생태계 한 줄 소개'},
+        {id:'h5', label:'Bottom CTA', sub:'베타 신청 풀-블리드 배너'},
+      ]
+    },
+    {
+      id:'lucy', label:'Lucy Studio', sub:'/lucy-studio', color:'#34C759', tag:'✅ 완성',
+      children:[
+        {id:'l1', label:'Hero', sub:'Visual Flutter Builder 소개'},
+        {id:'l2', label:'AI Copilot', sub:'AI 자동 컴포넌트 생성'},
+        {id:'l3', label:'Component Library', sub:'사전 빌드 UI 컴포넌트'},
+        {id:'l4', label:'Deploy', sub:'원클릭 앱 배포'},
+        {id:'l5', label:'Team 협업', sub:'멀티 유저 편집'},
+        {id:'l6', label:'Analytics', sub:'앱 사용 통계 연동'},
+        {id:'l7', label:'Integrations', sub:'외부 API · DB 연결'},
+        {id:'l8', label:'Templates', sub:'앱 템플릿 갤러리'},
+        {id:'l9', label:'Pricing Link', sub:'요금제 연결 CTA'},
+      ]
+    },
+    {
+      id:'platform', label:'Platform', sub:'/platform', color:'#0A84FF', tag:'🔲 미제작',
+      children:[
+        {id:'p1', label:'Hero', sub:'플랫폼 선언 섹션'},
+        {id:'p2', label:'생태계 맵', sub:'제품 연결 구조 시각화'},
+        {id:'p3', label:'API & SDK', sub:'개발자 연동 · Waitlist CTA'},
+        {id:'p4', label:'팀 & 엔터프라이즈', sub:'SSO · 권한 관리 · 전용 지원'},
+        {id:'p5', label:'파트너십 CTA', sub:'파트너 프로그램 문의'},
+      ]
+    },
+    {
+      id:'pricing', label:'Pricing', sub:'/pricing', color:'#0A84FF', tag:'🔲 미제작',
+      children:[
+        {id:'pr1', label:'플랜 카드', sub:'Free · Starter · Pro · Enterprise'},
+        {id:'pr2', label:'월간/연간 토글', sub:'가격 애니메이션 · 절감 배지'},
+        {id:'pr3', label:'기능 비교 테이블', sub:'플랜별 전체 기능 매트릭스'},
+        {id:'pr4', label:'FAQ 아코디언', sub:'결제 · 환불 · 플랜 변경'},
+        {id:'pr5', label:'베타 배너', sub:'무료 신청 · 출시 후 제거 가능'},
+      ]
+    },
+    {
+      id:'resources', label:'Resources', sub:'/resources', color:'#0A84FF', tag:'🔲 미제작',
+      children:[
+        {id:'r1', label:'카테고리 필터', sub:'블로그 · 릴리스 노트 · 튜토리얼'},
+        {id:'r2', label:'뉴스레터 구독', sub:'Resend · Notion DB 연동'},
+        {id:'r3', label:'템플릿 갤러리', sub:'앱 썸네일 그리드 · 다운로드'},
+        {id:'r4', label:'커뮤니티 링크', sub:'Discord · YouTube · GitHub'},
+      ]
+    },
+    {
+      id:'common', label:'공통\n컴포넌트', color:'#FF9F0A', tag:'',
+      children:[
+        {id:'c1', label:'GNB', sub:'sticky · blur · 54px · 모바일 햄버거'},
+        {id:'c2', label:'Footer', sub:'4컬럼 · 소셜 · 정책 링크'},
+        {id:'c3', label:'베타 신청 폼', sub:'/beta/thanks 리디렉션'},
+        {id:'c4', label:'디자인 토큰', sub:'#080808 · #F0EDE8 · #8361FF'},
+      ]
+    },
+  ]
+};
+
+const COL0_X = 140;
+const COL1_X = 340;
+const COL2_X = 600;
+const NODE_H = 52;
+const LEAF_GAP = 10;
+const PAGE_GAP = 28;
+
+function calcLayout(tree) {
+  let nodes = [];
+  let edges = [];
+
+  function processNode(node, depth, parentId) {
+    let entry = {
+      id: node.id,
+      label: node.label,
+      sub: node.sub || '',
+      color: node.color || '#555',
+      tag: node.tag || '',
+      depth,
+      parentId,
+      x: 0, y: 0,
+      children: node.children ? node.children.map(c=>c.id) : []
+    };
+    nodes.push(entry);
+    if(node.children) {
+      node.children.forEach(c => processNode(c, depth+1, node.id));
+    }
+  }
+  processNode(tree, 0, null);
+
+  let map = {};
+  nodes.forEach(n => map[n.id] = n);
+
+  nodes.forEach(n => {
+    if(n.depth===0) n.x = COL0_X;
+    else if(n.depth===1) n.x = COL1_X;
+    else n.x = COL2_X;
+  });
+
+  function assignY(id, startY) {
+    let node = map[id];
+    if(!node.children.length) {
+      node.y = startY;
+      return startY + NODE_H + LEAF_GAP;
+    }
+    let curY = startY;
+    node.children.forEach(cid => {
+      curY = assignY(cid, curY);
+    });
+    let firstChild = map[node.children[0]];
+    let lastChild = map[node.children[node.children.length-1]];
+    node.y = (firstChild.y + lastChild.y) / 2;
+    return curY + PAGE_GAP;
+  }
+
+  let curY = 60;
+  map['root'].children.forEach(cid => {
+    curY = assignY(cid, curY);
+    curY += PAGE_GAP;
+  });
+  let l1 = map['root'].children.map(id=>map[id]);
+  map['root'].y = (l1[0].y + l1[l1.length-1].y)/2;
+
+  nodes.forEach(n => {
+    if(n.parentId) edges.push({from: n.parentId, to: n.id});
+  });
+
+  return {nodes, edges, map};
+}
+
+let layout = calcLayout(TREE);
+let {nodes, edges, map} = layout;
+
+let allY = nodes.map(n=>n.y);
+let minY = Math.min(...allY), maxY = Math.max(...allY);
+let totalH = maxY - minY + NODE_H*2;
+let totalW = COL2_X + 260;
+
+let vp = {x:0, y:0, scale:1};
+let dragging = false, dragStart = {x:0,y:0}, vpStart = {x:0,y:0};
+let hovered = null;
+
+function resize() {
+  canvas.width = wrap.clientWidth;
+  canvas.height = wrap.clientHeight;
+  vp.x = canvas.width/2 - totalW/2;
+  vp.y = canvas.height/2 - totalH/2;
+  draw();
+}
+
+const BG_CARD = '#111318';
+const BG_LEAF = '#0E1017';
+
+function toScreen(wx, wy) {
+  return { x: wx * vp.scale + vp.x, y: wy * vp.scale + vp.y };
+}
+
+function drawRoundRect(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
+
+function drawNode(node, isHovered) {
+  let s = toScreen(node.x, node.y);
+  let sc = vp.scale;
+  let isRoot = node.depth===0;
+  let isPage = node.depth===1;
+
+  let w, h;
+  if(isRoot){ w=120*sc; h=52*sc; }
+  else if(isPage){ w=140*sc; h=44*sc; }
+  else { w=200*sc; h=42*sc; }
+
+  let x = s.x - w/2;
+  let y = s.y - h/2;
+
+  ctx.save();
+
+  if(isRoot) {
+    drawRoundRect(x,y,w,h,10*sc);
+    ctx.fillStyle = node.color;
+    ctx.fill();
+    ctx.shadowColor = node.color;
+    ctx.shadowBlur = 20*sc;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  } else if(isPage) {
+    drawRoundRect(x,y,w,h,8*sc);
+    ctx.fillStyle = isHovered ? '#1a1e28' : BG_CARD;
+    ctx.fill();
+    ctx.fillStyle = node.color;
+    drawRoundRect(x, y+h*0.2, 3*sc, h*0.6, 2*sc);
+    ctx.fill();
+    ctx.strokeStyle = isHovered ? node.color : 'rgba(255,255,255,0.1)';
+    ctx.lineWidth = isHovered ? 1.5*sc : 1*sc;
+    drawRoundRect(x,y,w,h,8*sc);
+    ctx.stroke();
+  } else {
+    drawRoundRect(x,y,w,h,7*sc);
+    ctx.fillStyle = isHovered ? '#14171f' : BG_LEAF;
+    ctx.fill();
+    ctx.strokeStyle = isHovered ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1*sc;
+    drawRoundRect(x,y,w,h,7*sc);
+    ctx.stroke();
+  }
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  if(isRoot) {
+    let lines = node.label.split('\n');
+    let lh = 14*sc;
+    let totalTH = lines.length*lh;
+    lines.forEach((ln,i) => {
+      ctx.font = `700 ${Math.max(10,12*sc)}px Inter,-apple-system,sans-serif`;
+      ctx.fillStyle = '#fff';
+      ctx.fillText(ln, s.x, s.y - totalTH/2 + lh*i + lh/2);
+    });
+  } else if(isPage) {
+    ctx.font = `600 ${Math.max(9,11*sc)}px Inter,-apple-system,sans-serif`;
+    ctx.fillStyle = '#F0EDE8';
+    ctx.textAlign = 'left';
+    ctx.fillText(node.label, x + 12*sc, s.y - 6*sc);
+    ctx.font = `400 ${Math.max(8,9.5*sc)}px Inter,-apple-system,sans-serif`;
+    ctx.fillStyle = 'rgba(240,237,232,0.38)';
+    ctx.fillText(node.sub || '', x + 12*sc, s.y + 7*sc);
+    if(node.tag && sc > 0.5) {
+      ctx.font = `500 ${Math.max(7,8.5*sc)}px Inter,-apple-system,sans-serif`;
+      ctx.fillStyle = node.color;
+      ctx.textAlign = 'right';
+      ctx.fillText(node.tag, x+w-8*sc, s.y);
+    }
+  } else {
+    ctx.font = `500 ${Math.max(8,10.5*sc)}px Inter,-apple-system,sans-serif`;
+    ctx.fillStyle = 'rgba(240,237,232,0.85)';
+    ctx.textAlign = 'left';
+    ctx.fillText(node.label, x+10*sc, s.y - 5.5*sc);
+    ctx.font = `400 ${Math.max(7,9*sc)}px Inter,-apple-system,sans-serif`;
+    ctx.fillStyle = 'rgba(240,237,232,0.33)';
+    ctx.fillText(node.sub, x+10*sc, s.y+6*sc);
+  }
+
+  ctx.restore();
+}
+
+function getNodeBounds(node) {
+  let s = toScreen(node.x, node.y);
+  let sc = vp.scale;
+  let isRoot = node.depth===0;
+  let isPage = node.depth===1;
+  let w = isRoot ? 120*sc : isPage ? 140*sc : 200*sc;
+  let h = isRoot ? 52*sc : isPage ? 44*sc : 42*sc;
+  return {x:s.x-w/2, y:s.y-h/2, w, h};
+}
+
+function drawEdge(fromNode, toNode) {
+  let f = toScreen(fromNode.x, fromNode.y);
+  let t = toScreen(toNode.x, toNode.y);
+  let sc = vp.scale;
+
+  let fromW = fromNode.depth===0 ? 60*sc : fromNode.depth===1 ? 70*sc : 100*sc;
+  let toW = toNode.depth===1 ? 70*sc : 100*sc;
+
+  let x1 = f.x + fromW;
+  let y1 = f.y;
+  let x2 = t.x - toW;
+  let y2 = t.y;
+  let cx = (x1+x2)/2;
+
+  let isHov = (hovered === fromNode.id || hovered === toNode.id);
+
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.bezierCurveTo(cx, y1, cx, y2, x2, y2);
+  ctx.strokeStyle = isHov
+    ? (fromNode.color || toNode.color || '#8361FF') + '88'
+    : 'rgba(255,255,255,0.1)';
+  ctx.lineWidth = isHov ? 1.5*sc : 1*sc;
+  ctx.stroke();
+}
+
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255,255,255,0.025)';
+  ctx.lineWidth = 1;
+  let gs = 40*vp.scale;
+  let ox = vp.x % gs, oy = vp.y % gs;
+  for(let x=ox; x<canvas.width; x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
+  for(let y=oy; y<canvas.height; y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}
+  ctx.restore();
+
+  edges.forEach(e => {
+    let fn = map[e.from], tn = map[e.to];
+    if(fn && tn) drawEdge(fn, tn);
+  });
+
+  nodes.forEach(n => {
+    drawNode(n, hovered===n.id);
+  });
+}
+
+function getHovered(mx, my) {
+  for(let i=nodes.length-1;i>=0;i--){
+    let n = nodes[i];
+    let b = getNodeBounds(n);
+    if(mx>=b.x && mx<=b.x+b.w && my>=b.y && my<=b.y+b.h) return n.id;
+  }
+  return null;
+}
+
+canvas.addEventListener('mousemove', e => {
+  let r = canvas.getBoundingClientRect();
+  let mx = e.clientX-r.left, my = e.clientY-r.top;
+  if(dragging) {
+    vp.x = vpStart.x + (e.clientX - dragStart.x);
+    vp.y = vpStart.y + (e.clientY - dragStart.y);
+    draw();
+    return;
+  }
+  let h = getHovered(mx,my);
+  if(h !== hovered) { hovered=h; canvas.style.cursor=h?'pointer':'grab'; draw(); }
+});
+
+canvas.addEventListener('mousedown', e => {
+  dragging=true; dragStart={x:e.clientX,y:e.clientY}; vpStart={x:vp.x,y:vp.y};
+  wrap.classList.add('dragging');
+});
+window.addEventListener('mouseup', () => { dragging=false; wrap.classList.remove('dragging'); });
+
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  let r = canvas.getBoundingClientRect();
+  let mx = e.clientX-r.left, my = e.clientY-r.top;
+  let delta = e.deltaY > 0 ? 0.88 : 1.14;
+  let newScale = Math.min(2.5, Math.max(0.25, vp.scale*delta));
+  let ratio = newScale/vp.scale;
+  vp.x = mx - (mx-vp.x)*ratio;
+  vp.y = my - (my-vp.y)*ratio;
+  vp.scale = newScale;
+  draw();
+}, {passive:false});
+
+document.getElementById('btn-in').onclick = () => {
+  let cx=canvas.width/2,cy=canvas.height/2;
+  let ns=Math.min(2.5,vp.scale*1.2);
+  let r=ns/vp.scale; vp.x=cx-(cx-vp.x)*r; vp.y=cy-(cy-vp.y)*r; vp.scale=ns; draw();
+};
+document.getElementById('btn-out').onclick = () => {
+  let cx=canvas.width/2,cy=canvas.height/2;
+  let ns=Math.max(0.25,vp.scale*0.83);
+  let r=ns/vp.scale; vp.x=cx-(cx-vp.x)*r; vp.y=cy-(cy-vp.y)*r; vp.scale=ns; draw();
+};
+document.getElementById('btn-reset').onclick = () => {
+  vp.scale=1;
+  vp.x=canvas.width/2-totalW/2;
+  vp.y=canvas.height/2-totalH/2;
+  draw();
+};
+
+let lastDist=0;
+canvas.addEventListener('touchstart', e => {
+  if(e.touches.length===1){dragging=true;dragStart={x:e.touches[0].clientX,y:e.touches[0].clientY};vpStart={x:vp.x,y:vp.y};}
+  if(e.touches.length===2){lastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}
+},{passive:true});
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if(e.touches.length===1&&dragging){vp.x=vpStart.x+(e.touches[0].clientX-dragStart.x);vp.y=vpStart.y+(e.touches[0].clientY-dragStart.y);draw();}
+  if(e.touches.length===2){
+    let d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+    let r=d/lastDist; lastDist=d;
+    let cx=(e.touches[0].clientX+e.touches[1].clientX)/2;
+    let cy=(e.touches[0].clientY+e.touches[1].clientY)/2;
+    let ns=Math.min(2.5,Math.max(0.25,vp.scale*r));
+    let ratio=ns/vp.scale; vp.x=cx-(cx-vp.x)*ratio; vp.y=cy-(cy-vp.y)*ratio; vp.scale=ns; draw();
+  }
+},{passive:false});
+canvas.addEventListener('touchend',()=>{dragging=false;});
+
+window.addEventListener('resize', resize);
+resize();
+
+setTimeout(()=>{
+  let padding=60;
+  let scaleX=(canvas.width-padding*2)/totalW;
+  let scaleY=(canvas.height-padding*2)/totalH;
+  vp.scale=Math.min(scaleX,scaleY,1);
+  vp.x=canvas.width/2-(totalW/2)*vp.scale;
+  vp.y = canvas.height/2 - ((minY+totalH/2)*vp.scale);
+  draw();
+},50);
+</script>
+
+</body>
+</html>

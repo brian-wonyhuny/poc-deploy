@@ -1,0 +1,522 @@
+﻿<title>Edencrew Ecosystem Overview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;500;600&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:   #0B0D12;
+    --bg2:  #111318;
+    --bg3:  #161921;
+    --bg4:  #1C1F2A;
+    --p:    #8361FF;
+    --p2:   #A78BFA;
+    --wh:   #fff;
+    --mid:  rgba(255,255,255,.42);
+    --dim:  rgba(255,255,255,.18);
+    --dim2: rgba(255,255,255,.07);
+    --cta:  #FF6B35;
+    --green:#34D399;
+    --blue: #60A5FA;
+    --yellow:#FCD34D;
+    --red:  #F87171;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--wh);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    padding: 48px 32px 80px;
+    line-height: 1.4;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .eyebrow {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--p2); margin-bottom: 10px;
+  }
+  .page-header h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900; font-size: clamp(20px,3vw,30px);
+    color: var(--wh); letter-spacing: -.02em;
+  }
+  .page-header .sub {
+    font-size: 12px; color: var(--mid); margin-top: 8px;
+  }
+
+  .eco-wrap {
+    max-width: 1160px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .journey-section {
+    margin-bottom: 40px;
+  }
+  .journey-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .journey-label::after {
+    content: ''; flex: 1; height: 1px;
+    background: var(--dim2);
+  }
+
+  .site-row {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr 80px 1fr 80px 1fr;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 32px;
+  }
+
+  .site-node {
+    border-radius: 12px;
+    border: 1px solid var(--dim);
+    background: var(--bg2);
+    overflow: hidden;
+  }
+  .site-node-header {
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid var(--dim2);
+  }
+  .site-node-eyebrow {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 5px;
+  }
+  .site-node-name {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900; font-size: 14px;
+    color: var(--wh); letter-spacing: -.01em;
+  }
+  .site-node-domain {
+    font-size: 10px; font-family: monospace;
+    margin-top: 4px;
+  }
+  .site-node-body {
+    padding: 12px 16px;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .site-tag {
+    font-size: 10px; color: var(--mid);
+    background: var(--dim2);
+    border-radius: 4px; padding: 3px 7px;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .site-tag .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .node-home   { border-color: rgba(131,97,255,.4); }
+  .node-home .site-node-header { background: rgba(131,97,255,.08); }
+  .node-home .site-node-name   { color: var(--p2); }
+  .node-home .site-node-domain { color: var(--p); }
+
+  .node-auth   { border-color: rgba(255,107,53,.35); }
+  .node-auth .site-node-header { background: rgba(255,107,53,.07); }
+  .node-auth .site-node-name   { color: #FF9A6C; }
+  .node-auth .site-node-domain { color: var(--cta); }
+
+  .node-tc     { border-color: rgba(52,211,153,.35); }
+  .node-tc .site-node-header   { background: rgba(52,211,153,.07); }
+  .node-tc .site-node-name     { color: var(--green); }
+  .node-tc .site-node-domain   { color: var(--green); }
+
+  .node-admin  { border-color: rgba(252,211,77,.3); border-style: dashed; }
+  .node-admin .site-node-header { background: rgba(252,211,77,.05); }
+  .node-admin .site-node-name   { color: var(--yellow); }
+  .node-admin .site-node-domain { color: var(--yellow); opacity:.7; }
+
+  .arrow-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 0 4px;
+  }
+  .arrow-line {
+    display: flex; align-items: center;
+    gap: 0; width: 100%;
+  }
+  .arrow-shaft {
+    flex: 1; height: 1px;
+    background: var(--dim);
+  }
+  .arrow-head {
+    font-size: 10px; color: var(--dim);
+    line-height: 1;
+  }
+  .arrow-label {
+    font-size: 9px; color: var(--mid);
+    text-align: center; line-height: 1.3;
+    white-space: nowrap;
+  }
+
+  .flows {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--dim2);
+  }
+  .flow-trigger {
+    width: 180px; flex-shrink: 0;
+    background: var(--bg3);
+    border-right: 1px solid var(--dim2);
+    padding: 11px 14px;
+    display: flex; flex-direction: column;
+    justify-content: center; gap: 3px;
+  }
+  .flow-trigger .ft-label {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 2px;
+  }
+  .flow-trigger .ft-action {
+    font-size: 11px; font-weight: 600; color: var(--wh);
+  }
+  .flow-trigger .ft-from {
+    font-size: 10px; font-family: monospace; color: var(--mid);
+    margin-top: 1px;
+  }
+
+  .flow-steps {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .flow-step {
+    display: flex; align-items: center;
+    flex-shrink: 0;
+  }
+  .step-box {
+    background: var(--bg4);
+    border-radius: 7px; padding: 7px 11px;
+    font-size: 11px; color: var(--mid);
+    text-align: center; white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .step-box .step-url {
+    display: block; font-size: 9px;
+    font-family: monospace; margin-top: 2px;
+  }
+  .step-arrow {
+    padding: 0 5px;
+    font-size: 11px; color: var(--dim);
+    flex-shrink: 0;
+  }
+  .step-box.home-step   { border-color: rgba(131,97,255,.3); color: var(--p2); }
+  .step-box.auth-step   { border-color: rgba(255,107,53,.3); color: #FF9A6C; }
+  .step-box.tc-step     { border-color: rgba(52,211,153,.3); color: var(--green); }
+  .step-box.admin-step  { border-color: rgba(252,211,77,.3); color: var(--yellow); }
+  .step-box.final       { font-weight: 700; }
+
+  .section-divider {
+    border: none; border-top: 1px solid var(--dim2);
+    margin: 40px 0;
+  }
+
+  .admin-teaser {
+    background: rgba(252,211,77,.04);
+    border: 1px dashed rgba(252,211,77,.25);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+  .admin-teaser-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px;
+  }
+  .admin-teaser-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900; font-size: 14px; color: var(--yellow);
+  }
+  .admin-teaser-domain {
+    font-size: 11px; font-family: monospace;
+    color: rgba(252,211,77,.5);
+  }
+  .admin-tag {
+    margin-left: auto;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase;
+    background: rgba(252,211,77,.12); color: var(--yellow);
+    border: 1px solid rgba(252,211,77,.25);
+    border-radius: 4px; padding: 3px 8px;
+  }
+  .admin-modules {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .admin-module {
+    background: rgba(252,211,77,.06);
+    border: 1px solid rgba(252,211,77,.2);
+    border-radius: 7px; padding: 8px 12px;
+    font-size: 11px; color: rgba(252,211,77,.7);
+  }
+  .admin-module .mod-title {
+    font-weight: 600; color: var(--yellow);
+    margin-bottom: 2px;
+  }
+  .admin-module .mod-desc {
+    font-size: 10px; color: rgba(252,211,77,.5);
+  }
+
+  .note {
+    max-width: 1160px; margin: 32px auto 0;
+    background: rgba(131,97,255,.06);
+    border: 1px solid rgba(131,97,255,.2);
+    border-radius: 10px; padding: 16px 20px;
+    font-size: 12px; color: var(--mid); line-height: 1.7;
+  }
+  .note strong { color: var(--p2); }
+</style>
+
+<nav style="max-width:1160px;margin:0 auto 36px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+  <span style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-right:4px">사이트맵 →</span>
+  <a href="project-dashboard.html"
+     style="font-size:11px;font-weight:600;padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:rgba(255,255,255,.6);text-decoration:none;">
+    ← 대시보드
+  </a>
+  <a href="sitemap-edencrew.html"
+     style="font-size:11px;font-weight:600;padding:6px 14px;border-radius:6px;border:1px solid rgba(131,97,255,.4);background:rgba(131,97,255,.1);color:var(--p2);text-decoration:none;">
+    edencrew.com
+  </a>
+  <a href="sitemap-teamcloud.html"
+     style="font-size:11px;font-weight:600;padding:6px 14px;border-radius:6px;border:1px solid rgba(52,211,153,.35);background:rgba(52,211,153,.08);color:var(--green);text-decoration:none;">
+    TeamCloud
+  </a>
+  <a href="sitemap-admin.html" style="font-size:11px;font-weight:600;padding:6px 14px;border-radius:6px;border:1px solid rgba(252,211,77,.35);background:rgba(252,211,77,.08);color:#FCD34D;text-decoration:none">Admin</a>
+  <span style="margin-left:auto;font-size:10px;padding:5px 10px;border-radius:5px;background:rgba(131,97,255,.15);color:var(--p2);border:1px solid rgba(131,97,255,.3)">● Ecosystem Overview</span>
+</nav>
+
+<div class="page-header">
+  <div class="eyebrow">Edencrew · Ecosystem Overview</div>
+  <h1>서비스 전체 구조 & 연결</h1>
+  <p class="sub">edencrew.com · auth · TeamCloud · Admin | 2026-06-29</p>
+</div>
+
+<div class="eco-wrap">
+
+  <div class="journey-label">서비스 도메인 구조</div>
+
+  <div class="site-row">
+
+    <div class="site-node node-home">
+      <div class="site-node-header">
+        <div class="site-node-eyebrow">마케팅 · 홈페이지</div>
+        <div class="site-node-name">edencrew.com</div>
+        <div class="site-node-domain">edencrew.com</div>
+      </div>
+      <div class="site-node-body">
+        <div class="site-tag"><div class="dot" style="background:var(--p)"></div>Lucy Studio 소개</div>
+        <div class="site-tag"><div class="dot" style="background:var(--p)"></div>Lucy Platform 생태계</div>
+        <div class="site-tag"><div class="dot" style="background:var(--p)"></div>Pricing 플랜 비교</div>
+        <div class="site-tag"><div class="dot" style="background:var(--p)"></div>Resources · Docs</div>
+        <div class="site-tag"><div class="dot" style="background:var(--cta)"></div>[Sign In] CTA</div>
+        <div class="site-tag"><div class="dot" style="background:var(--cta)"></div>[Download Studio] CTA</div>
+        <div class="site-tag"><div class="dot" style="background:var(--cta)"></div>[Contact Sales] CTA</div>
+      </div>
+    </div>
+
+    <div class="arrow-col">
+      <div class="arrow-line"><div class="arrow-shaft"></div><div class="arrow-head">▶</div></div>
+      <div class="arrow-label">Sign In<br>Download</div>
+    </div>
+
+    <div class="site-node node-auth">
+      <div class="site-node-header">
+        <div class="site-node-eyebrow">인증 서버 (SSO)</div>
+        <div class="site-node-name">lucy-auth</div>
+        <div class="site-node-domain">auth.edencrew.com</div>
+      </div>
+      <div class="site-node-body">
+        <div class="site-tag"><div class="dot" style="background:var(--cta)"></div>이메일 로그인</div>
+        <div class="site-tag"><div class="dot" style="background:var(--cta)"></div>회원가입 · 이메일 인증</div>
+        <div class="site-tag"><div class="dot" style="background:var(--cta)"></div>Google OAuth2</div>
+        <div class="site-tag"><div class="dot" style="background:var(--cta)"></div>PKCE code 발급</div>
+        <div class="site-tag"><div class="dot" style="background:var(--cta)"></div>비밀번호 재설정</div>
+        <div class="site-tag"><div class="dot" style="background:var(--cta); opacity:.4"></div>JWT · API Key</div>
+      </div>
+    </div>
+
+    <div class="arrow-col">
+      <div class="arrow-line"><div class="arrow-shaft"></div><div class="arrow-head">▶</div></div>
+      <div class="arrow-label">로그인 완료<br>code → token</div>
+    </div>
+
+    <div class="site-node node-tc">
+      <div class="site-node-header">
+        <div class="site-node-eyebrow">웹 대시보드 (SaaS)</div>
+        <div class="site-node-name">TeamCloud</div>
+        <div class="site-node-domain">app.edencrew.com</div>
+      </div>
+      <div class="site-node-body">
+        <div class="site-tag"><div class="dot" style="background:var(--green)"></div>Dashboard · Overview</div>
+        <div class="site-tag"><div class="dot" style="background:var(--green)"></div>Projects · Git 연동</div>
+        <div class="site-tag"><div class="dot" style="background:var(--green)"></div>Members · RBAC</div>
+        <div class="site-tag"><div class="dot" style="background:var(--green)"></div>Billing (Open Beta+)</div>
+        <div class="site-tag"><div class="dot" style="background:var(--green); opacity:.4"></div>Deploy (Post-Beta)</div>
+        <div class="site-tag"><div class="dot" style="background:var(--green); opacity:.4"></div>Community · Learn</div>
+      </div>
+    </div>
+
+    <div class="arrow-col">
+      <div class="arrow-line"><div class="arrow-shaft"></div><div class="arrow-head">▶</div></div>
+      <div class="arrow-label">Super Admin<br>관리</div>
+    </div>
+
+    <div class="site-node node-admin">
+      <div class="site-node-header">
+        <div class="site-node-eyebrow">내부 운영 관리자</div>
+        <div class="site-node-name">Admin</div>
+        <div class="site-node-domain">admin.edencrew.com</div>
+      </div>
+      <div class="site-node-body">
+        <div class="site-tag" style="opacity:.6"><div class="dot" style="background:var(--yellow)"></div>User 전체 관리</div>
+        <div class="site-tag" style="opacity:.6"><div class="dot" style="background:var(--yellow)"></div>Organization 관리</div>
+        <div class="site-tag" style="opacity:.6"><div class="dot" style="background:var(--yellow)"></div>License 발급·관리</div>
+        <div class="site-tag" style="opacity:.6"><div class="dot" style="background:var(--yellow)"></div>Analytics · 모니터링</div>
+        <div class="site-tag" style="opacity:.6"><div class="dot" style="background:var(--yellow)"></div>On-prem 배포 관리</div>
+        <div class="site-tag" style="opacity:.4; font-style:italic"><div class="dot" style="background:var(--yellow); opacity:.3"></div>추후 설계 예정</div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="journey-label">User Journey 흐름</div>
+
+  <div class="flows">
+
+    <div class="flow">
+      <div class="flow-trigger">
+        <div class="ft-label">Journey 1</div>
+        <div class="ft-action">Sign In</div>
+        <div class="ft-from">edencrew.com GNB</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step"><div class="step-box home-step">[Sign In] 클릭<span class="step-url">edencrew.com</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box auth-step">로그인 화면<span class="step-url">auth.edencrew.com/login</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box auth-step">인증 완료<span class="step-url">code 발급</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box tc-step final">TeamCloud Dashboard<span class="step-url">app.edencrew.com/dashboard</span></div></div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-trigger">
+        <div class="ft-label">Journey 2</div>
+        <div class="ft-action">Download Studio (신규)</div>
+        <div class="ft-from">edencrew.com GNB</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step"><div class="step-box home-step">[Download Studio]<span class="step-url">edencrew.com</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box auth-step">회원가입<span class="step-url">auth.edencrew.com/register</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box home-step">Studio 다운로드<span class="step-url">/lucy-studio#download</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box tc-step final">TeamCloud Dashboard<span class="step-url">app.edencrew.com/dashboard</span></div></div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-trigger">
+        <div class="ft-label">Journey 3</div>
+        <div class="ft-action">Download Studio (기존)</div>
+        <div class="ft-from">edencrew.com GNB</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step"><div class="step-box home-step">[Download Studio]<span class="step-url">edencrew.com</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box auth-step">로그인<span class="step-url">auth.edencrew.com/login</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box tc-step final">TeamCloud Dashboard<span class="step-url">app.edencrew.com/dashboard</span></div></div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-trigger">
+        <div class="ft-label">Journey 4</div>
+        <div class="ft-action">플랜 업그레이드</div>
+        <div class="ft-from">edencrew.com/pricing</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step"><div class="step-box home-step">플랜 선택<span class="step-url">/pricing</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box auth-step">로그인 확인<span class="step-url">auth 검증</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box tc-step">Stripe Checkout<span class="step-url">app/billing/upgrade</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box tc-step final">Billing 관리<span class="step-url">app/billing</span></div></div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-trigger">
+        <div class="ft-label">Journey 5</div>
+        <div class="ft-action">Enterprise 문의</div>
+        <div class="ft-from">edencrew.com GNB</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step"><div class="step-box home-step">[Contact Sales]<span class="step-url">edencrew.com</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box home-step">문의 유형 선택<span class="step-url">/contact (팝업)</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box home-step final" style="border-color:rgba(255,107,53,.3);color:#FF9A6C">영업팀 연결<span class="step-url">contact@edencrew.com</span></div></div>
+      </div>
+    </div>
+
+    <div class="flow" style="border-color:rgba(252,211,77,.15);opacity:.75">
+      <div class="flow-trigger" style="background:rgba(252,211,77,.04)">
+        <div class="ft-label">Journey 6</div>
+        <div class="ft-action" style="color:var(--yellow)">내부 운영 관리</div>
+        <div class="ft-from" style="color:rgba(252,211,77,.5)">Admin (추후)</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step"><div class="step-box auth-step">내부 로그인<span class="step-url">auth.edencrew.com</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box admin-step">Admin Panel<span class="step-url">admin.edencrew.com</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box admin-step">Users · Orgs · License<span class="step-url">전체 관리</span></div><div class="step-arrow">→</div></div>
+        <div class="flow-step"><div class="step-box tc-step final">TeamCloud 연동<span class="step-url">app.edencrew.com</span></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="admin-teaser">
+    <div class="admin-teaser-header">
+      <div>
+        <div class="admin-teaser-title">Admin 사이트 — 다음 작업</div>
+        <div class="admin-teaser-domain">admin.edencrew.com</div>
+      </div>
+      <div class="admin-tag">설계 예정</div>
+    </div>
+    <div class="admin-modules">
+      <div class="admin-module"><div class="mod-title">👤 User Management</div><div class="mod-desc">전체 계정 · 역할 · 상태</div></div>
+      <div class="admin-module"><div class="mod-title">🏢 Organization</div><div class="mod-desc">테넌트 · 플랜 강제 변경</div></div>
+      <div class="admin-module"><div class="mod-title">🔑 License</div><div class="mod-desc">NH · On-prem 라이선스</div></div>
+      <div class="admin-module"><div class="mod-title">📊 Analytics</div><div class="mod-desc">사용 현황 · 퍼널 모니터링</div></div>
+      <div class="admin-module"><div class="mod-title">🚦 Platform Status</div><div class="mod-desc">서비스 상태 · 장애 관리</div></div>
+      <div class="admin-module"><div class="mod-title">📦 On-prem Deploy</div><div class="mod-desc">고객사 배포 패키지 관리</div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="note">
+  <strong>도메인 구조:</strong> edencrew.com (홈) · auth.edencrew.com (SSO) · app.edencrew.com (TeamCloud) · admin.edencrew.com (관리자, 예정)<br>
+  <strong>공통 인증:</strong> lucy-auth SSO 1회 로그인 → 모든 서비스 접근 가능<br>
+  <strong>다음 작업:</strong> admin.edencrew.com 사이트맵 설계
+</div>
