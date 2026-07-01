@@ -1,0 +1,3538 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edencrew Web — Project Dashboard</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<script>
+(function(){
+  var s = localStorage.getItem('luum-theme');
+  var t = (s === 'dark' || s === 'light') ? s : 'light';
+  if (t === 'dark') document.documentElement.setAttribute('data-theme','dark');
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:   #F5F5F5;
+  --s1:   #FFFFFF;
+  --s2:   #F9FAFB;
+  --s3:   #F3F4F6;
+  --bd:   #E9E8E8;
+  --bd2:  #D1D5DB;
+  --p:    #8361FF;
+  --pg:   rgba(131,97,255,0.08);
+  --wh:   #111827;
+  --mu:   #6B7280;
+  --mu2:  rgba(107,114,128,0.12);
+  --ok:   #16A34A;
+  --warn: #D97706;
+  --info: #2563EB;
+  --danger: #DC2626;
+  --sw: 260px;
+  --sh: 52px;
+}
+[data-theme="dark"] {
+  --bg:   #09090D;
+  --s1:   #111118;
+  --s2:   #15151D;
+  --s3:   #1C1B26;
+  --bd:   rgba(255,255,255,0.07);
+  --bd2:  rgba(255,255,255,0.13);
+  --p:    #8361FF;
+  --pg:   rgba(131,97,255,0.12);
+  --wh:   #F0EDE8;
+  --mu:   rgba(240,237,232,0.55);
+  --mu2:  rgba(240,237,232,0.12);
+  --ok:   #34D399;
+  --warn: #FBBF24;
+  --info: #60A5FA;
+  --danger: #F87171;
+}
+.tsp-member-row, .msp-child, .msp-act { background: transparent; }
+.tsp-member-row:hover, .team-list-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+.ov-remain-item { background: rgba(217,119,6,0.05); }
+input[type="date"] { color-scheme: light; }
+.mm-subtask { background: transparent; border: 1px solid var(--bd); }
+#mmSidePanel { box-shadow: -8px 0 32px rgba(0,0,0,0.12); }
+#teamSidePanel { box-shadow: -8px 0 32px rgba(0,0,0,0.12); }
+#mmNodeToolbar { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+[data-theme="dark"] .tsp-member-row, [data-theme="dark"] .msp-child, [data-theme="dark"] .msp-act { background: var(--s3); }
+[data-theme="dark"] #mmSidePanel { box-shadow: -8px 0 32px rgba(0,0,0,.55); }
+[data-theme="dark"] #teamSidePanel { box-shadow: -8px 0 32px rgba(0,0,0,.55); }
+[data-theme="dark"] #mmNodeToolbar { box-shadow: 0 4px 16px rgba(0,0,0,.5); }
+[data-theme="dark"] input[type="date"] { color-scheme: dark; }
+html,body { height:100%; background:var(--bg); color:var(--wh); font-family:'Inter','Pretendard',-apple-system,'Segoe UI',sans-serif; font-size:14px; line-height:1.5; overflow:hidden; }
+body { padding:10px; }
+
+.shell { display:flex; height:100%; gap:10px; }
+.content-row { display:flex; flex-direction:column; flex:1; min-width:0; overflow:hidden; gap:8px; }
+
+/* ── Top Bar ── */
+.top-bar {
+  height:52px; flex-shrink:0;
+  display:flex; align-items:center; gap:8px;
+  padding:0 14px;
+  background:var(--s1); border-radius:12px;
+}
+.tb-left { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.tb-fold {
+  width:30px; height:30px; border-radius:7px;
+  border:none; background:none; color:var(--mu);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; flex-shrink:0;
+  transition:background .1s,color .1s;
+}
+.tb-fold:hover { background:var(--s3); color:var(--wh); }
+.sidebar.sb-hidden + .main .tb-fold-ico { transform:scaleX(-1); }
+.tb-breadcrumb { display:flex; align-items:center; gap:5px; }
+.tb-proj { font-size:18px; font-weight:700; color:var(--wh); cursor:pointer; white-space:nowrap; transition:color .1s; border:none; background:none; font-family:inherit; }
+.tb-proj:hover { color:var(--wh); }
+.tb-chev { color:var(--mu2); font-size:14px; flex-shrink:0; line-height:1; }
+.tb-sub { font-size:13px; font-weight:500; color:var(--wh); white-space:nowrap; }
+.tb-status-pill { display:flex; align-items:center; gap:4px; font-size:10.5px; font-weight:600; color:var(--ok); background:rgba(22,163,74,.08); border:1px solid rgba(22,163,74,.2); border-radius:20px; padding:3px 9px; flex-shrink:0; margin-left:2px; }
+.tb-dot2 { width:5px; height:5px; border-radius:50%; background:var(--ok); animation:pulse 2.4s ease-in-out infinite; flex-shrink:0; }
+.tb-tabs { display:flex; align-items:center; gap:6px; margin-left:auto; }
+.tb-tab {
+  font-size:13px; font-weight:500; color:var(--mu);
+  background:var(--s1); border:1px solid var(--bd); cursor:pointer; font-family:inherit;
+  padding:6px 14px; border-radius:8px;
+  transition:border-color .1s,color .1s,background .1s;
+  text-decoration:none; white-space:nowrap;
+  display:inline-flex; align-items:center; gap:6px;
+}
+.tb-tab:hover { border-color:var(--bd2); color:var(--wh); background:var(--s2); }
+.tb-tab.active { color:var(--wh); border-color:var(--bd2); font-weight:600; }
+.tb-tab-dis { opacity:.35; pointer-events:none; cursor:default; }
+.tb-sep { display:none; }
+.tb-badge { font-size:9px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:1px 5px; border-radius:3px; }
+.tb-badge-ver { background:rgba(52,199,89,.12); color:#34C759; }
+.tb-badge-sched { background:var(--mu2); color:var(--mu); }
+.tb-badge-beta { background:var(--pg); color:var(--p); }
+.tb-right { display:flex; align-items:center; gap:2px; flex-shrink:0; }
+.tb-icon-btn {
+  width:30px; height:30px; border-radius:7px;
+  border:none; background:none; color:var(--mu);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:background .1s,color .1s; flex-shrink:0;
+}
+.tb-icon-btn:hover { background:var(--s3); color:var(--wh); }
+
+/* Sidebar — 완전 숨김 (인덱스와 다르게 아이콘 없음) */
+.sidebar.sb-hidden { width:0; }
+
+/* ── Strip ── */
+.strip { grid-column:1/-1; display:flex; align-items:center; background:transparent; border-bottom:none; }
+.strip-brand { width:var(--sw); flex-shrink:0; height:100%; display:flex; align-items:center; gap:8px; padding:0 16px; border-right:none; }
+[data-theme="dark"] .strip { background:var(--s1); border-bottom:1px solid var(--bd); }
+[data-theme="dark"] .strip-brand { border-right:1px solid var(--bd); }
+.bmark { width:18px; height:18px; background:var(--p); flex-shrink:0; clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); }
+.btext { font-weight:800; font-size:13px; letter-spacing:.02em; }
+.btext em { color:var(--mu); font-style:normal; font-weight:500; }
+.strip-body { display:flex; align-items:center; gap:12px; padding:0 18px; flex:1; }
+.strip-title { font-weight:700; }
+.strip-slash { color:var(--mu2); }
+.strip-phase { font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--p); background:var(--pg); padding:3px 8px; border-radius:4px; }
+.strip-right { margin-left:auto; display:flex; align-items:center; gap:14px; }
+.strip-date { font-size:11px; color:var(--mu); font-variant-numeric:tabular-nums; }
+.s-status { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:var(--ok); background:rgba(22,163,74,.08); border:1px solid rgba(22,163,74,.2); border-radius:20px; padding:4px 10px; }
+.s-dot { width:6px; height:6px; border-radius:50%; background:var(--ok); animation:pulse 2.4s ease-in-out infinite; flex-shrink:0; }
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@media(prefers-reduced-motion:reduce){.s-dot{animation:none}}
+/* Strip icon buttons */
+.strip-icon-btn { width:30px; height:30px; border-radius:7px; border:none; background:none; color:var(--mu); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .1s,color .1s; flex-shrink:0; }
+.strip-icon-btn:hover { background:var(--mu2); color:var(--wh); }
+/* Sidebar logo header */
+.sb-ws { display:flex; align-items:center; justify-content:space-between; padding:14px 14px 10px; flex-shrink:0; }
+.sb-ws .ws-wm .luum-l { fill:#111827; }
+.sb-ws .ws-wm .luum-m { fill:#111827; }
+[data-theme="dark"] .sb-ws .ws-wm .luum-l { fill:#F0EDE8; }
+[data-theme="dark"] .sb-ws .ws-wm .luum-m { fill:#F0EDE8; }
+.sidebar.col .sb-ws .ws-wm { display:none; }
+/* Sidebar project area (flat, no card) */
+.sb-proj { padding:12px 14px 10px; }
+.sb-proj-header { display:flex; align-items:flex-start; justify-content:space-between; gap:6px; }
+.sb-proj-name { font-size:13px; font-weight:600; color:var(--wh); line-height:1.3; }
+.sb-proj-client { font-size:11px; color:var(--mu); margin-top:2px; }
+.sb-proj-set { width:22px; height:22px; border-radius:5px; border:none; background:none; color:var(--mu); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .12s,color .12s; flex-shrink:0; }
+.sb-proj-set:hover { background:var(--mu2); color:var(--wh); }
+.sb-proj-status { display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:600; color:var(--ok); margin-top:6px; }
+.sb-proj-dot { width:5px; height:5px; border-radius:50%; background:var(--ok); }
+/* Sub-project selector */
+.sb-subproj { padding:8px 14px 0; position:relative; }
+.sp-trigger { width:100%; display:flex; align-items:center; gap:7px; padding:6px 10px; background:var(--mu2); border:none; border-radius:7px; cursor:pointer; font-family:inherit; font-size:12px; font-weight:400; color:var(--wh); transition:background .1s; text-align:left; }
+.sp-trigger:hover { background:var(--bd2); }
+.sp-trigger-label { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.sp-trigger-chev { color:var(--mu); flex-shrink:0; transition:transform .18s; }
+.sp-trigger.open .sp-trigger-chev { transform:rotate(180deg); }
+.sp-popover { position:absolute; top:calc(100% + 4px); left:14px; right:14px; background:var(--s1); border:1px solid var(--bd2); border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,.12); z-index:200; overflow:hidden; display:none; }
+[data-theme="dark"] .sp-popover { box-shadow:0 4px 20px rgba(0,0,0,.5); }
+.sp-popover.open { display:block; }
+.sp-item { display:flex; align-items:center; gap:8px; padding:8px 12px; font-size:13px; font-weight:400; color:var(--wh); cursor:pointer; transition:background .1s; }
+.sp-item:hover { background:var(--s2); }
+.sp-item.active { color:var(--p); }
+.sp-item-check { width:14px; flex-shrink:0; color:var(--p); }
+/* Main tab bar */
+.main-tabbar { display:flex; align-items:flex-end; gap:0; padding:0 20px; border-bottom:1px solid var(--bd); flex-shrink:0; }
+.mtab-group { display:flex; align-items:flex-end; gap:0; flex:1; }
+.mtab-right { display:flex; align-items:center; gap:2px; padding-bottom:6px; flex-shrink:0; }
+.mtab { display:flex; align-items:center; gap:5px; padding:10px 14px; font-size:13px; font-weight:400; color:var(--mu); border:none; background:none; cursor:pointer; font-family:inherit; border-bottom:2px solid transparent; margin-bottom:-1px; transition:color .1s; text-decoration:none; white-space:nowrap; }
+.mtab:hover { color:var(--wh); }
+.mtab.active { color:var(--wh); font-weight:500; border-bottom-color:var(--p); }
+.mtab.mtab-disabled { opacity:.4; pointer-events:none; cursor:default; }
+.mtab-badge { font-size:9px; font-weight:700; padding:1px 5px; border-radius:2px; background:var(--mu2); color:var(--mu); }
+.mtab.active .mtab-badge { background:var(--pg); color:var(--p); }
+
+/* ── Sidebar ── */
+.sidebar { width:260px; background:var(--s1); border-radius:12px; display:flex; flex-direction:column; overflow:hidden; position:relative; transition:width .22s cubic-bezier(.4,0,.2,1); flex-shrink:0; }
+[data-theme="dark"] .sidebar { border:1px solid var(--bd); }
+.sidebar.col { width:52px; }
+.sidebar-scroll { flex:1; overflow-y:auto; overflow-x:hidden; }
+.sidebar-bottom { flex-shrink:0; border-top:none; }
+[data-theme="dark"] .sidebar-bottom { border-top:1px solid var(--bd); }
+.sidebar-resizer { display:none; }
+
+/* Sidebar bottom bar */
+.sb-bot-bar { display:flex; align-items:center; gap:6px; padding:9px 12px; justify-content:space-between; }
+.sidebar.col .sb-bot-bar { justify-content:center; padding:9px 0; }
+.sb-copy { font-size:10px; color:var(--mu); white-space:nowrap; overflow:hidden; flex:1; }
+.sidebar.col .sb-copy { display:none; }
+.sidebar.col .th-seg { display:none; }
+.sb-fold { width:28px; height:28px; border-radius:7px; border:1px solid var(--bd); background:none; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--mu); transition:background .12s,color .12s; flex-shrink:0; }
+.sb-fold:hover { background:var(--s3); color:var(--wh); }
+.sb-fold svg { transition:transform .22s; }
+.sidebar.col .sb-fold svg { transform:rotate(180deg); }
+
+.sidebar-toggle { background:none; border:none; color:var(--mu); cursor:pointer; font-size:16px; padding:4px 6px; border-radius:3px; line-height:1; display:flex; align-items:center; justify-content:center; transition:color .15s; flex-shrink:0; }
+.sidebar-toggle:hover { color:var(--wh); background:var(--s3); }
+
+/* Milestone card */
+.ms-card { border-bottom:1px solid var(--bd); flex-shrink:0; }
+.ms-header { display:flex; align-items:center; gap:8px; padding:11px 14px; cursor:pointer; user-select:none; transition:background .1s; }
+.ms-header:hover { background:var(--s2); }
+.ms-icon { width:14px; height:14px; display:flex; align-items:center; flex-shrink:0; }
+.ms-label { font-size:10.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--mu); flex:1; }
+.ms-badge { font-size:10px; font-weight:700; padding:2px 7px; border-radius:2px; white-space:nowrap; }
+.ms-chev { color:var(--mu); font-size:10px; transition:transform .2s; }
+.ms-card.open .ms-chev { transform:rotate(180deg); }
+.ms-body { display:none; }
+.ms-card.open .ms-body { display:block; }
+.ms-period { display:flex; justify-content:space-between; align-items:center; padding:6px 14px 8px; font-size:10px; color:var(--mu); font-variant-numeric:tabular-nums; }
+.ms-period strong { color:var(--wh); font-size:11px; font-weight:600; }
+
+/* Gantt */
+.gantt { position:relative; padding:0 14px 4px; display:flex; flex-direction:column; gap:5px; }
+.g-row { display:grid; grid-template-columns:52px 1fr; align-items:center; gap:7px; }
+.g-lbl { font-size:10px; color:var(--mu); text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.g-track { position:relative; height:15px; border-radius:2px; background:var(--mu2); overflow:visible; }
+.g-bar { position:absolute; top:0; bottom:0; border-radius:2px; }
+.g-today-line { position:absolute; top:-4px; bottom:-4px; width:1.5px; background:rgba(240,237,232,.55); z-index:5; border-radius:1px; pointer-events:none; }
+
+.ms-dday { margin:8px 14px 12px; padding:8px 10px; background:var(--s3); border:1px solid var(--bd2); border-radius:4px; display:flex; justify-content:space-between; align-items:center; }
+.ms-dday-lbl { font-size:10px; color:var(--mu); }
+.ms-dday-val { font-size:13px; font-weight:800; font-variant-numeric:tabular-nums; }
+
+/* Nav sections */
+.nav-sec { border-bottom:1px solid var(--bd); }
+.nav-sec-head { display:flex; align-items:center; gap:8px; padding:11px 14px; cursor:pointer; user-select:none; transition:background .1s; }
+.nav-sec-head:hover { background:var(--s2); }
+.nsh-icon { width:14px; height:14px; display:flex; align-items:center; flex-shrink:0; }
+.nsh-title { font-size:10.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--mu); flex:1; }
+.nsh-chev { color:var(--mu); font-size:10px; transition:transform .2s; }
+.nav-sec.open .nsh-chev { transform:rotate(180deg); }
+.nav-items { display:none; padding:2px 0 8px; }
+.nav-sec.open .nav-items { display:block; }
+
+.nav-item { display:flex; align-items:center; gap:7px; padding:7px 14px 7px 36px; cursor:pointer; color:var(--sub, var(--mu)); font-size:13px; font-weight:400; text-decoration:none; transition:background .1s,color .1s; position:relative; }
+.nav-item:hover { background:var(--s2); color:var(--wh); }
+.nav-item.active { color:var(--p); background:var(--pg); }
+.nav-item.active::before { content:''; position:absolute; left:0; top:4px; bottom:4px; width:2px; background:var(--p); border-radius:0 2px 2px 0; }
+.nav-item.disabled { opacity:.38; pointer-events:none; }
+.nav-badge { margin-left:auto; font-size:10px; font-weight:700; padding:1px 6px; border-radius:2px; white-space:nowrap; }
+.nb-ok   { background:rgba(62,207,142,.12);  color:var(--ok);   }
+.nb-wip  { background:rgba(131,97,255,.12);  color:var(--p);    }
+.nb-sched{ background:var(--mu2);            color:var(--mu);   }
+.nb-beta { background:var(--pg);             color:var(--p);    }
+.nb-todo { background:var(--mu2);             color:var(--mu);   }
+.sub-arr { font-size:10px; color:var(--mu2); margin-right:-1px; }
+
+.nav-settings { border-bottom:none; }
+
+/* ── Main ── */
+.main { flex:1; min-width:0; overflow-y:auto; padding:0; display:flex; flex-direction:column; background:transparent; border-radius:0; }
+[data-theme="dark"] .main { background:transparent; }
+.main.prd-active { overflow:hidden; }
+
+/* views */
+.view { display:none; flex:1; flex-direction:column; gap:20px; padding:24px 28px; }
+.view.active { display:flex; }
+/* ── PRD View ── */
+#view-prd { padding:0; overflow:hidden; }
+/* empty state */
+.prd-empty { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:40px 24px; }
+.prd-empty.hidden { display:none; }
+.prd-empty-icon { color:var(--mu); }
+.prd-empty-ttl { font-size:15px; font-weight:700; color:var(--wh); }
+.prd-empty-sub { font-size:13px; color:var(--mu); text-align:center; line-height:1.65; }
+.btn-prd-write { margin-top:6px; padding:9px 22px; background:var(--p); color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; font-family:inherit; transition:opacity .1s; }
+.btn-prd-write:hover { opacity:.85; }
+/* source panel */
+.prd-src-panel { width:min(480px,100%); background:var(--s1); border:1px solid var(--bd); border-radius:12px; padding:22px; display:none; flex-direction:column; gap:14px; margin-top:6px; }
+.prd-src-panel.show { display:flex; }
+.prd-src-tabs { display:flex; background:var(--s3); border-radius:7px; padding:3px; gap:2px; }
+.prd-src-tab { flex:1; padding:6px; border:none; background:none; border-radius:5px; font-size:12.5px; font-weight:500; color:var(--mu); cursor:pointer; font-family:inherit; transition:background .1s,color .1s; }
+.prd-src-tab.active { background:var(--s1); color:var(--wh); box-shadow:0 1px 3px rgba(0,0,0,.1); }
+.prd-src-pane { display:none; flex-direction:column; gap:10px; }
+.prd-src-pane.active { display:flex; }
+.prd-src-hint { font-size:12px; color:var(--mu); line-height:1.6; }
+.prd-src-input { padding:8px 12px; border:1px solid var(--bd); border-radius:7px; background:var(--s2); color:var(--wh); font-size:13px; font-family:inherit; width:100%; outline:none; transition:border-color .1s; }
+.prd-src-input:focus { border-color:var(--p); }
+.prd-src-textarea { padding:10px 12px; border:1px solid var(--bd); border-radius:7px; background:var(--s2); color:var(--wh); font-size:13px; font-family:inherit; width:100%; height:140px; resize:none; outline:none; line-height:1.6; transition:border-color .1s; }
+.prd-src-textarea:focus { border-color:var(--p); }
+.prd-src-file-row { display:flex; align-items:center; gap:10px; }
+.prd-src-file-lbl { padding:7px 14px; border:1px solid var(--bd); border-radius:7px; font-size:12.5px; color:var(--mu); cursor:pointer; background:var(--s2); transition:border-color .1s,color .1s; white-space:nowrap; }
+.prd-src-file-lbl:hover { border-color:var(--p); color:var(--wh); }
+.prd-src-file-name { font-size:12px; color:var(--mu); }
+.btn-prd-src { padding:8px 18px; background:var(--p); color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:500; cursor:pointer; font-family:inherit; align-self:flex-end; transition:opacity .1s; }
+.btn-prd-src:hover { opacity:.85; }
+/* registered doc layout */
+.prd-doc-layout { flex:1; min-height:0; display:flex; justify-content:center; overflow-y:auto; overflow-x:hidden; padding:0 32px 24px; background:var(--s3); }
+.prd-doc-layout.hidden { display:none; }
+[data-theme="dark"] .prd-doc-layout { background:#111111; }
+.prd-center-wrap { display:flex; width:100%; max-width:1120px; align-items:flex-start; gap:0; }
+.prd-anchor-nav { width:180px; flex-shrink:0; padding:4px 0; position:sticky; top:0; align-self:flex-start; display:flex; flex-direction:column; gap:2px; }
+.prd-anchor-lbl { font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--mu); padding:0 10px; margin-bottom:8px; }
+.prd-anchor-link { display:flex; align-items:center; gap:8px; padding:6px 10px; font-size:12.5px; color:var(--mu); cursor:pointer; border-radius:6px; transition:background .1s,color .1s; }
+.prd-anchor-link:hover { background:var(--s3); color:var(--wh); }
+.prd-anchor-link.active { color:var(--p); background:var(--pg); }
+.prd-anchor-num { font-size:10px; font-weight:700; color:var(--p); min-width:16px; }
+.prd-frame-area { flex:1; min-width:0; }
+.prd-frame { border:none; width:100%; display:block; }
+
+/* Summary */
+.summary-bar { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.stat { background:var(--s1); border:1px solid var(--bd); border-radius:5px; padding:14px 16px; display:flex; flex-direction:column; gap:6px; }
+.stat-lbl { font-size:10.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--mu); }
+.stat-val { font-size:20px; font-weight:800; font-variant-numeric:tabular-nums; line-height:1; }
+.stat-sub { font-size:11px; color:var(--mu); }
+.stat-bar { height:3px; background:var(--mu2); border-radius:2px; margin-top:4px; overflow:hidden; }
+.stat-fill { height:100%; border-radius:2px; }
+
+/* ── Team list view ── */
+.team-list-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
+.team-list-card { background:var(--s1); border:1px solid var(--bd); border-radius:8px; padding:18px 20px; cursor:pointer; transition:border-color .1s,box-shadow .1s; display:flex; flex-direction:column; gap:10px; }
+.team-list-card:hover { border-color:var(--p); box-shadow:0 0 0 1px rgba(131,97,255,.25); }
+.tlc-name { font-size:14px; font-weight:700; }
+.tlc-count { font-size:11px; color:var(--mu); }
+.tlc-avatars { display:flex; flex-wrap:wrap; gap:4px; min-height:22px; }
+.tlc-avatar { font-size:10px; font-weight:700; background:rgba(131,97,255,.18); color:var(--p); border-radius:4px; padding:2px 7px; white-space:nowrap; max-width:90px; overflow:hidden; text-overflow:ellipsis; }
+.tlc-add { background:none; border:2px dashed var(--bd); border-radius:8px; padding:18px 20px; cursor:pointer; color:var(--mu); font-size:13px; font-weight:400; display:flex; align-items:center; justify-content:center; gap:6px; transition:border-color .1s,color .1s; }
+.tlc-add:hover { border-color:var(--p); color:var(--p); }
+
+/* ── Team side panel ── */
+#teamSidePanel { position:fixed; top:0; right:0; width:360px; height:100vh; background:var(--s1); border-left:1px solid var(--bd); transform:translateX(100%); transition:transform .22s cubic-bezier(.4,0,.2,1); z-index:201; display:flex; flex-direction:column; overflow:hidden; }
+#teamSidePanel.open { transform:translateX(0); box-shadow:-8px 0 32px rgba(0,0,0,.55); }
+.tsp-header { display:flex; align-items:center; gap:8px; padding:14px 16px 12px; border-bottom:1px solid var(--bd); flex-shrink:0; }
+.tsp-back { background:none; border:none; color:var(--mu); cursor:pointer; font-size:16px; padding:2px 6px; border-radius:3px; line-height:1; }
+.tsp-back:hover { color:var(--wh); background:var(--s3); }
+.tsp-badge { font-size:9px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:2px 7px; border-radius:4px; background:rgba(131,97,255,.18); color:var(--p); }
+.tsp-title { flex:1; font-size:13px; font-weight:700; }
+.tsp-title-input { flex:1; background:transparent; border:none; border-bottom:1px solid transparent; color:var(--wh); font-size:13px; font-weight:700; outline:none; }
+.tsp-title-input:focus { border-bottom-color:var(--p); }
+.tsp-close { background:none; border:none; color:var(--mu); cursor:pointer; font-size:14px; padding:4px 6px; line-height:1; border-radius:3px; }
+.tsp-close:hover { color:var(--wh); background:var(--s3); }
+.tsp-body { flex:1; overflow-y:auto; padding:14px 16px; display:flex; flex-direction:column; gap:10px; }
+.tsp-footer { padding:12px 16px; border-top:1px solid var(--bd); display:flex; gap:8px; flex-shrink:0; }
+
+/* member list rows (in panel) */
+.tsp-member-row { background:var(--s2); border:1px solid var(--bd); border-radius:8px; padding:11px 13px; display:flex; align-items:center; gap:10px; cursor:pointer; transition:border-color .1s; }
+.tsp-member-row:hover { border-color:var(--p); }
+.tsp-member-info { flex:1; min-width:0; }
+.tsp-member-name { font-size:13px; font-weight:600; }
+.tsp-member-sub  { font-size:11px; color:var(--mu); margin-top:2px; }
+.tsp-member-del  { background:none; border:none; color:var(--mu); font-size:13px; cursor:pointer; padding:3px 5px; border-radius:3px; flex-shrink:0; }
+.tsp-member-del:hover { color:#f56565; }
+.tsp-empty { color:var(--mu); font-size:12px; padding:8px 0; }
+
+/* member edit form (in panel body) */
+.tsp-field { display:flex; flex-direction:column; gap:4px; }
+.tsp-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--mu); }
+.tsp-label .req { color:#f56565; margin-left:2px; }
+.tsp-input { background:var(--s2); border:1px solid var(--bd); border-radius:4px; color:var(--wh); font-size:12px; padding:7px 10px; outline:none; width:100%; box-sizing:border-box; }
+.tsp-input:focus { border-color:var(--p); }
+.tsp-range { display:flex; align-items:center; gap:6px; }
+.tsp-range .tsp-input { flex:1; width:auto; }
+.tsp-range span { color:var(--mu); font-size:12px; flex-shrink:0; }
+.tsp-file-row { display:flex; align-items:center; gap:8px; }
+.tsp-file-lbl { font-size:11px; color:var(--mu); flex-shrink:0; min-width:76px; }
+.tsp-file-btn { font-size:11px; padding:4px 10px; background:var(--s2); border:1px solid var(--bd); color:var(--wh); border-radius:4px; cursor:pointer; flex-shrink:0; }
+.tsp-file-btn:hover { border-color:var(--p); color:var(--p); }
+.tsp-file-name { font-size:11px; color:var(--mu); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.tsp-del-btn { background:none; border:1px solid rgba(245,101,101,.4); color:#f56565; border-radius:4px; font-size:11px; padding:4px 12px; cursor:pointer; }
+.tsp-del-btn:hover { background:rgba(245,101,101,.12); }
+
+/* ── Overview NH-style ── */
+.ov-grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.ov-grid3 { display:grid; grid-template-columns:2fr 1fr; gap:12px; }
+.ov-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:900px){ .ov-grid4{grid-template-columns:repeat(2,1fr)} .ov-grid3,.ov-grid2{grid-template-columns:1fr} }
+.ov-card { background:var(--s1); border:1px solid var(--bd); border-radius:8px; padding:18px 20px; }
+.ov-kpi-label { font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:var(--mu); margin-bottom:10px; }
+.ov-kpi-val { font-size:30px; font-weight:800; letter-spacing:-1px; line-height:1; font-variant-numeric:tabular-nums; }
+.ov-kpi-sub { font-size:11px; color:var(--mu); margin-top:5px; }
+.ov-delta { display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; margin-top:7px; }
+.ov-delta-up   { background:rgba(62,207,142,.13); color:var(--ok); }
+.ov-delta-warn { background:rgba(245,166,35,.13);  color:var(--warn); }
+.ov-delta-info { background:rgba(97,179,255,.13);  color:var(--info); }
+.ov-section-lbl { font-size:13px; font-weight:700; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.ov-section-lbl::before { content:''; display:block; width:3px; height:16px; background:var(--p); border-radius:2px; flex-shrink:0; }
+.ov-prog-item { margin-bottom:14px; }
+.ov-prog-item:last-child { margin-bottom:0; }
+.ov-prog-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px; font-size:12px; }
+.ov-prog-name { font-weight:500; }
+.ov-prog-stat { color:var(--mu); font-variant-numeric:tabular-nums; }
+.ov-prog-track { height:7px; background:var(--mu2); border-radius:4px; overflow:hidden; }
+.ov-prog-fill  { height:100%; border-radius:4px; transition:width .4s; }
+.ov-timeline-track { height:22px; background:var(--mu2); border-radius:5px; overflow:hidden; margin-top:7px; }
+.ov-timeline-fill  { height:100%; background:linear-gradient(90deg,var(--p),var(--info)); border-radius:5px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; font-size:10px; font-weight:700; color:#fff; }
+.ov-timeline-lbl   { display:flex; justify-content:space-between; font-size:10px; color:var(--mu); margin-top:5px; }
+.ov-table { width:100%; border-collapse:collapse; font-size:12px; }
+.ov-table thead th { text-align:left; padding:6px 10px; font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:var(--mu); border-bottom:1px solid var(--bd); }
+.ov-table tbody tr { border-bottom:1px solid var(--bd); }
+.ov-table tbody tr:last-child { border-bottom:none; }
+.ov-table tbody td { padding:8px 10px; vertical-align:middle; }
+.ov-pct { font-weight:700; font-size:13px; font-variant-numeric:tabular-nums; }
+.ov-chip { display:inline-block; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:700; }
+.ov-chip-ok   { background:rgba(62,207,142,.13);  color:var(--ok);   }
+.ov-chip-wip  { background:rgba(245,166,35,.13);   color:var(--warn); }
+.ov-chip-todo { background:var(--mu2);              color:var(--mu);   }
+.ov-remain-item { background:var(--s2); border-radius:7px; padding:13px 15px; border-left:3px solid var(--warn); }
+.ov-remain-title { font-size:12px; font-weight:700; color:var(--warn); margin-bottom:4px; }
+.ov-remain-desc  { font-size:11px; color:var(--mu); line-height:1.6; }
+.ov-remain-bar   { height:5px; background:var(--mu2); border-radius:3px; margin-top:8px; overflow:hidden; }
+.ov-remain-fill  { height:100%; border-radius:3px; }
+
+.sec-head { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.sec-head h2 { font-size:10.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--mu); }
+.sec-div { flex:1; height:1px; background:var(--bd); }
+
+/* ── Settings view ── */
+.settings-wrap { display:flex; flex-direction:column; gap:20px; max-width:720px; }
+
+.settings-section { background:var(--s1); border:1px solid var(--bd); border-radius:6px; overflow:hidden; }
+.ss-head { display:flex; align-items:center; gap:10px; padding:13px 16px; border-bottom:1px solid var(--bd); cursor:pointer; user-select:none; transition:background .1s; }
+.ss-head:hover { background:var(--s2); }
+.ss-htitle { font-size:13px; font-weight:500; flex:1; }
+.ss-hchev { color:var(--mu); font-size:11px; transition:transform .2s; }
+.settings-section.open .ss-hchev { transform:rotate(180deg); }
+.ss-body { display:none; padding:16px; }
+.settings-section.open .ss-body { display:block; }
+
+/* form controls */
+.form-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.form-row:last-child { margin-bottom:0; }
+.form-label { font-size:11px; font-weight:600; color:var(--mu); min-width:80px; }
+input[type="date"], input[type="text"], select {
+  background:var(--bg); border:1px solid var(--bd2); color:var(--wh);
+  font-family:inherit; font-size:12px; padding:5px 9px; border-radius:3px;
+  outline:none; transition:border-color .15s;
+}
+input[type="date"]:focus, input[type="text"]:focus, select:focus { border-color:var(--p); }
+input[type="date"] { font-variant-numeric:tabular-nums; color-scheme:dark; font-family:'Inter','Pretendard',sans-serif; }
+input[type="color"] { background:var(--bg); border:1px solid var(--bd2); padding:2px; border-radius:3px; width:36px; height:28px; cursor:pointer; }
+
+/* milestone table */
+.ms-table { width:100%; border-collapse:collapse; }
+.ms-table th { font-size:10.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--mu); padding:0 8px 8px; text-align:left; }
+.ms-table td { padding:4px 6px; vertical-align:middle; }
+.ms-table tr:not(:last-child) td { border-bottom:1px solid var(--bd); }
+.ms-table input[type="text"] { width:100%; min-width:70px; }
+.ms-table input[type="date"] { width:120px; }
+
+.btn { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:7px; font-size:12px; font-weight:500; font-family:inherit; cursor:pointer; border:none; transition:background .1s, color .1s, filter .1s; }
+.btn:hover { filter:brightness(.93); }
+.btn-p  { background:var(--p);  color:#fff; }
+.btn-ok { background:rgba(62,207,142,.12); color:var(--ok); border:1px solid rgba(62,207,142,.25); }
+.btn-del { background:rgba(245,101,101,.1); color:var(--danger); border:1px solid rgba(245,101,101,.2); padding:4px 8px; font-size:11px; }
+.btn-add { background:var(--s3); color:var(--mu); border:1px dashed var(--bd2); width:100%; justify-content:center; margin-top:10px; }
+
+/* WBS tree */
+.wbs-phase { margin-bottom:12px; border:1px solid var(--bd); border-radius:5px; overflow:hidden; }
+.wbs-phase.drag-over { border-color:var(--p); box-shadow:0 0 0 1px var(--p) inset; }
+.wbs-phase.dragging-phase { opacity:.35; }
+
+.wbs-ph-head { display:flex; align-items:center; gap:8px; padding:8px 10px; background:var(--s3); border-bottom:1px solid var(--bd); }
+.wbs-ph-name { font-size:12px; font-weight:700; flex:1; background:transparent; border:none; border-bottom:1px solid transparent; color:var(--wh); font-family:inherit; padding:2px 4px; outline:none; }
+.wbs-ph-name:focus { border-bottom-color:var(--p); }
+.wbs-tasks { padding:8px 10px; display:flex; flex-direction:column; gap:3px; }
+
+.drag-handle { display:flex; align-items:center; color:var(--mu2); cursor:grab; font-size:12px; padding:0 2px; flex-shrink:0; line-height:1; letter-spacing:-1px; user-select:none; }
+.drag-handle:active { cursor:grabbing; }
+.drag-handle:hover { color:var(--mu); }
+
+.wbs-task-row { display:grid; grid-template-columns:16px 1fr 100px 100px auto 72px 52px 52px 28px; gap:6px; align-items:center; border-radius:3px; padding:3px 2px; transition:background .1s; }
+.wbs-task-row:hover { background:var(--s3); }
+.wbs-task-row.dragging-task { opacity:.3; }
+.wbs-task-row.drop-above { box-shadow:0 -2px 0 var(--p); }
+.wbs-task-row.drop-below { box-shadow:0 2px 0 var(--p); }
+.wbs-task-row input[type="text"] { font-size:12px; }
+.wbs-assignee { font-size:12px; }
+
+/* Stage checkboxes */
+.stage-checks { display:flex; gap:5px; flex-wrap:nowrap; }
+.sc-item { display:flex; align-items:center; gap:3px; font-size:10px; color:var(--mu); cursor:pointer; white-space:nowrap; padding:2px 5px; border-radius:2px; border:1px solid var(--bd2); transition:all .12s; }
+.sc-item:hover { border-color:var(--mu); color:var(--wh); }
+.sc-item.sc-checked { color:var(--ok); border-color:rgba(62,207,142,.35); background:rgba(62,207,142,.06); }
+.sc-item input { display:none; }
+
+/* Weight / progress display */
+.task-wd  { font-size:10px; color:var(--mu); font-variant-numeric:tabular-nums; text-align:center; }
+.task-prog-wrap { display:flex; flex-direction:column; align-items:center; gap:2px; }
+.task-prog-val  { font-size:11px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1; }
+.task-prog-bar  { width:100%; height:2px; background:var(--mu2); border-radius:1px; overflow:hidden; }
+.task-prog-fill { height:100%; border-radius:1px; background:var(--ok); transition:width .25s; }
+
+.settings-save-row { display:flex; align-items:center; gap:10px; margin-top:4px; }
+.save-msg { font-size:11px; color:var(--ok); opacity:0; transition:opacity .3s; }
+.save-msg.show { opacity:1; }
+
+/* ── Mindmap ── */
+.mm-wrap { overflow:auto; padding:32px 40px; flex:1; }
+.mm-canvas { position:relative; }
+.mm-node {
+  position:absolute; border-radius:5px; border:1px solid var(--bd);
+  background:var(--s1); padding:9px 12px;
+  transition:border-color .15s, box-shadow .15s;
+  cursor:default;
+}
+.mm-node:hover { box-shadow:0 0 0 2px var(--nc, var(--p)); border-color:var(--nc, var(--p)); }
+.mm-root {
+  background:var(--p); border-color:var(--p); color:#fff;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; --nc:var(--p);
+}
+.mm-root-label { font-size:13px; font-weight:800; line-height:1.2; }
+.mm-root-sub   { font-size:10px; opacity:.7; margin-top:3px; }
+.mm-phase { background:var(--s2); border-color:var(--bd2); }
+.mm-task  { background:var(--s1); border-color:var(--bd); }
+.mm-label { font-size:11px; font-weight:600; color:var(--wh); line-height:1.35; }
+.mm-meta  { display:flex; align-items:center; gap:8px; margin-top:5px; }
+.mm-prog-track { flex:1; height:3px; background:var(--mu2); border-radius:2px; overflow:hidden; }
+.mm-prog-fill  { height:100%; border-radius:2px; transition:width .4s; }
+.mm-prog-pct   { font-size:10px; font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.mm-wd         { font-size:9px; color:var(--mu); white-space:nowrap; }
+.mm-assignee   { font-size:9px; color:var(--mu); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:60px; }
+.mm-phase-prog { font-size:10px; font-weight:700; color:var(--mu); margin-top:4px; }
+.mm-stages     { display:flex; gap:3px; margin-top:5px; flex-wrap:wrap; }
+.mm-stage-dot  { width:6px; height:6px; border-radius:1px; }
+.mm-node { cursor:pointer; }
+.mm-node.mm-active { box-shadow:0 0 0 2px var(--p); border-color:var(--p) !important; }
+.mm-subtask { background:var(--bg); border-color:var(--bd); }
+.mm-subtask .mm-label { font-size:10px; }
+.mm-subtask .mm-meta  { margin-top:3px; }
+.mm-subtask .mm-stages { margin-top:3px; }
+
+/* ── Sliding Side Panel ── */
+#mmSidePanel {
+  position:fixed; top:0; right:0;
+  width:320px; height:100vh;
+  background:var(--s1); border-left:1px solid var(--bd2);
+  transform:translateX(100%);
+  transition:transform .28s cubic-bezier(.22,.61,.36,1);
+  z-index:200; display:flex; flex-direction:column; overflow:hidden;
+}
+#mmSidePanel.open { transform:translateX(0); box-shadow:-8px 0 32px rgba(0,0,0,.55); }
+.msp-header { display:flex; align-items:center; gap:8px; padding:14px 16px 12px; border-bottom:1px solid var(--bd); flex-shrink:0; }
+.msp-badge  { font-size:9px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:2px 7px; border-radius:4px; flex-shrink:0; }
+.msp-badge.root  { background:rgba(131,97,255,.18); color:var(--p); }
+.msp-badge.phase { background:rgba(97,179,255,.14); color:var(--info); }
+.msp-badge.task  { background:rgba(62,207,142,.12); color:var(--ok); }
+.msp-htitle { flex:1; font-size:13px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.msp-close  { background:none; border:none; color:var(--mu); cursor:pointer; font-size:14px; padding:4px 6px; line-height:1; border-radius:3px; }
+.msp-close:hover { color:var(--wh); background:var(--s3); }
+.msp-body   { flex:1; overflow-y:auto; padding:14px 16px; display:flex; flex-direction:column; gap:14px; }
+.msp-sec    { display:flex; flex-direction:column; gap:7px; }
+.msp-seclbl { font-size:10.5px; font-weight:600; color:var(--mu); letter-spacing:.06em; text-transform:uppercase; padding-bottom:5px; border-bottom:1px solid var(--bd); }
+.msp-field  { display:flex; flex-direction:column; gap:3px; }
+.msp-flabel { font-size:10px; color:var(--mu); font-weight:600; }
+.msp-input  { background:var(--s3); border:1px solid var(--bd2); border-radius:4px; color:var(--wh); font-family:inherit; font-size:12px; padding:6px 9px; outline:none; width:100%; }
+.msp-input:focus { border-color:var(--p); }
+.msp-row2   { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.msp-stages { display:flex; gap:4px; flex-wrap:wrap; }
+.msp-stage  { display:flex; align-items:center; gap:4px; padding:5px 8px; border-radius:3px; border:1px solid var(--bd2); background:var(--s3); cursor:pointer; user-select:none; font-size:11px; color:var(--mu); transition:all .12s; }
+.msp-stage.on { color:var(--ok); border-color:rgba(62,207,142,.4); background:rgba(62,207,142,.08); }
+.msp-stage input { display:none; }
+.msp-select { background:var(--s3); border:1px solid var(--bd2); border-radius:4px; color:var(--wh); font-family:inherit; font-size:12px; padding:6px 9px; outline:none; width:100%; cursor:pointer; }
+.msp-select:focus { border-color:var(--p); }
+.msp-acts   { display:flex; flex-direction:column; gap:4px; }
+.msp-act {
+  display:flex; align-items:center; gap:9px;
+  padding:8px 10px; border-radius:4px;
+  background:var(--s3); border:1px solid var(--bd);
+  cursor:pointer; font-family:inherit; font-size:12px;
+  color:var(--wh); transition:all .12s; text-align:left; width:100%;
+}
+.msp-act:hover { border-color:var(--bd2); background:var(--s2); }
+.msp-act-icon { font-size:13px; width:18px; text-align:center; flex-shrink:0; }
+.msp-act.act-ok     { color:var(--ok);    border-color:rgba(62,207,142,.2);  background:rgba(62,207,142,.05); }
+.msp-act.act-ok:hover     { background:rgba(62,207,142,.1); }
+.msp-act.act-danger { color:var(--danger);border-color:rgba(245,101,101,.2); background:rgba(245,101,101,.04); }
+.msp-act.act-danger:hover { background:rgba(245,101,101,.1); }
+.msp-footer { display:flex; gap:8px; padding:12px 16px; border-top:1px solid var(--bd); flex-shrink:0; }
+.msp-save   { flex:1; background:var(--p); color:#fff; border:none; border-radius:4px; padding:8px; font-size:12px; font-weight:700; font-family:inherit; cursor:pointer; }
+.msp-save:hover { opacity:.85; }
+.msp-cancel { background:var(--s3); color:var(--mu); border:1px solid var(--bd2); border-radius:4px; padding:8px 14px; font-size:12px; font-family:inherit; cursor:pointer; }
+.msp-del    { background:rgba(245,101,101,.08); color:var(--danger); border:1px solid rgba(245,101,101,.25); border-radius:4px; padding:8px 14px; font-size:12px; font-family:inherit; cursor:pointer; transition:all .15s; }
+.msp-del:hover:not([disabled]) { background:rgba(245,101,101,.18); }
+.msp-del[disabled] { opacity:.3; cursor:not-allowed; }
+.msp-del.del-confirm { background:rgba(245,101,101,.22); border-color:var(--danger); animation:delPulse .35s ease; }
+
+/* ── Children list in side panel ── */
+.msp-children { display:flex; flex-direction:column; gap:3px; }
+.msp-child {
+  display:grid; grid-template-columns:8px 1fr auto auto auto; align-items:center; gap:6px;
+  padding:7px 9px; border-radius:4px; border:1px solid var(--bd); background:var(--s3);
+  transition:border-color .12s;
+}
+.msp-child:hover { border-color:var(--bd2); }
+.msp-child-dot  { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.msp-child-name { font-size:12px; color:var(--wh); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.msp-child-meta { display:flex; align-items:center; gap:4px; flex-shrink:0; }
+.msp-child-prog { font-size:10px; font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.msp-child-lock { font-size:11px; opacity:.7; }
+.msp-child-btn  { background:none; border:1px solid var(--bd2); border-radius:3px; color:var(--mu); cursor:pointer; font-size:10px; font-family:inherit; padding:2px 7px; white-space:nowrap; transition:all .12s; }
+.msp-child-btn:hover { color:var(--wh); border-color:var(--bd); }
+.msp-child-btn.del { border-color:rgba(245,101,101,.25); color:var(--danger); background:rgba(245,101,101,.05); }
+.msp-child-btn.del:hover { background:rgba(245,101,101,.15); }
+.msp-child-btn:disabled { opacity:.3; cursor:not-allowed; }
+.msp-child-btn:disabled:hover { color:var(--mu); border-color:var(--bd2); background:none; }
+.msp-lock-tip { font-size:10px; color:var(--warn); background:rgba(245,166,35,.08); border:1px solid rgba(245,166,35,.2); border-radius:3px; padding:5px 8px; line-height:1.5; }
+.msp-empty { font-size:11px; color:var(--mu); text-align:center; padding:12px 0; }
+
+/* ── Node inline toolbar ── */
+#mmNodeToolbar {
+  position:absolute; z-index:100;
+  flex-direction:column; align-items:center; gap:3px;
+  padding:5px; background:var(--s2);
+  border:1px solid var(--bd2); border-radius:9px;
+  box-shadow:0 6px 24px rgba(0,0,0,.5);
+  display:none;
+  pointer-events:all;
+}
+#mmNodeToolbar.visible { display:flex; }
+@keyframes tbIn { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
+.mm-tb-btn {
+  width:28px; height:28px; border-radius:5px;
+  background:var(--s3); border:1px solid var(--bd2);
+  color:var(--mu); cursor:pointer; font-size:14px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .12s; flex-shrink:0; font-family:inherit;
+  line-height:1;
+}
+.mm-tb-btn:hover:not([disabled]) { background:var(--s1); border-color:var(--bd); color:var(--wh); }
+.mm-tb-btn[disabled] { opacity:.22; cursor:not-allowed; }
+.mm-tb-btn.tb-add { background:rgba(131,97,255,.14); border-color:rgba(131,97,255,.4); color:var(--p); font-size:17px; }
+.mm-tb-btn.tb-add:hover:not([disabled]) { background:rgba(131,97,255,.28); }
+.mm-tb-sep { width:18px; height:1px; background:var(--bd); margin:1px 0; }
+
+/* ── 2-step delete confirmation ── */
+.del-confirm {
+  background:rgba(245,101,101,.18) !important;
+  border-color:rgba(245,101,101,.55) !important;
+  color:var(--danger) !important;
+  animation:delPulse .35s ease;
+}
+@keyframes delPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+
+/* ── Upload toolbar ── */
+.mm-toolbar { display:flex; align-items:center; gap:8px; }
+.btn-upload { display:inline-flex; align-items:center; gap:5px; padding:5px 11px; border-radius:7px; font-size:11px; font-weight:500; font-family:inherit; cursor:pointer; background:var(--s3); border:1px dashed var(--bd2); color:var(--mu); transition:border-color .1s,color .1s; }
+.btn-upload:hover { border-color:var(--p); color:var(--wh); }
+.btn-tmpl   { display:inline-flex; align-items:center; gap:4px; padding:5px 10px; border-radius:7px; font-size:11px; font-weight:500; font-family:inherit; cursor:pointer; background:none; border:1px solid var(--bd2); color:var(--mu); transition:border-color .1s,color .1s; }
+.btn-tmpl:hover { color:var(--wh); border-color:var(--bd); }
+.btn-back { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:7px; font-size:14px; font-weight:500; font-family:inherit; cursor:pointer; background:var(--s2); border:1px solid var(--bd); color:var(--mu); transition:background .1s,color .1s,border-color .1s; flex-shrink:0; margin-bottom:12px; }
+.btn-back:hover { color:var(--wh); border-color:var(--p); background:var(--s3); }
+
+/* ── Theme toggle ── */
+.th-seg { display:flex; gap:2px; background:var(--s3); border:1px solid var(--bd); border-radius:6px; padding:3px; }
+.th-btn { width:26px; height:26px; border:none; border-radius:4px; background:transparent; color:var(--mu); cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center; transition:background .1s,color .1s; }
+.th-btn.active { background:var(--s1); color:var(--wh); box-shadow:0 1px 3px rgba(0,0,0,.25); }
+.th-btn:hover:not(.active) { color:var(--wh); }
+
+/* ── Mobile bottom nav ── */
+.mob-nav { display:none; }
+
+@media (max-width: 768px) {
+  :root { --mob-nav: 60px; }
+  html, body { overflow:hidden; }
+  .shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: var(--sh) 1fr;
+    height: calc(100vh - var(--mob-nav));
+  }
+  .strip { grid-column: 1; }
+  .sidebar { display:none; }
+  .main { overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  .view { padding:16px; gap:14px; }
+
+  /* bottom nav */
+  .mob-nav {
+    display:flex; position:fixed; bottom:0; left:0; right:0;
+    height:var(--mob-nav); background:var(--s1); border-top:1px solid var(--bd);
+    z-index:300;
+  }
+  .mob-tab {
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:3px; background:none; border:none; color:var(--mu); cursor:pointer;
+    font-family:inherit; transition:color .15s;
+  }
+  .mob-tab.active { color:var(--p); }
+  .mob-tab-icon { width:22px; height:22px; display:flex; align-items:center; justify-content:center; }
+  .mob-tab-lbl  { font-size:10px; font-weight:600; }
+
+  /* 모바일에서 < 버튼 숨김 (공간 부족) */
+  .view-back-btn { display:none; }
+
+  /* 그리드 1열로 */
+  .ov-grid4 { grid-template-columns: repeat(2,1fr); }
+  .ov-grid3 { grid-template-columns: 1fr; }
+  .ov-grid2 { grid-template-columns: 1fr; }
+  .summary-bar { grid-template-columns: repeat(2,1fr); }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  :root { --sw: 200px; }
+  .view { padding:18px 20px; gap:16px; }
+  .ov-grid4 { grid-template-columns: repeat(2,1fr); }
+  .ov-grid3 { grid-template-columns: 1fr; }
+  .ov-grid2 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- SIDEBAR — 좌측 독립 카드 -->
+  <nav class="sidebar" id="sidebar">
+  <div class="sidebar-resizer" id="sidebarResizer"></div>
+
+  <div class="sidebar-scroll">
+
+    <!-- 프로젝트 개요 -->
+    <div class="sb-proj">
+      <div class="sb-proj-header">
+        <div>
+          <div class="sb-proj-name">edencrew.com 리뉴얼</div>
+          <div class="sb-proj-client">Edencrew Inc.</div>
+        </div>
+        <button class="sb-proj-set" onclick="showView('settings-project')" title="프로젝트 설정">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37c1 .608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <div class="sb-proj-status"><div class="sb-proj-dot"></div>진행 중</div>
+    </div>
+
+    <!-- 서브 프로젝트 선택기 (서브 프로젝트가 있을 때만 렌더링) -->
+    <div class="sb-subproj" id="sbSubproj" style="display:none;">
+      <button class="sp-trigger" id="spTrigger" onclick="toggleSubprojPopover()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        <span class="sp-trigger-label" id="spTriggerLabel">서브 프로젝트 선택</span>
+        <svg class="sp-trigger-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="sp-popover" id="spPopover"></div>
+    </div>
+
+    <!-- Milestone card -->
+    <div class="ms-card open" id="msCard">
+      <div class="ms-header" onclick="toggleMs()">
+        <span class="ms-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M11 15h1"/><path d="M12 15v3"/></svg></span>
+        <span class="ms-label">Milestone</span>
+        <span class="ms-badge" id="msBadge" style="background:var(--pg);color:var(--p);">—</span>
+        <span class="ms-chev" id="msChev">▲</span>
+      </div>
+      <div class="ms-body">
+        <div class="ms-period">
+          <span id="sidebarPeriod">2026.07.01 — 10.30</span>
+          <strong id="sidebarGA">GA 11.02</strong>
+        </div>
+        <div class="gantt" id="ganttRoot"></div>
+        <div class="ms-dday" id="msDday">
+          <span class="ms-dday-lbl" id="ddayLbl">현재 단계</span>
+          <span class="ms-dday-val" id="ddayVal">—</span>
+        </div>
+        <div style="border-top:1px solid var(--bd);padding:6px 14px 8px;">
+          <a class="nav-item" onclick="showView('wbs-map')" style="padding:5px 0;">
+  WBS <span class="nav-badge nb-wip">시각화</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overview (PRD / 기능명세서 / 유저플로우 / Ecosystem) -->
+    <div class="nav-sec open" id="secOverview">
+      <div class="nav-sec-head" onclick="toggleSec('secOverview')">
+        <span class="nsh-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+        <span class="nsh-title">Overview</span>
+        <span class="nsh-chev">▲</span>
+      </div>
+      <div class="nav-items">
+        <a class="nav-item" onclick="switchMainTab('prd')">
+PRD <span class="nav-badge nb-ok">v1.0</span>
+        </a>
+        <a class="nav-item" onclick="switchMainTab('feature-spec')">
+기능명세서 <span class="nav-badge nb-ok">v1.0</span>
+        </a>
+        <span class="nav-item nav-item-dis" style="opacity:.38;pointer-events:none;">
+유저플로우 <span class="nav-badge nb-sched">예정</span>
+        </span>
+        <a class="nav-item" href="sitemap-ecosystem.html">
+Ecosystem <span class="nav-badge nb-ok">v2</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 사이트맵 -->
+    <div class="nav-sec open" id="secSitemap">
+      <div class="nav-sec-head" onclick="toggleSec('secSitemap')">
+        <span class="nsh-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"/><path d="M15 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"/><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"/><path d="M6 15v-1a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v1"/><path d="M12 9l0 3"/></svg></span>
+        <span class="nsh-title">Sitemap</span>
+        <span class="nsh-chev">▲</span>
+      </div>
+      <div class="nav-items">
+        <a class="nav-item" href="sitemap-edencrew.html">
+edencrew.com <span class="nav-badge nb-ok">v29</span>
+        </a>
+        <a class="nav-item" href="sitemap-teamcloud.html">
+TeamCloud <span class="nav-badge nb-ok">v2</span>
+        </a>
+        <a class="nav-item" href="sitemap-admin.html">
+Admin <span class="nav-badge nb-wip">NEW</span>
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /sidebar-scroll -->
+  </nav>
+
+  <!-- RIGHT COLUMN — 탑바 + 콘텐츠 -->
+  <div class="content-row">
+
+  <!-- TOP BAR — 우측 컬럼 전용 -->
+  <div class="top-bar" id="topBar">
+    <div class="tb-left">
+      <div class="tb-breadcrumb">
+        <button class="tb-proj" onclick="location.href='luum-index.html'">edencrew.com 리뉴얼</button>
+        <span class="tb-chev">›</span>
+        <span class="tb-sub" id="tbSubName">PRD</span>
+      </div>
+    </div>
+    <div class="tb-tabs">
+      <button class="tb-tab active" id="tbtab-prd" onclick="switchMainTab('prd')">PRD <span class="tb-badge tb-badge-ver">v1.0</span></button>
+      <a class="tb-tab" href="edencrew-feature-spec.html" target="_blank">기능명세서 <span class="tb-badge tb-badge-ver">v1.0</span></a>
+      <span class="tb-tab tb-tab-dis">유저플로우 <span class="tb-badge tb-badge-sched">예정</span></span>
+    </div>
+    <div class="tb-right">
+      <button class="tb-icon-btn" title="유저" onclick="LuumSidebar.openUserPopover(event, {userName:'Brian', userEmail:'brian@edencrew.com'})">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      </button>
+      <button class="tb-icon-btn" title="코멘트">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <button class="tb-icon-btn" title="히스토리">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile bottom nav -->
+  <nav class="mob-nav">
+    <button class="mob-tab active" id="mobt-home"     onclick="mobTab('home',     'overview')">
+      <span class="mob-tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/></svg></span><span class="mob-tab-lbl">홈</span>
+    </button>
+    <button class="mob-tab"        id="mobt-wbs"      onclick="mobTab('wbs',      'wbs-map')">
+      <span class="mob-tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"/><path d="M15 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"/><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"/><path d="M6 15v-1a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v1"/><path d="M12 9l0 3"/></svg></span><span class="mob-tab-lbl">WBS</span>
+    </button>
+    <button class="mob-tab"        id="mobt-team"     onclick="mobTab('team',     'settings-team')">
+      <span class="mob-tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0 -3 -3.85"/></svg></span><span class="mob-tab-lbl">팀</span>
+    </button>
+    <button class="mob-tab"        id="mobt-settings" onclick="mobTab('settings', 'settings-project')">
+      <span class="mob-tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/></svg></span><span class="mob-tab-lbl">설정</span>
+    </button>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- Overview view -->
+    <!-- PRD 인라인 뷰 -->
+    <div class="view" id="view-prd">
+
+      <!-- 빈 상태 -->
+      <div class="prd-empty" id="prdEmpty">
+        <svg class="prd-empty-icon" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <div class="prd-empty-ttl">등록된 PRD가 없습니다</div>
+        <div class="prd-empty-sub">Notion에서 불러오거나 MD 파일을 등록하거나<br>직접 작성해서 PRD를 시작하세요.</div>
+        <button class="btn-prd-write" onclick="togglePrdSrcPanel()">PRD 작성</button>
+        <div class="prd-src-panel" id="prdSrcPanel">
+          <div class="prd-src-tabs">
+            <button class="prd-src-tab active" onclick="switchPrdSrc('notion',this)">Notion</button>
+            <button class="prd-src-tab" onclick="switchPrdSrc('md',this)">MD 파일</button>
+            <button class="prd-src-tab" onclick="switchPrdSrc('form',this)">직접 작성</button>
+          </div>
+          <div class="prd-src-pane active" id="prd-src-notion">
+            <p class="prd-src-hint">Notion 페이지 URL을 입력하면 내용을 불러옵니다.</p>
+            <input class="prd-src-input" type="url" placeholder="https://notion.so/..." id="prdNotionUrl">
+            <button class="btn-prd-src" onclick="registerPrd('notion')">불러오기</button>
+          </div>
+          <div class="prd-src-pane" id="prd-src-md">
+            <p class="prd-src-hint">Markdown(.md) 파일을 업로드하면 PRD로 등록됩니다.</p>
+            <div class="prd-src-file-row">
+              <label class="prd-src-file-lbl" for="prdMdFile">파일 선택</label>
+              <input type="file" id="prdMdFile" accept=".md" style="display:none" onchange="handleMdFile(this)">
+              <span class="prd-src-file-name" id="prdMdFileName">선택된 파일 없음</span>
+            </div>
+            <button class="btn-prd-src" onclick="registerPrd('md')">등록</button>
+          </div>
+          <div class="prd-src-pane" id="prd-src-form">
+            <p class="prd-src-hint">PRD 제목과 주요 내용을 입력하세요. 저장 후 상세 편집이 가능합니다.</p>
+            <input class="prd-src-input" type="text" placeholder="PRD 제목" id="prdFormTitle">
+            <textarea class="prd-src-textarea" placeholder="한 줄 정의, 목표, 주요 기능 등을 자유롭게 작성하세요..." id="prdFormContent"></textarea>
+            <button class="btn-prd-src" onclick="registerPrd('form')">저장</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 등록된 상태 -->
+      <div class="prd-doc-layout hidden" id="prdDocLayout">
+        <div class="prd-center-wrap">
+        <nav class="prd-anchor-nav" id="prdAnchorNav">
+          <a class="prd-anchor-link active" onclick="prdScrollTo('overview',this)"><span class="prd-anchor-num">01</span>사이트 목적 & 타깃</a>
+          <a class="prd-anchor-link" onclick="prdScrollTo('sitemap',this)"><span class="prd-anchor-num">02</span>사이트맵 & 구조</a>
+          <a class="prd-anchor-link" onclick="prdScrollTo('pages',this)"><span class="prd-anchor-num">03</span>페이지별 요구사항</a>
+          <a class="prd-anchor-link" onclick="prdScrollTo('components',this)"><span class="prd-anchor-num">04</span>공통 컴포넌트</a>
+          <a class="prd-anchor-link" onclick="prdScrollTo('cta',this)"><span class="prd-anchor-num">05</span>CTA 전략</a>
+          <a class="prd-anchor-link" onclick="prdScrollTo('responsive',this)"><span class="prd-anchor-num">06</span>반응형 요구사항</a>
+          <a class="prd-anchor-link" onclick="prdScrollTo('mvp',this)"><span class="prd-anchor-num">07</span>MVP 1차 론칭 범위</a>
+          <a class="prd-anchor-link" onclick="prdScrollTo('stack',this)"><span class="prd-anchor-num">08</span>기술 스택 & 배포</a>
+        </nav>
+        <div class="prd-frame-area">
+          <iframe class="prd-frame" id="prdFrame" src="edencrew-prd.html?embedded=true" title="PRD"></iframe>
+        </div>
+        </div><!-- /prd-center-wrap -->
+      </div>
+
+    </div>
+
+    <div class="view active" id="view-overview">
+      <div id="ov-content"></div>
+    </div>
+
+    <!-- Settings: 프로젝트 설정 (기간 + 마일스톤) -->
+    <div class="view" id="view-settings-project">
+      <div>
+        <div style="font-size:16px;font-weight:800;margin-bottom:4px;">프로젝트 설정</div>
+        <div style="font-size:12px;color:var(--mu);">프로젝트 기간, GA 날짜, 단계별 마일스톤을 설정합니다.</div>
+      </div>
+      <div class="settings-wrap">
+        <!-- 기간 -->
+        <div class="settings-section open">
+          <div class="ss-head" onclick="toggleSS(this)">
+            <span class="ss-htitle">프로젝트 기간</span>
+            <span class="ss-hchev">▲</span>
+          </div>
+          <div class="ss-body">
+            <div class="form-row">
+              <span class="form-label">프로젝트 시작</span>
+              <input type="date" id="ip-start" value="2026-07-01">
+            </div>
+            <div class="form-row">
+              <span class="form-label">프로젝트 종료</span>
+              <input type="date" id="ip-end" value="2026-10-30">
+            </div>
+            <div class="form-row">
+              <span class="form-label">GA 날짜</span>
+              <input type="date" id="ip-ga" value="2026-11-02">
+            </div>
+            <div id="period-preview" style="background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:14px;margin-top:12px;">
+              <div style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--mu);margin-bottom:8px;">미리보기</div>
+              <div id="period-preview-content" style="font-size:12px;"></div>
+            </div>
+            <div class="settings-save-row" style="margin-top:12px;">
+              <button class="btn btn-p" onclick="savePeriod()">저장</button>
+              <span class="save-msg" id="period-msg">✓ 저장됨</span>
+            </div>
+          </div>
+        </div>
+        <!-- 마일스톤 -->
+        <div class="settings-section open">
+          <div class="ss-head" onclick="toggleSS(this)">
+            <span class="ss-htitle">마일스톤</span>
+            <span class="ss-hchev">▲</span>
+          </div>
+          <div class="ss-body">
+            <div style="overflow-x:auto;">
+              <table class="ms-table" id="msEditTable">
+                <thead>
+                  <tr><th>단계명</th><th>시작일</th><th>종료일</th><th>색상</th><th></th></tr>
+                </thead>
+                <tbody id="msEditBody"></tbody>
+              </table>
+            </div>
+            <button class="btn btn-add" onclick="addMsRow()">+ 단계 추가</button>
+            <div class="settings-save-row" style="margin-top:12px;">
+              <button class="btn btn-p" onclick="saveMilestones()">저장 및 간트 반영</button>
+              <span class="save-msg" id="ms-msg">✓ 저장됨</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings: 팀 구성 -->
+    <div class="view" id="view-settings-team">
+      <div>
+        <div style="font-size:16px;font-weight:800;margin-bottom:4px;">팀 구성</div>
+        <div style="font-size:12px;color:var(--mu);">역할별 팀을 구성하고 팀원 정보를 관리합니다.</div>
+      </div>
+      <div class="settings-wrap" style="max-width:900px;">
+        <div id="teamList"></div>
+        <button class="btn btn-add" style="margin-top:4px;" onclick="addTeam()">+ 팀 추가</button>
+      </div>
+    </div>
+
+    <!-- Settings: WBS -->
+    <div class="view" id="view-settings-wbs">
+      <div>
+        <div style="font-size:16px;font-weight:800;margin-bottom:4px;">프로젝트 스케줄(WBS)</div>
+        <div style="font-size:12px;color:var(--mu);">Phase > Task 구조로 작업을 분류하고 담당자·상태를 관리합니다.</div>
+      </div>
+      <div class="settings-wrap" style="max-width:860px;">
+        <div class="settings-section open">
+          <div class="ss-head" onclick="toggleSS(this)">
+            <span class="ss-htitle">작업 목록</span>
+            <span class="ss-hchev">▲</span>
+          </div>
+          <div class="ss-body">
+            <div id="wbsEditor"></div>
+            <button class="btn btn-add" style="margin-top:4px;" onclick="addWbsPhase()">+ Phase 추가</button>
+            <div class="settings-save-row" style="margin-top:12px;">
+              <button class="btn btn-p" onclick="saveWbs()">저장</button>
+              <span class="save-msg" id="wbs-msg">✓ 저장됨</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WBS 마인드맵 뷰 -->
+    <div class="view" id="view-wbs-map">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-shrink:0;flex-wrap:wrap;gap:8px;">
+        <div>
+          <div style="font-size:16px;font-weight:800;margin-bottom:2px;">WBS 시각화</div>
+          <div style="font-size:12px;color:var(--mu);">노드를 클릭하면 바로 편집할 수 있습니다.</div>
+        </div>
+        <div class="mm-toolbar">
+          <input type="file" id="wbsFileInput" accept=".csv,.xlsx" style="display:none" onchange="handleFileUpload(this.files[0])">
+          <button class="btn-tmpl" onclick="downloadCsvTemplate()">↓ CSV 템플릿</button>
+          <button class="btn-upload" onclick="document.getElementById('wbsFileInput').click()">↑ CSV / Excel 업로드</button>
+          <button class="btn btn-p" style="font-size:11px;" onclick="showView('settings-wbs')">편집 →</button>
+        </div>
+      </div>
+      <div class="mm-wrap">
+        <div class="mm-canvas" id="mmCanvas">
+          <svg id="mmSvg" style="position:absolute;top:0;left:0;overflow:visible;pointer-events:none;"></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team side panel -->
+    <div id="teamSidePanel">
+      <div class="tsp-header" id="tspHeader"></div>
+      <div class="tsp-body"   id="tspBody"></div>
+      <div class="tsp-footer" id="tspFooter"></div>
+    </div>
+
+    <!-- Sliding side panel (node editor) -->
+    <div id="mmSidePanel">
+      <div class="msp-header">
+        <span class="msp-badge" id="mspBadge">NODE</span>
+        <span class="msp-htitle" id="mspTitle">노드 편집</span>
+        <button class="msp-close" onclick="closeSidePanel()">✕</button>
+      </div>
+      <div class="msp-body" id="mspBody"></div>
+      <div class="msp-footer" id="mspFooter" style="display:none;">
+        <button class="msp-cancel" onclick="closeSidePanel()">취소</button>
+        <button class="msp-del" id="mspDelBtn" style="display:none;" onclick="">삭제</button>
+        <button class="msp-save" onclick="saveSidePanel()">저장</button>
+      </div>
+    </div>
+
+  </main>
+
+  </div><!-- /content-row -->
+</div><!-- /shell -->
+
+<script src="luum-sidebar.js"></script>
+<script>
+// ──────────────────────────────────────────────
+// Default state
+// ──────────────────────────────────────────────
+const DEFAULTS = {
+  period: { start:'2026-07-01', end:'2026-10-30', ga:'2026-11-02' },
+  teams: [
+    { name:'PM',       members:[] },
+    { name:'기획',     members:[] },
+    { name:'디자인',   members:[] },
+    { name:'퍼블리싱', members:[] },
+    { name:'개발',     members:[] },
+  ],
+  milestones: [
+    { name:'기획',     start:'2026-07-01', end:'2026-07-24', color:'#8361ff' },
+    { name:'디자인',   start:'2026-07-13', end:'2026-07-31', color:'#3ecf8e' },
+    { name:'퍼블리싱', start:'2026-07-20', end:'2026-08-14', color:'#f5a623' },
+    { name:'개발',     start:'2026-08-03', end:'2026-10-09', color:'#61b3ff' },
+    { name:'1차 통테', start:'2026-10-12', end:'2026-10-16', color:'#ff8c6b' },
+    { name:'2차 통테', start:'2026-10-19', end:'2026-10-23', color:'#ff8c6b' },
+    { name:'이관',     start:'2026-10-26', end:'2026-10-30', color:'#f5a623' },
+  ],
+  wbs: [
+    { phase:'Phase 1 — IA & 사이트맵', tasks:[
+      { name:'edencrew.com 사이트맵', start:'2026-07-01', end:'2026-07-10', stages:{plan:true,design:false,pub:false,dev:false,qa:false}, assignee:'누리' },
+      { name:'TeamCloud 사이트맵',    start:'2026-07-01', end:'2026-07-10', stages:{plan:true,design:false,pub:false,dev:false,qa:false}, assignee:'누리' },
+      { name:'Ecosystem Overview',    start:'2026-07-01', end:'2026-07-10', stages:{plan:true,design:false,pub:false,dev:false,qa:false}, assignee:'누리' },
+      { name:'Admin 사이트맵',        start:'2026-07-07', end:'2026-07-14', stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee:'누리' },
+    ]},
+    { phase:'Phase 2 — 페이지 제작', tasks:[
+      { name:'Home',        start:'2026-07-20', end:'2026-07-25', stages:{plan:true,design:true,pub:true,dev:false,qa:false}, assignee:'누리' },
+      { name:'Lucy Studio', start:'2026-07-20', end:'2026-07-28', stages:{plan:true,design:true,pub:true,dev:false,qa:false}, assignee:'누리' },
+      { name:'Platform',    start:'2026-07-28', end:'2026-08-05', stages:{plan:true,design:false,pub:false,dev:false,qa:false}, assignee:'누리' },
+      { name:'Pricing',     start:'2026-08-05', end:'2026-08-10', stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee:'' },
+      { name:'Resources',   start:'2026-08-10', end:'2026-08-14', stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee:'' },
+    ]},
+    { phase:'Phase 3 — 개발', tasks:[
+      { name:'Next.js + Tailwind 세팅', start:'2026-08-03', end:'2026-08-10', stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee:'' },
+      { name:'외주팀 킥오프',            start:'2026-08-03', end:'2026-08-03', stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee:'Brian' },
+      { name:'Vercel 배포 세팅',         start:'2026-09-01', end:'2026-09-05', stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee:'' },
+    ]},
+    { phase:'Phase 4 — GA', tasks:[
+      { name:'QA & 검수',  start:'2026-10-12', end:'2026-10-30', stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee:'' },
+      { name:'도메인 전환', start:'2026-11-01', end:'2026-11-02', stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee:'Brian' },
+    ]},
+  ]
+};
+
+function loadState() {
+  try {
+    return {
+      period:     JSON.parse(localStorage.getItem('ec_period'))     || DEFAULTS.period,
+      milestones: JSON.parse(localStorage.getItem('ec_milestones')) || DEFAULTS.milestones,
+      wbs:        JSON.parse(localStorage.getItem('ec_wbs'))        || DEFAULTS.wbs,
+      teams:      JSON.parse(localStorage.getItem('ec_teams'))      || DEFAULTS.teams,
+    };
+  } catch(e) { return { ...DEFAULTS }; }
+}
+
+let STATE = loadState();
+
+// ──────────────────────────────────────────────
+// Gantt
+// ──────────────────────────────────────────────
+function buildGantt() {
+  const root = document.getElementById('ganttRoot');
+  root.innerHTML = '';
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const ps    = new Date(STATE.period.start);
+  const pe    = new Date(STATE.period.end);
+  const ga    = new Date(STATE.period.ga);
+  const total = pe - ps;
+
+  // Update period display
+  const fmt = d => `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+  document.getElementById('sidebarPeriod').textContent = `${fmt(ps)} — ${fmt(pe)}`;
+  document.getElementById('sidebarGA').textContent = `GA ${String(ga.getMonth()+1).padStart(2,'0')}.${String(ga.getDate()).padStart(2,'0')}`;
+
+  const todayPct = total > 0 ? Math.max(0, Math.min(100, (today - ps) / total * 100)) : -1;
+
+  STATE.milestones.forEach(m => {
+    const s = new Date(m.start), e = new Date(m.end);
+    const left  = ((s - ps) / total * 100).toFixed(2);
+    const width = ((e - s)  / total * 100).toFixed(2);
+    const isActive = today >= s && today <= e;
+    const isDone   = today > e;
+
+    const row = document.createElement('div');
+    row.className = 'g-row';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'g-lbl';
+    lbl.textContent = m.name;
+    if (isActive) lbl.style.color = m.color;
+
+    const track = document.createElement('div');
+    track.className = 'g-track';
+    track.style.position = 'relative';
+
+    const bar = document.createElement('div');
+    bar.className = 'g-bar';
+    bar.style.left  = left + '%';
+    bar.style.width = width + '%';
+
+    if (isActive) {
+      const prog = Math.max(0, Math.min(100, (today - s) / (e - s) * 100)).toFixed(1);
+      bar.style.background = `linear-gradient(90deg, ${m.color} ${prog}%, ${m.color}55 ${prog}%)`;
+      bar.style.boxShadow = `0 0 0 1px ${m.color}44 inset`;
+    } else if (isDone) {
+      bar.style.background = m.color + '50';
+    } else {
+      bar.style.background = m.color + '80';
+    }
+
+    // Today line within this track
+    if (todayPct >= 0 && todayPct <= 100) {
+      const tl = document.createElement('div');
+      tl.className = 'g-today-line';
+      tl.style.left = todayPct + '%';
+      track.appendChild(tl);
+    }
+
+    track.appendChild(bar);
+    row.appendChild(lbl);
+    row.appendChild(track);
+    root.appendChild(row);
+  });
+
+  // D-day
+  const lbl = document.getElementById('ddayLbl');
+  const val = document.getElementById('ddayVal');
+  const badge = document.getElementById('msBadge');
+  const phase = document.getElementById('stripPhase');
+
+  const diff = d => Math.ceil((d - today) / 86400000);
+
+  if (today < ps) {
+    const d = diff(ps);
+    lbl.textContent = '시작까지';
+    val.textContent = `D-${d}`;
+    val.style.color = 'var(--warn)';
+    badge.textContent = `D-${d}`;
+    badge.style.background = 'rgba(245,166,35,.12)';
+    badge.style.color = 'var(--warn)';
+    phase.textContent = '시작 전';
+  } else if (today > ga) {
+    lbl.textContent = 'GA 완료';
+    val.textContent = '🎉';
+    badge.textContent = 'GA 완료';
+    badge.style.background = 'rgba(62,207,142,.12)';
+    badge.style.color = 'var(--ok)';
+    phase.textContent = 'GA 완료';
+  } else {
+    const cur = STATE.milestones.find(m => today >= new Date(m.start) && today <= new Date(m.end));
+    if (cur) {
+      const d = diff(new Date(cur.end));
+      lbl.textContent = cur.name + ' 진행 중';
+      val.textContent = `D-${d} 남음`;
+      val.style.color = cur.color;
+      badge.textContent = cur.name;
+      badge.style.background = cur.color + '22';
+      badge.style.color = cur.color;
+      phase.textContent = cur.name + ' 진행 중';
+    } else {
+      const next = STATE.milestones.find(m => today < new Date(m.start));
+      if (next) {
+        const d = diff(new Date(next.start));
+        lbl.textContent = next.name + ' 시작까지';
+        val.textContent = `D-${d}`;
+        val.style.color = 'var(--mu)';
+        badge.textContent = `${next.name} 준비`;
+        phase.textContent = `${next.name} 준비 중`;
+      }
+    }
+  }
+
+}
+
+// ──────────────────────────────────────────────
+// Team view
+// ──────────────────────────────────────────────
+const GRADE_YEARS = {
+  '초급': ['1년차','2년차','3년차'],
+  '중급': ['4년차','5년차','6년차','7년차'],
+  '고급': ['8년차','9년차','10년차','11년차','12년차'],
+  '특급': ['13년차','14년차','15년차 이상'],
+};
+
+function getTeamMembers() {
+  return STATE.teams.flatMap(t =>
+    t.members.filter(m => m.name && m.name.trim()).map(m => ({
+      name: m.name.trim(), team: t.name, grade: m.grade || '', years: m.years || ''
+    }))
+  );
+}
+
+function _populateAssigneeSelect(sel, current) {
+  const members = getTeamMembers();
+  const byTeam = {};
+  members.forEach(m => { if (!byTeam[m.team]) byTeam[m.team] = []; byTeam[m.team].push(m); });
+  sel.innerHTML = `<option value="">— 없음 —</option>`;
+  Object.entries(byTeam).forEach(([team, mems]) => {
+    const grp = document.createElement('optgroup');
+    grp.label = team;
+    mems.forEach(m => {
+      const opt = document.createElement('option');
+      opt.value = m.name;
+      const badge = m.grade ? ` (${m.grade}${m.years ? ' ' + m.years : ''})` : '';
+      opt.textContent = m.name + badge;
+      if (m.name === current) opt.selected = true;
+      grp.appendChild(opt);
+    });
+    sel.appendChild(grp);
+  });
+  if (current && !members.find(m => m.name === current)) {
+    const opt = document.createElement('option');
+    opt.value = current; opt.textContent = current; opt.selected = true;
+    sel.appendChild(opt);
+  }
+}
+
+function assigneeSelectHtml(id, current, extraClass) {
+  const members = getTeamMembers();
+  const byTeam = {};
+  members.forEach(m => { if (!byTeam[m.team]) byTeam[m.team] = []; byTeam[m.team].push(m); });
+  let opts = `<option value="">— 없음 —</option>`;
+  Object.entries(byTeam).forEach(([team, mems]) => {
+    opts += `<optgroup label="${team}">`;
+    mems.forEach(m => {
+      const badge = m.grade ? ` (${m.grade}${m.years ? ' ' + m.years : ''})` : '';
+      opts += `<option value="${m.name}" ${current===m.name?'selected':''}>${_esc(m.name)}${badge}</option>`;
+    });
+    opts += `</optgroup>`;
+  });
+  // 기존 담당자가 팀원 목록에 없는 경우 유지
+  if (current && !members.find(m => m.name === current)) {
+    opts += `<option value="${_esc(current)}" selected>${_esc(current)}</option>`;
+  }
+  return `<select id="${id}" class="msp-input ${extraClass||''}" style="width:100%;">${opts}</select>`;
+}
+
+function saveTeams() {
+  localStorage.setItem('ec_teams', JSON.stringify(STATE.teams));
+}
+
+// ── 팀 list view ──
+function renderTeamView() {
+  const list = document.getElementById('teamList');
+  if (!list) return;
+  list.innerHTML = `<div class="team-list-grid">
+    ${STATE.teams.map((team, ti) => {
+      const avatars = team.members.filter(m => m.name).slice(0, 4)
+        .map(m => `<span class="tlc-avatar">${_esc(m.name)}</span>`).join('');
+      const extra = team.members.length > 4 ? `<span class="tlc-avatar" style="background:var(--s3);color:var(--mu);">+${team.members.length-4}</span>` : '';
+      return `<div class="team-list-card" onclick="openTeamPanel(${ti})">
+        <div class="tlc-name">${_esc(team.name)}</div>
+        <div class="tlc-avatars">${avatars || extra || '<span style="font-size:11px;color:var(--mu);">팀원 없음</span>'}${avatars ? extra : ''}</div>
+        <div class="tlc-count">${team.members.length}명</div>
+      </div>`;
+    }).join('')}
+    <button class="tlc-add" onclick="addTeam()">+ 팀 추가</button>
+  </div>`;
+}
+
+// ── 팀 패널 (팀 상세 + 팀원 목록) ──
+let _tspTi = -1, _tspMi = -1;
+
+function openTeamPanel(ti) {
+  _tspTi = ti; _tspMi = -1;
+  _renderTeamPanel();
+  document.getElementById('teamSidePanel').classList.add('open');
+}
+
+function closeTeamPanel() {
+  document.getElementById('teamSidePanel').classList.remove('open');
+  renderTeamView();
+}
+
+function _renderTeamPanel() {
+  const team = STATE.teams[_tspTi];
+  const header = document.getElementById('tspHeader');
+  const body   = document.getElementById('tspBody');
+  const footer = document.getElementById('tspFooter');
+
+  header.innerHTML = `
+    <span class="tsp-badge">팀</span>
+    <input class="tsp-title-input" value="${_esc(team.name)}" placeholder="팀 이름"
+      onchange="STATE.teams[_tspTi].name=this.value;saveTeams();renderTeamView();">
+    <button class="tsp-close" onclick="closeTeamPanel()">✕</button>`;
+
+  const rows = team.members.length === 0
+    ? `<div class="tsp-empty">팀원이 없습니다.</div>`
+    : team.members.map((m, mi) => {
+        const badge = [m.grade, m.years].filter(Boolean).join(' ');
+        const period = m.from && m.to ? `${m.from} – ${m.to}` : m.from ? `${m.from} ~` : '';
+        return `<div class="tsp-member-row" onclick="openMemberPanel(${mi})">
+          <div class="tsp-member-info">
+            <div class="tsp-member-name">${_esc(m.name || '(이름 없음)')}</div>
+            <div class="tsp-member-sub">${badge ? badge + (period ? '  ·  ' + period : '') : (period || '정보 없음')}</div>
+          </div>
+          <button class="tsp-member-del" onclick="event.stopPropagation();deleteMember(${mi})" title="삭제">✕</button>
+        </div>`;
+      }).join('');
+
+  body.innerHTML = rows;
+  footer.innerHTML = `
+    <button class="btn btn-add" style="flex:1;" onclick="addMember()">+ 팀원 추가</button>
+    <button class="tsp-del-btn" onclick="deleteTeam()">팀 삭제</button>`;
+}
+
+// ── 팀원 편집 패널 (레벨 2) ──
+function openMemberPanel(mi) {
+  _tspMi = mi;
+  _renderMemberPanel();
+}
+
+function _renderMemberPanel() {
+  const m = STATE.teams[_tspTi].members[_tspMi];
+  const header = document.getElementById('tspHeader');
+  const body   = document.getElementById('tspBody');
+  const footer = document.getElementById('tspFooter');
+
+  header.innerHTML = `
+    <button class="tsp-back" onclick="_renderTeamPanel()" title="뒤로">←</button>
+    <span class="tsp-badge">팀원</span>
+    <span class="tsp-title">${_esc(STATE.teams[_tspTi].name)}</span>
+    <button class="tsp-close" onclick="closeTeamPanel()">✕</button>`;
+
+  const gradeOpts = ['','초급','중급','고급','특급'].map(g =>
+    `<option value="${g}" ${m.grade===g?'selected':''}>${g||'선택'}</option>`).join('');
+  const yearsOpts = (m.grade && GRADE_YEARS[m.grade] ? ['', ...GRADE_YEARS[m.grade]] : ['']).map(y =>
+    `<option value="${y}" ${m.years===y?'selected':''}>${y||'선택'}</option>`).join('');
+
+  const fileRow = (key, label, req) => {
+    const fname = m.files && m.files[key] ? m.files[key] : '';
+    return `<div class="tsp-file-row">
+      <span class="tsp-file-lbl">${label}${req ? '<span style="color:#f56565;margin-left:2px;">*</span>' : ' <span style="font-size:9px;color:var(--mu);">(선택)</span>'}</span>
+      <button class="tsp-file-btn" onclick="document.getElementById('tspf-${key}').click()">파일 선택</button>
+      <input type="file" id="tspf-${key}" style="display:none" onchange="tspAttach('${key}',this)">
+      <span class="tsp-file-name" id="tspfn-${key}">${fname ? '📎 ' + fname : '없음'}</span>
+    </div>`;
+  };
+
+  body.innerHTML = `
+    <div class="tsp-field">
+      <span class="tsp-label">이름 <span class="req">*</span></span>
+      <input class="tsp-input" id="tsp-name" value="${_esc(m.name||'')}" placeholder="홍길동">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="tsp-field">
+        <span class="tsp-label">등급</span>
+        <select class="tsp-input" id="tsp-grade" onchange="tspGradeChange(this.value)">${gradeOpts}</select>
+      </div>
+      <div class="tsp-field">
+        <span class="tsp-label">연차</span>
+        <select class="tsp-input" id="tsp-years">${yearsOpts}</select>
+      </div>
+    </div>
+    <div class="tsp-field">
+      <span class="tsp-label">전화번호</span>
+      <input class="tsp-input" id="tsp-phone" value="${_esc(m.phone||'')}" placeholder="010-0000-0000">
+    </div>
+    <div class="tsp-field">
+      <span class="tsp-label">이메일</span>
+      <input class="tsp-input" id="tsp-email" type="email" value="${_esc(m.email||'')}" placeholder="name@example.com">
+    </div>
+    <div class="tsp-field">
+      <span class="tsp-label">투입 기간</span>
+      <div class="tsp-range">
+        <input class="tsp-input" id="tsp-from" type="date" value="${m.from||''}">
+        <span>–</span>
+        <input class="tsp-input" id="tsp-to" type="date" value="${m.to||''}">
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <span class="tsp-label" style="margin-bottom:2px;">첨부 파일</span>
+      ${fileRow('resume',    '이력서',     true)}
+      ${fileRow('profile',   '인력프로필', false)}
+      ${fileRow('portfolio', '포트폴리오', false)}
+    </div>`;
+
+  footer.innerHTML = `
+    <button class="msp-cancel" onclick="_renderTeamPanel()">취소</button>
+    <button class="tsp-del-btn" onclick="deleteMember(_tspMi)">삭제</button>
+    <button class="msp-save" style="flex:1;" onclick="saveMemberPanel()">저장</button>`;
+}
+
+function tspGradeChange(grade) {
+  const sel = document.getElementById('tsp-years');
+  if (!sel) return;
+  const opts = grade && GRADE_YEARS[grade] ? ['', ...GRADE_YEARS[grade]] : [''];
+  sel.innerHTML = opts.map(y => `<option value="${y}">${y||'선택'}</option>`).join('');
+}
+
+function tspAttach(key, input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (!STATE.teams[_tspTi].members[_tspMi].files) STATE.teams[_tspTi].members[_tspMi].files = {};
+  STATE.teams[_tspTi].members[_tspMi].files[key] = file.name;
+  saveTeams();
+  const el = document.getElementById(`tspfn-${key}`);
+  if (el) el.textContent = '📎 ' + file.name;
+}
+
+function saveMemberPanel() {
+  const m = STATE.teams[_tspTi].members[_tspMi];
+  m.name  = document.getElementById('tsp-name')?.value.trim()  || '';
+  m.grade = document.getElementById('tsp-grade')?.value        || '';
+  m.years = document.getElementById('tsp-years')?.value        || '';
+  m.phone = document.getElementById('tsp-phone')?.value.trim() || '';
+  m.email = document.getElementById('tsp-email')?.value.trim() || '';
+  m.from  = document.getElementById('tsp-from')?.value         || '';
+  m.to    = document.getElementById('tsp-to')?.value           || '';
+  saveTeams();
+  _renderTeamPanel();
+}
+
+function addTeam() {
+  STATE.teams.push({ name:'새 팀', members:[] });
+  saveTeams();
+  renderTeamView();
+  openTeamPanel(STATE.teams.length - 1);
+}
+
+function deleteTeam() {
+  STATE.teams.splice(_tspTi, 1);
+  saveTeams();
+  closeTeamPanel();
+}
+
+function addMember() {
+  STATE.teams[_tspTi].members.push({ name:'', grade:'', years:'', phone:'', email:'', from:'', to:'', files:{} });
+  saveTeams();
+  openMemberPanel(STATE.teams[_tspTi].members.length - 1);
+}
+
+function deleteMember(mi) {
+  STATE.teams[_tspTi].members.splice(mi, 1);
+  saveTeams();
+  _tspMi = -1;
+  _renderTeamPanel();
+}
+
+function _esc(s) { return String(s).replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// ──────────────────────────────────────────────
+// Overview render
+// ──────────────────────────────────────────────
+function renderOverview() {
+  const el = document.getElementById('ov-content');
+  if (!el) return;
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const ps  = new Date(STATE.period.start);
+  const pe  = new Date(STATE.period.end);
+  const ga  = new Date(STATE.period.ga);
+  const fmt = d => `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+  const diffDays = d => Math.ceil((d - today) / 86400000);
+
+  // Overall progress
+  const allTasks = STATE.wbs.flatMap(p => p.tasks);
+  const totalProg = allTasks.length
+    ? Math.round(allTasks.reduce((s,t) => s + taskProgress(t), 0) / allTasks.length)
+    : 0;
+
+  // Total WD
+  const totalWD = totalProjectWD();
+  const elapsed = Math.max(0, workingDays(ps, today));
+  const timeElapsed = totalWD > 0 ? Math.min(100, Math.round(elapsed / totalWD * 100)) : 0;
+
+  // Phase count / task count
+  const phaseCount = STATE.wbs.length;
+  const taskCount  = allTasks.length;
+
+  // GA
+  const gaD = diffDays(ga);
+  const gaLabel = gaD > 0 ? `D-${gaD}` : gaD === 0 ? 'D-Day' : '완료';
+  const gaTotalDays = Math.ceil((ga - ps) / 86400000);
+  const gaElapsed   = Math.ceil((today - ps)  / 86400000);
+  const gaPct = gaTotalDays > 0 ? Math.min(100, Math.max(0, Math.round(gaElapsed / gaTotalDays * 100))) : 0;
+
+  // Phase progress bars
+  const phaseBars = STATE.wbs.map(ph => {
+    const tasks = ph.tasks;
+    const pct = tasks.length
+      ? Math.round(tasks.reduce((s,t) => s + taskProgress(t), 0) / tasks.length)
+      : 0;
+    const tasksDone = tasks.filter(t => taskProgress(t) === 100).length;
+    return { name: ph.phase, pct, tasksDone, taskTotal: tasks.length };
+  });
+
+  // Donut SVG
+  const R = 54, CX = 70, CY = 70;
+  const circ = 2 * Math.PI * R;
+  const offset = circ * (1 - totalProg / 100);
+  const donutSvg = `<svg viewBox="0 0 140 140" width="140" height="140">
+    <circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="var(--mu2)" stroke-width="14"/>
+    <circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="var(--p)" stroke-width="14"
+      stroke-dasharray="${circ}" stroke-dashoffset="${offset}"
+      stroke-linecap="round" transform="rotate(-90 ${CX} ${CY})"/>
+    <text x="${CX}" y="${CY - 6}" text-anchor="middle" fill="var(--wh)" font-size="22" font-weight="800">${totalProg}%</text>
+    <text x="${CX}" y="${CY + 14}" text-anchor="middle" fill="var(--mu)" font-size="10">전체 진척률</text>
+  </svg>`;
+
+  // Phase detail table rows
+  const tableRows = STATE.wbs.map(ph => {
+    const tasks = ph.tasks;
+    const pct = tasks.length ? Math.round(tasks.reduce((s,t) => s + taskProgress(t), 0) / tasks.length) : 0;
+    const done   = tasks.filter(t => taskProgress(t) === 100).length;
+    const inProg = tasks.filter(t => { const p = taskProgress(t); return p > 0 && p < 100; }).length;
+    const todo   = tasks.filter(t => taskProgress(t) === 0).length;
+    let chipHtml;
+    if (pct === 100) chipHtml = `<span class="ov-chip ov-chip-ok">완료</span>`;
+    else if (pct > 0) chipHtml = `<span class="ov-chip ov-chip-wip">진행</span>`;
+    else chipHtml = `<span class="ov-chip ov-chip-todo">예정</span>`;
+    const shortName = ph.phase.replace(/Phase \d+ [—–] /, '');
+    return `<tr>
+      <td>${shortName}</td>
+      <td class="ov-pct" style="color:${pct===100?'var(--ok)':pct>0?'var(--p)':'var(--mu)'}">${pct}%</td>
+      <td><div style="width:80px;height:5px;background:var(--mu2);border-radius:3px;overflow:hidden;display:inline-block;"><div style="width:${pct}%;height:100%;background:${pct===100?'var(--ok)':pct>50?'var(--p)':'var(--warn)'};border-radius:3px;"></div></div></td>
+      <td>${done}/${tasks.length}</td>
+      <td>${chipHtml}</td>
+    </tr>`;
+  }).join('');
+
+  // Remaining items
+  const remaining = [];
+  STATE.wbs.forEach(ph => {
+    ph.tasks.forEach(t => {
+      if (t.children && t.children.length > 0) {
+        t.children.forEach(st => {
+          if (subtaskProgress(st) < 100) {
+            remaining.push({ phase: ph.phase.replace(/Phase \d+ [—–] /,''), name: st.name, pct: subtaskProgress(st) });
+          }
+        });
+      } else if (taskProgress(t) < 100) {
+        remaining.push({ phase: ph.phase.replace(/Phase \d+ [—–] /,''), name: t.name, pct: taskProgress(t) });
+      }
+    });
+  });
+
+  const remainHtml = remaining.length === 0
+    ? `<div style="color:var(--ok);font-size:13px;font-weight:700;">모든 항목 완료 🎉</div>`
+    : remaining.slice(0, 8).map(r => `
+      <div class="ov-remain-item">
+        <div class="ov-remain-title">${r.name}</div>
+        <div class="ov-remain-desc">${r.phase}</div>
+        <div class="ov-remain-bar"><div class="ov-remain-fill" style="width:${r.pct}%;background:${r.pct===0?'var(--mu)':'var(--warn)'};"></div></div>
+      </div>`).join('');
+
+  const progColor = p => p === 100 ? 'var(--ok)' : p > 60 ? 'var(--p)' : p > 30 ? 'var(--warn)' : 'var(--info)';
+
+  el.innerHTML = `
+    <!-- Header -->
+    <div style="margin-bottom:20px;">
+      <div style="font-size:20px;font-weight:800;letter-spacing:-0.5px;">edencrew.com 리뉴얼</div>
+      <div style="font-size:12px;color:var(--mu);margin-top:4px;">Lucy Platform 에코시스템 공식 홈페이지 · ${fmt(ps)} – ${fmt(pe)} · GA ${fmt(ga)}</div>
+    </div>
+
+    <!-- KPI cards -->
+    <div class="ov-grid4" style="margin-bottom:14px;">
+      <div class="ov-card">
+        <div class="ov-kpi-label">전체 진척률</div>
+        <div class="ov-kpi-val" style="color:${progColor(totalProg)}">${totalProg}<span style="font-size:16px;font-weight:500;color:var(--mu);">%</span></div>
+        <div class="ov-delta ov-delta-${totalProg > 50 ? 'up' : 'warn'}">${totalProg > 50 ? '순조로운 진행' : '초기 단계'}</div>
+        <div class="ov-kpi-sub">전체 태스크 평균</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-kpi-label">Phase</div>
+        <div class="ov-kpi-val">${phaseCount}<span style="font-size:16px;font-weight:500;color:var(--mu);"> 개</span></div>
+        <div class="ov-delta ov-delta-info">총 ${taskCount}개 태스크</div>
+        <div class="ov-kpi-sub">WBS 기준</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-kpi-label">잔여 항목</div>
+        <div class="ov-kpi-val" style="color:${remaining.length===0?'var(--ok)':'var(--warn)'}">${remaining.length}<span style="font-size:16px;font-weight:500;color:var(--mu);"> 건</span></div>
+        <div class="ov-delta ov-delta-${remaining.length===0?'up':'warn'}">${remaining.length===0?'모두 완료':'미완료 태스크'}</div>
+        <div class="ov-kpi-sub">진척률 100% 미만</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-kpi-label">GA까지</div>
+        <div class="ov-kpi-val" style="color:${gaD<=14&&gaD>0?'var(--danger)':gaD<=30&&gaD>0?'var(--warn)':'var(--ok)'}">${gaLabel}</div>
+        <div class="ov-delta ov-delta-info">시간 경과 ${gaPct}%</div>
+        <div class="ov-kpi-sub">${fmt(ga)}</div>
+      </div>
+    </div>
+
+    <!-- 진척 bars + donut -->
+    <div class="ov-grid3" style="margin-bottom:14px;">
+      <div class="ov-card">
+        <div class="ov-section-lbl">Phase별 진척 현황</div>
+        ${phaseBars.map(ph => `
+          <div class="ov-prog-item">
+            <div class="ov-prog-header">
+              <span class="ov-prog-name">${ph.name.replace(/Phase \d+ [—–] /,'')}</span>
+              <span class="ov-prog-stat">${ph.tasksDone}/${ph.taskTotal} · ${ph.pct}%</span>
+            </div>
+            <div class="ov-prog-track">
+              <div class="ov-prog-fill" style="width:${ph.pct}%;background:${progColor(ph.pct)};"></div>
+            </div>
+          </div>`).join('')}
+        <div style="margin-top:18px;">
+          <div class="ov-section-lbl" style="margin-bottom:8px;">프로젝트 타임라인</div>
+          <div class="ov-timeline-track">
+            <div class="ov-timeline-fill" style="width:${timeElapsed}%;">${timeElapsed > 10 ? timeElapsed + '%' : ''}</div>
+          </div>
+          <div class="ov-timeline-lbl">
+            <span>${fmt(ps)}</span>
+            <span style="color:var(--p);">오늘 ${fmt(today)}</span>
+            <span>${fmt(pe)}</span>
+          </div>
+        </div>
+      </div>
+      <div class="ov-card" style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+        <div class="ov-section-lbl" style="align-self:flex-start;">전체 진행</div>
+        ${donutSvg}
+        <div style="width:100%;">
+          ${phaseBars.map(ph => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px;">
+              <span style="color:var(--mu);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${ph.name.replace(/Phase \d+ [—–] /,'')}</span>
+              <span style="font-weight:700;color:${progColor(ph.pct)};font-variant-numeric:tabular-nums;">${ph.pct}%</span>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail table + remaining -->
+    <div class="ov-grid2" style="margin-bottom:14px;">
+      <div class="ov-card">
+        <div class="ov-section-lbl">Phase 상세 현황</div>
+        <div style="overflow-x:auto;">
+          <table class="ov-table">
+            <thead>
+              <tr><th>Phase</th><th>진척</th><th>바</th><th>완료/전체</th><th>상태</th></tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-section-lbl">미완료 항목</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          ${remainHtml}
+          ${remaining.length > 8 ? `<div style="font-size:11px;color:var(--mu);text-align:center;">외 ${remaining.length-8}건</div>` : ''}
+        </div>
+      </div>
+    </div>`;
+}
+
+// ──────────────────────────────────────────────
+// View routing
+// ──────────────────────────────────────────────
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  const target = document.getElementById('view-' + name);
+  if (target) target.classList.add('active');
+
+  // 서브 뷰 < 백 버튼 자동 주입
+  document.querySelectorAll('.view-back-btn').forEach(b => b.remove());
+  if (name !== 'overview') {
+    const firstChild = target && target.firstElementChild;
+    if (firstChild) {
+      const btn = document.createElement('button');
+      btn.className = 'btn-back view-back-btn';
+      btn.textContent = '<';
+      btn.title = '대시보드로';
+      btn.onclick = () => showView('overview');
+      target.insertBefore(btn, firstChild);
+    }
+  }
+
+  // Populate on open
+  if (name === 'overview')           renderOverview();
+  if (name === 'settings-project')   { populatePeriodForm(); populateMsTable(); }
+  if (name === 'settings-team')      renderTeamView();
+  if (name === 'settings-wbs')       populateWbs();
+  if (name === 'wbs-map')            setTimeout(renderMindmap, 0);
+}
+
+// ──────────────────────────────────────────────
+// Sidebar toggles
+// ──────────────────────────────────────────────
+function toggleMs() {
+  const c = document.getElementById('msCard');
+  c.classList.toggle('open');
+  document.getElementById('msChev').textContent = c.classList.contains('open') ? '▲' : '▼';
+}
+function toggleSec(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+function toggleSS(head) {
+  const sec = head.closest('.settings-section');
+  sec.classList.toggle('open');
+}
+
+// ──────────────────────────────────────────────
+// Period settings
+// ──────────────────────────────────────────────
+function populatePeriodForm() {
+  document.getElementById('ip-start').value = STATE.period.start;
+  document.getElementById('ip-end').value   = STATE.period.end;
+  document.getElementById('ip-ga').value    = STATE.period.ga;
+  updatePeriodPreview();
+}
+function updatePeriodPreview() {
+  const s  = document.getElementById('ip-start').value;
+  const e  = document.getElementById('ip-end').value;
+  const ga = document.getElementById('ip-ga').value;
+  if (!s || !e || !ga) return;
+  const diff = d1 => {
+    const a = new Date(d1[0]), b = new Date(d1[1]);
+    return Math.round((b-a)/86400000);
+  };
+  const content = document.getElementById('period-preview-content');
+  content.innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;">
+      <div style="display:flex;gap:24px;">
+        <span style="color:var(--mu);min-width:80px;">시작 — 종료</span>
+        <span>${s} → ${e}</span>
+      </div>
+      <div style="display:flex;gap:24px;">
+        <span style="color:var(--mu);min-width:80px;">전체 기간</span>
+        <span>${diff([s,e])}일</span>
+      </div>
+      <div style="display:flex;gap:24px;">
+        <span style="color:var(--mu);min-width:80px;">GA</span>
+        <span style="color:var(--ok);font-weight:700;">${ga}</span>
+      </div>
+    </div>
+  `;
+}
+['ip-start','ip-end','ip-ga'].forEach(id => {
+  document.getElementById(id).addEventListener('change', updatePeriodPreview);
+});
+
+function savePeriod() {
+  STATE.period = {
+    start: document.getElementById('ip-start').value,
+    end:   document.getElementById('ip-end').value,
+    ga:    document.getElementById('ip-ga').value,
+  };
+  localStorage.setItem('ec_period', JSON.stringify(STATE.period));
+  buildGantt();
+  flashMsg('period-msg');
+}
+
+// ──────────────────────────────────────────────
+// Milestone settings
+// ──────────────────────────────────────────────
+function populateMsTable() {
+  const tbody = document.getElementById('msEditBody');
+  tbody.innerHTML = '';
+  STATE.milestones.forEach((m, i) => {
+    tbody.appendChild(makeMsRow(m, i));
+  });
+}
+function makeMsRow(m, i) {
+  const tr = document.createElement('tr');
+  tr.dataset.idx = i;
+  tr.innerHTML = `
+    <td><input type="text"  class="ms-name"  value="${m.name}"  placeholder="단계명" style="width:80px;"></td>
+    <td><input type="date"  class="ms-start" value="${m.start}"></td>
+    <td><input type="date"  class="ms-end"   value="${m.end}"></td>
+    <td><input type="color" class="ms-color" value="${m.color}"></td>
+    <td><button class="btn btn-del" onclick="delMsRow(this)">✕</button></td>
+  `;
+  return tr;
+}
+function addMsRow() {
+  const tbody = document.getElementById('msEditBody');
+  const newM = { name:'새 단계', start:'2026-07-01', end:'2026-07-07', color:'#8361ff' };
+  tbody.appendChild(makeMsRow(newM, tbody.rows.length));
+}
+function delMsRow(btn) {
+  btn.closest('tr').remove();
+}
+function saveMilestones() {
+  const rows = document.querySelectorAll('#msEditBody tr');
+  STATE.milestones = Array.from(rows).map(tr => ({
+    name:  tr.querySelector('.ms-name').value,
+    start: tr.querySelector('.ms-start').value,
+    end:   tr.querySelector('.ms-end').value,
+    color: tr.querySelector('.ms-color').value,
+  }));
+  localStorage.setItem('ec_milestones', JSON.stringify(STATE.milestones));
+  buildGantt();
+  flashMsg('ms-msg');
+}
+
+// ──────────────────────────────────────────────
+// WBS settings
+// ──────────────────────────────────────────────
+// ── Stages (edencrew web project 맞춤) ──
+const STAGES = [
+  { key:'plan',   label:'기획',   score:15 },
+  { key:'design', label:'디자인', score:20 },
+  { key:'pub',    label:'퍼블',   score:25 },
+  { key:'dev',    label:'개발',   score:30 },
+  { key:'qa',     label:'QA',     score:10 },
+];
+
+// ── Working day helpers ──
+function workingDays(startStr, endStr) {
+  if (!startStr || !endStr) return 0;
+  const s = new Date(startStr), e = new Date(endStr);
+  if (s > e) return 0;
+  let count = 0;
+  const cur = new Date(s);
+  while (cur <= e) {
+    const d = cur.getDay();
+    if (d !== 0 && d !== 6) count++;
+    cur.setDate(cur.getDate() + 1);
+  }
+  return Math.max(1, count);
+}
+
+function totalProjectWD() {
+  return workingDays(STATE.period.start, STATE.period.end);
+}
+
+function taskWeight(task) {
+  const wd = workingDays(task.start, task.end);
+  const total = totalProjectWD();
+  return total > 0 ? wd / total : 0;
+}
+
+function subtaskProgress(st) {
+  const stages = st.stages || {};
+  return STAGES.reduce((sum, s) => sum + (stages[s.key] ? s.score : 0), 0);
+}
+
+function taskProgress(task) {
+  if (task.children && task.children.length > 0) {
+    const sum = task.children.reduce((s, st) => s + subtaskProgress(st), 0);
+    return Math.round(sum / task.children.length);
+  }
+  const stages = task.stages || {};
+  return STAGES.reduce((sum, s) => sum + (stages[s.key] ? s.score : 0), 0);
+}
+
+function overallProgress() {
+  const allTasks = STATE.wbs.flatMap(ph => ph.tasks).filter(t => t.start && t.end);
+  const totalW = allTasks.reduce((s, t) => s + taskWeight(t), 0);
+  if (totalW === 0) return 0;
+  const done = allTasks.reduce((s, t) => s + taskWeight(t) * taskProgress(t) / 100, 0);
+  return Math.round(done / totalW * 100);
+}
+
+function populateWbs() {
+  const editor = document.getElementById('wbsEditor');
+  editor.innerHTML = '';
+  STATE.wbs.forEach((ph, pi) => {
+    editor.appendChild(makePhaseBlock(ph, pi));
+  });
+}
+// ──────────────────────────────────────────────
+// Mindmap renderer
+// ──────────────────────────────────────────────
+function renderMindmap() {
+  const canvas = document.getElementById('mmCanvas');
+  const svg    = document.getElementById('mmSvg');
+  // Clear previous (keep svg + toolbar)
+  [...canvas.children].forEach(c => { if (c !== svg && c !== _mmToolbar) c.remove(); });
+  svg.innerHTML = '';
+  // Ensure toolbar exists in canvas
+  if (!_mmToolbar) {
+    _mmToolbar = document.createElement('div');
+    _mmToolbar.id = 'mmNodeToolbar';
+    canvas.appendChild(_mmToolbar);
+  } else if (!_mmToolbar.parentElement) {
+    canvas.appendChild(_mmToolbar);
+  }
+
+  const wbs = STATE.wbs;
+
+  // Layout constants
+  const ROOT_W  = 130, ROOT_H  = 72;
+  const PHASE_W = 164, PHASE_H = 64;
+  const TASK_W  = 220, TASK_H  = 72;
+  const SUBTASK_W = 196, SUBTASK_H = 60, SUBTASK_GAP = 8;
+  const COL1_X  = 0;
+  const COL2_X  = ROOT_W  + 72;
+  const COL3_X  = COL2_X + PHASE_W + 60;
+  const COL4_X  = COL3_X + TASK_W  + 56;
+  const TASK_GAP = 10;
+  const PHASE_GAP = 20;
+
+  function taskEffH(task) {
+    const n = (task.children && task.children.length) || 0;
+    if (n === 0) return TASK_H;
+    return Math.max(TASK_H, n * SUBTASK_H + (n - 1) * SUBTASK_GAP);
+  }
+
+  // ── Pass 1: compute task Y positions ──
+  let curY = 0;
+  const phLayouts = wbs.map(ph => {
+    const taskLayouts = ph.tasks.map(task => {
+      const effH = taskEffH(task);
+      const y = curY;
+      curY += effH + TASK_GAP;
+      return { task, y, effH };
+    });
+    const phTop    = taskLayouts.length ? taskLayouts[0].y : curY;
+    const phBottom = taskLayouts.length ? taskLayouts[taskLayouts.length - 1].y + taskLayouts[taskLayouts.length - 1].effH : curY;
+    const phY      = (phTop + phBottom) / 2 - PHASE_H / 2;
+    curY += PHASE_GAP;
+    return { ph, phY, taskLayouts };
+  });
+
+  const totalH = curY;
+  const rootY  = totalH / 2 - ROOT_H / 2;
+  const hasSubtasks = wbs.some(ph => ph.tasks.some(t => t.children && t.children.length));
+  const canvasW = (hasSubtasks ? COL4_X + SUBTASK_W : COL3_X + TASK_W) + 40;
+  const canvasH = Math.max(totalH + 20, ROOT_H + 40);
+
+  canvas.style.width  = canvasW + 'px';
+  canvas.style.height = canvasH + 'px';
+  svg.setAttribute('width',  canvasW);
+  svg.setAttribute('height', canvasH);
+
+  // ── Draw connector: root → phase ──
+  phLayouts.forEach(({ phY }) => {
+    const x1 = COL1_X + ROOT_W, y1 = rootY + ROOT_H / 2;
+    const x2 = COL2_X,          y2 = phY   + PHASE_H / 2;
+    drawBezier(svg, x1, y1, x2, y2, 'rgba(131,97,255,0.45)', 2);
+  });
+
+  // ── Draw connector: phase → task ──
+  phLayouts.forEach(({ phY, taskLayouts }) => {
+    taskLayouts.forEach(({ y, effH }) => {
+      const x1 = COL2_X + PHASE_W, y1 = phY + PHASE_H / 2;
+      const x2 = COL3_X,           y2 = y   + effH / 2;
+      drawBezier(svg, x1, y1, x2, y2, 'rgba(255,255,255,0.13)', 1.5);
+    });
+  });
+
+  // ── Draw connector: task → subtask ──
+  phLayouts.forEach(({ taskLayouts }, phIdx) => {
+    taskLayouts.forEach(({ task, y, effH }, tIdx) => {
+      if (!task.children || !task.children.length) return;
+      const n = task.children.length;
+      const stTotalH = n * SUBTASK_H + (n - 1) * SUBTASK_GAP;
+      const stStartY = y + effH / 2 - stTotalH / 2;
+      task.children.forEach((st, stIdx) => {
+        const stY = stStartY + stIdx * (SUBTASK_H + SUBTASK_GAP);
+        const x1 = COL3_X + TASK_W, y1 = y + effH / 2;
+        const x2 = COL4_X,          y2 = stY + SUBTASK_H / 2;
+        drawBezier(svg, x1, y1, x2, y2, 'rgba(131,97,255,0.25)', 1.5);
+      });
+    });
+  });
+
+  // ── Render root node ──
+  const totalTasks = wbs.reduce((s, p) => s + p.tasks.length, 0);
+  const rootEl = mkDiv('mm-node mm-root', COL1_X, rootY, ROOT_W, ROOT_H);
+  rootEl.innerHTML = `
+    <div class="mm-root-label">edencrew.com<br>리뉴얼</div>
+    <div class="mm-root-sub">${wbs.length}개 Phase · ${totalTasks}개 Task</div>
+  `;
+  rootEl.addEventListener('click', () => openSidePanel('root', -1, -1, rootEl));
+  canvas.appendChild(rootEl);
+
+  // ── Render phase nodes ──
+  phLayouts.forEach(({ ph, phY, taskLayouts }, phIdx) => {
+    const tasks = ph.tasks;
+    const phProg = tasks.length
+      ? Math.round(tasks.reduce((s, t) => s + taskProgress(t), 0) / tasks.length)
+      : 0;
+    const phColor = phProg === 100 ? 'var(--ok)' : phProg > 0 ? 'var(--p)' : 'var(--mu2)';
+    const phEl = mkDiv('mm-node mm-phase', COL2_X, phY, PHASE_W, PHASE_H);
+    phEl.style.setProperty('--nc', phColor);
+    phEl.style.borderColor = phColor + '66';
+    phEl.innerHTML = `
+      <div class="mm-label" style="font-size:11px;font-weight:700;">${ph.phase}</div>
+      <div class="mm-meta" style="margin-top:6px;">
+        <div class="mm-prog-track"><div class="mm-prog-fill" style="width:${phProg}%;background:${phColor};"></div></div>
+        <span class="mm-prog-pct" style="color:${phColor};">${phProg}%</span>
+        <span class="mm-wd">${tasks.length}개 Task</span>
+      </div>
+    `;
+    phEl.addEventListener('click', () => openSidePanel('phase', phIdx, -1, phEl));
+    canvas.appendChild(phEl);
+  });
+
+  // ── Render task nodes ──
+  const totalWD = totalProjectWD();
+  phLayouts.forEach(({ taskLayouts }, phIdx) => {
+    taskLayouts.forEach((tl, tIdx) => {
+      const { task, y, effH } = tl;
+      const prog  = taskProgress(task);
+      const wd    = workingDays(task.start, task.end);
+      const w     = totalWD > 0 ? (wd / totalWD * 100).toFixed(1) : '0.0';
+      const color = prog === 100 ? 'var(--ok)' : prog > 0 ? 'var(--p)' : 'var(--mu)';
+      const hasChildren = task.children && task.children.length > 0;
+      const tEl = mkDiv('mm-node mm-task', COL3_X, y + effH / 2 - TASK_H / 2, TASK_W, TASK_H);
+      tEl.addEventListener('click', () => openSidePanel('task', phIdx, tIdx, tEl));
+      tEl.style.setProperty('--nc', prog === 100 ? 'var(--ok)' : 'var(--p)');
+      if (prog > 0) tEl.style.borderColor = (prog === 100 ? '#3ecf8e' : '#8361ff') + '55';
+
+      const dotsHtml = STAGES.map(s => {
+        const done = task.stages && task.stages[s.key];
+        return `<div class="mm-stage-dot" title="${s.label} ${s.score}점" style="background:${done ? color : 'var(--mu2)'};"></div>`;
+      }).join('');
+
+      const dateStr = task.start && task.end
+        ? `${task.start.slice(5)} ~ ${task.end.slice(5)}`
+        : '날짜 미설정';
+
+      const childBadge = hasChildren
+        ? `<span style="font-size:9px;color:var(--p);background:var(--pg);padding:1px 5px;border-radius:2px;">${task.children.length} sub</span>`
+        : '';
+
+      tEl.innerHTML = `
+        <div class="mm-label">${task.name} ${childBadge}</div>
+        <div class="mm-meta">
+          <div class="mm-prog-track"><div class="mm-prog-fill" style="width:${prog}%;background:${color};"></div></div>
+          <span class="mm-prog-pct" style="color:${color};">${prog}%</span>
+          <span class="mm-wd">${w}% 가중</span>
+          ${task.assignee ? `<span class="mm-assignee">${task.assignee}</span>` : ''}
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:5px;">
+          ${hasChildren ? '' : `<div class="mm-stages">${dotsHtml}</div>`}
+          <span style="font-size:9px;color:var(--mu);margin-left:2px;">${dateStr}</span>
+        </div>
+      `;
+      canvas.appendChild(tEl);
+
+      // ── Render subtask nodes ──
+      if (hasChildren) {
+        const n = task.children.length;
+        const stTotalH = n * SUBTASK_H + (n - 1) * SUBTASK_GAP;
+        const stStartY = y + effH / 2 - stTotalH / 2;
+        task.children.forEach((st, stIdx) => {
+          const stY   = stStartY + stIdx * (SUBTASK_H + SUBTASK_GAP);
+          const stProg = subtaskProgress(st);
+          const stColor = stProg === 100 ? 'var(--ok)' : stProg > 0 ? 'var(--p)' : 'var(--mu)';
+          const stEl = mkDiv('mm-node mm-task mm-subtask', COL4_X, stY, SUBTASK_W, SUBTASK_H);
+          stEl.addEventListener('click', e => {
+            e.stopPropagation();
+            openSidePanel('subtask', phIdx, tIdx, stEl, stIdx);
+          });
+          if (stProg > 0) stEl.style.borderColor = (stProg === 100 ? '#3ecf8e' : '#8361ff') + '55';
+          const stDotsHtml = STAGES.map(s => {
+            const done = st.stages && st.stages[s.key];
+            return `<div class="mm-stage-dot" title="${s.label}" style="background:${done ? stColor : 'var(--mu2)'};width:5px;height:5px;"></div>`;
+          }).join('');
+          stEl.innerHTML = `
+            <div class="mm-label" style="font-size:11px;">${esc(st.name)}</div>
+            <div class="mm-meta" style="margin-top:4px;">
+              <div class="mm-prog-track"><div class="mm-prog-fill" style="width:${stProg}%;background:${stColor};"></div></div>
+              <span class="mm-prog-pct" style="color:${stColor};font-size:9px;">${stProg}%</span>
+              ${st.assignee ? `<span class="mm-assignee">${esc(st.assignee)}</span>` : ''}
+            </div>
+            <div class="mm-stages" style="margin-top:4px;">${stDotsHtml}</div>
+          `;
+          canvas.appendChild(stEl);
+        });
+      }
+    });
+  });
+}
+
+function mkDiv(cls, x, y, w, h) {
+  const d = document.createElement('div');
+  d.className = cls;
+  d.style.cssText = `left:${x}px;top:${y}px;width:${w}px;height:${h}px;`;
+  return d;
+}
+
+function drawBezier(svg, x1, y1, x2, y2, color, width) {
+  const cx = (x1 + x2) / 2;
+  const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  p.setAttribute('d', `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`);
+  p.setAttribute('fill', 'none');
+  p.setAttribute('stroke', color);
+  p.setAttribute('stroke-width', width);
+  svg.appendChild(p);
+}
+
+// ──────────────────────────────────────────────
+// Sliding side panel — node editor & actions
+// ──────────────────────────────────────────────
+let _spType = '', _spPh = -1, _spTk = -1, _spSt = -1, _spEl = null;
+let _mmToolbar = null;
+
+function openSidePanel(type, phIdx, tIdx, nodeEl, stIdx = -1) {
+  if (!nodeEl) return;
+  if (_spEl) _spEl.classList.remove('mm-active');
+  _spType = type; _spPh = phIdx; _spTk = tIdx; _spSt = stIdx; _spEl = nodeEl;
+  nodeEl.classList.add('mm-active');
+
+  const badge = document.getElementById('mspBadge');
+  const title = document.getElementById('mspTitle');
+  badge.className = 'msp-badge ' + type;
+
+  if (type === 'root') {
+    badge.textContent = 'ROOT';
+    title.textContent = 'edencrew.com 리뉴얼';
+    _renderPanelRoot();
+  } else if (type === 'phase') {
+    badge.textContent = 'PHASE';
+    title.textContent = STATE.wbs[phIdx]?.phase || 'Phase';
+    _renderPanelPhase(phIdx);
+  } else if (type === 'subtask') {
+    badge.textContent = 'SUB';
+    const st = STATE.wbs[phIdx]?.tasks[tIdx]?.children?.[stIdx];
+    title.textContent = st?.name || 'Sub-task';
+    _renderPanelSubtask(phIdx, tIdx, stIdx);
+  } else {
+    badge.textContent = 'TASK';
+    title.textContent = STATE.wbs[phIdx]?.tasks[tIdx]?.name || 'Task';
+    _renderPanelTask(phIdx, tIdx);
+  }
+
+  document.getElementById('mmSidePanel').classList.add('open');
+  _showNodeToolbar(type, phIdx, tIdx, nodeEl, stIdx);
+}
+
+function closeSidePanel() {
+  document.getElementById('mmSidePanel').classList.remove('open');
+  if (_spEl) _spEl.classList.remove('mm-active');
+  if (_mmToolbar) _mmToolbar.className = '';
+  _spType = ''; _spPh = _spTk = _spSt = -1; _spEl = null;
+}
+
+function _showNodeToolbar(type, phIdx, tIdx, nodeEl, stIdx = -1) {
+  if (!_mmToolbar) return;
+  const x = parseInt(nodeEl.style.left);
+  const y = parseInt(nodeEl.style.top);
+  const w = parseInt(nodeEl.style.width);
+  const h = parseInt(nodeEl.style.height);
+
+  let isFirst, isLast, addTitle, addAction, upAction, dnAction;
+
+  if (type === 'subtask') {
+    const children = STATE.wbs[phIdx]?.tasks[tIdx]?.children || [];
+    isFirst = stIdx === 0;
+    isLast  = stIdx === children.length - 1;
+    addTitle  = 'Sub-task 추가';
+    addAction = `spAddSiblingSubtask(${phIdx},${tIdx},${stIdx})`;
+    upAction  = `spMoveSubtask(${phIdx},${tIdx},${stIdx},-1)`;
+    dnAction  = `spMoveSubtask(${phIdx},${tIdx},${stIdx},1)`;
+  } else {
+    isFirst = type === 'phase' ? phIdx === 0 : tIdx === 0;
+    isLast  = type === 'phase' ? phIdx === STATE.wbs.length - 1
+                                : tIdx === (STATE.wbs[phIdx]?.tasks.length ?? 1) - 1;
+    addTitle  = type === 'root'  ? 'Phase 추가' : type === 'phase' ? 'Task 추가' : 'Sub-task 추가 (child)';
+    addAction = type === 'root'  ? 'spAddPhase()'
+              : type === 'phase' ? `spAddTask(${phIdx})`
+                                 : `spAddChild(${phIdx},${tIdx})`;
+    upAction  = type === 'phase' ? `spMovePhase(${phIdx},-1)` : `spMoveTask(${phIdx},${tIdx},-1)`;
+    dnAction  = type === 'phase' ? `spMovePhase(${phIdx},1)`  : `spMoveTask(${phIdx},${tIdx},1)`;
+  }
+
+  const moveHtml = type !== 'root' ? `
+    <button class="mm-tb-btn" title="위로 이동" ${isFirst?'disabled':''} onclick="${upAction}">↑</button>
+    <button class="mm-tb-btn" title="아래로 이동" ${isLast?'disabled':''} onclick="${dnAction}">↓</button>
+    <div class="mm-tb-sep"></div>` : '';
+
+  _mmToolbar.innerHTML = moveHtml + `
+    <button class="mm-tb-btn tb-add" title="${addTitle}" onclick="${addAction}">＋</button>`;
+
+  const tbH = type === 'root' ? 38 : 104;
+  _mmToolbar.style.left = (x + w + 12) + 'px';
+  _mmToolbar.style.top  = (y + h / 2 - tbH / 2) + 'px';
+  _mmToolbar.className  = 'visible';
+  _mmToolbar.style.animation = 'tbIn .16s ease';
+}
+
+function saveSidePanel() {
+  if (_spType === 'phase') {
+    const val = document.getElementById('msp-phase-name')?.value.trim();
+    if (val) STATE.wbs[_spPh].phase = val;
+  } else if (_spType === 'task') {
+    const task = STATE.wbs[_spPh]?.tasks[_spTk];
+    if (!task) return;
+    task.name     = document.getElementById('msp-task-name')?.value.trim() || task.name;
+    task.start    = document.getElementById('msp-task-start')?.value || task.start;
+    task.end      = document.getElementById('msp-task-end')?.value   || task.end;
+    task.assignee = document.getElementById('msp-task-assignee')?.value.trim() || '';
+    if (!task.stages) task.stages = {};
+    STAGES.forEach(s => {
+      const cb = document.querySelector(`.msp-stage[data-key="${s.key}"] input`);
+      if (cb) task.stages[s.key] = cb.checked;
+    });
+    document.getElementById('mspTitle').textContent = task.name;
+  } else if (_spType === 'subtask') {
+    const st = STATE.wbs[_spPh]?.tasks[_spTk]?.children?.[_spSt];
+    if (!st) return;
+    const locked = isTaskLocked(st);
+    if (!locked) {
+      st.name     = document.getElementById('msp-st-name')?.value.trim() || st.name;
+      st.start    = document.getElementById('msp-st-start')?.value || st.start;
+      st.end      = document.getElementById('msp-st-end')?.value   || st.end;
+    }
+    st.assignee = document.getElementById('msp-st-assignee')?.value.trim() || '';
+    if (!st.stages) st.stages = {};
+    STAGES.forEach(s => {
+      const cb = document.querySelector(`.msp-stage[data-key="${s.key}"] input`);
+      if (cb) st.stages[s.key] = cb.checked;
+    });
+    document.getElementById('mspTitle').textContent = st.name;
+  }
+  _saveWbsState();
+  renderMindmap();
+  refreshOverallProgress();
+}
+
+function _saveWbsState() {
+  localStorage.setItem('ec-dashboard', JSON.stringify(STATE));
+}
+
+// ── Panel renderers ──
+function _renderPanelRoot() {
+  const body = document.getElementById('mspBody');
+  document.getElementById('mspFooter').style.display = 'none';
+  document.getElementById('mspDelBtn').style.display  = 'none';
+  document.querySelector('.msp-save').style.display   = 'none';
+
+  const phaseItems = STATE.wbs.map((ph, phIdx) => {
+    const locked    = ph.tasks.some(t => isTaskLocked(t));
+    const inProg    = ph.tasks.some(t => isTaskInProgress(t));
+    const deletable = canDeletePhase(ph);
+    const phProg    = ph.tasks.length
+      ? Math.round(ph.tasks.reduce((s,t) => s + taskProgress(t), 0) / ph.tasks.length)
+      : 0;
+    const dotColor  = phProg === 100 ? '#3ecf8e' : phProg > 0 ? '#8361ff' : '#3a3648';
+    const lockReason = !deletable
+      ? (ph.tasks.length ? `하위 Task ${ph.tasks.length}개 보유` : '')
+      : '';
+    return `
+      <div class="msp-child">
+        <div class="msp-child-dot" style="background:${dotColor};"></div>
+        <span class="msp-child-name" title="${esc(ph.phase)}">${esc(ph.phase)}</span>
+        <div class="msp-child-meta">
+          ${locked ? '<span class="msp-child-lock" title="담당자 배정된 Task 있음">🔒</span>' : ''}
+          <span class="msp-child-prog" style="color:${dotColor};">${phProg}%</span>
+        </div>
+        <button class="msp-child-btn" onclick="openSidePanel('phase',${phIdx},-1,document.querySelectorAll('.mm-phase')[${phIdx}])">편집</button>
+        <button class="msp-child-btn del" ${!deletable?`disabled title="${lockReason}"`:''}
+          onclick="spDeletePhase(${phIdx},this)">삭제</button>
+      </div>`;
+  }).join('');
+
+  body.innerHTML = `
+    <div class="msp-sec">
+      <div class="msp-seclbl">프로젝트 개요</div>
+      <div style="font-size:12px;color:var(--mu);line-height:1.8;">
+        Phase <strong style="color:var(--wh);">${STATE.wbs.length}개</strong> ·
+        Task <strong style="color:var(--wh);">${STATE.wbs.reduce((s,p)=>s+p.tasks.length,0)}개</strong>
+        전체 진척 <strong style="color:var(--p);">${overallProgress()}%</strong>
+      </div>
+    </div>
+    <div class="msp-sec">
+      <div class="msp-seclbl">Phase 목록 (${STATE.wbs.length})</div>
+      <div class="msp-children">${phaseItems || '<div class="msp-empty">Phase 없음</div>'}</div>
+    </div>
+    <div class="msp-sec">
+      <div class="msp-seclbl">액션</div>
+      <div class="msp-acts">
+        <button class="msp-act act-ok" onclick="spAddPhase()">
+          <span class="msp-act-icon">＋</span><span>Phase 추가</span>
+        </button>
+      </div>
+    </div>`;
+}
+
+function _renderPanelPhase(phIdx) {
+  const ph      = STATE.wbs[phIdx];
+  const body    = document.getElementById('mspBody');
+  const deletable = canDeletePhase(ph);
+
+  // Footer
+  const footer = document.getElementById('mspFooter');
+  footer.style.display = 'flex';
+  document.querySelector('.msp-save').style.display = '';
+  const delBtn = document.getElementById('mspDelBtn');
+  delBtn.style.display = '';
+  delBtn.disabled = !deletable;
+  delBtn.title = !deletable ? 'Task가 있는 Phase는 삭제할 수 없습니다' : '';
+  delBtn.dataset.armed = '0';
+  delBtn.classList.remove('del-confirm');
+  delBtn.textContent = '삭제';
+  delBtn.onclick = function() { spDeletePhase(phIdx, this); };
+
+  const isFirst   = phIdx === 0;
+  const isLast    = phIdx === STATE.wbs.length - 1;
+
+  const taskItems = ph.tasks.map((task, tIdx) => {
+    const locked    = isTaskLocked(task);
+    const inProg    = isTaskInProgress(task);
+    const canDel    = canDeleteTask(task);
+    const prog      = taskProgress(task);
+    const dotColor  = taskDotColor(task);
+    const lockReasons = [];
+    if (inProg)  lockReasons.push('진행중');
+    if (locked)  lockReasons.push('담당자 배정');
+    const lockTip = lockReasons.join(' · ');
+    return `
+      <div class="msp-child">
+        <div class="msp-child-dot" style="background:${dotColor};"></div>
+        <span class="msp-child-name" title="${esc(task.name)}">${esc(task.name)}</span>
+        <div class="msp-child-meta">
+          ${locked||inProg ? `<span class="msp-child-lock" title="${lockTip}">🔒</span>` : ''}
+          <span class="msp-child-prog" style="color:${dotColor};">${prog}%</span>
+        </div>
+        <button class="msp-child-btn" ${locked?`disabled title="담당자 배정됨 — 수정 불가"`:''}
+          onclick="openSidePanel('task',${phIdx},${tIdx},_getTaskNode(${phIdx},${tIdx}))">편집</button>
+        <button class="msp-child-btn del" ${!canDel?`disabled title="${lockTip || '삭제 불가'}"`:''}
+          onclick="spDeleteTask(${phIdx},${tIdx},this)">삭제</button>
+      </div>`;
+  }).join('');
+
+  const lockWarning = !deletable
+    ? `<div class="msp-lock-tip">⚠ Task가 있거나 진행 중인 경우 Phase를 삭제할 수 없습니다.</div>`
+    : '';
+
+  body.innerHTML = `
+    <div class="msp-sec">
+      <div class="msp-seclbl">편집</div>
+      <div class="msp-field">
+        <span class="msp-flabel">Phase 이름</span>
+        <input type="text" class="msp-input" id="msp-phase-name" value="${esc(ph.phase)}">
+      </div>
+    </div>
+    <div class="msp-sec">
+      <div class="msp-seclbl">Task 목록 (${ph.tasks.length})</div>
+      <div class="msp-children">${taskItems || '<div class="msp-empty">Task 없음</div>'}</div>
+    </div>
+    <div class="msp-sec">
+      <div class="msp-seclbl">액션</div>
+      ${!deletable ? '<div class="msp-lock-tip">⚠ Task가 있는 Phase는 하단 삭제버튼이 비활성됩니다.</div>' : ''}
+      <div class="msp-acts" style="margin-top:${!deletable?'6px':'0'};">
+        <button class="msp-act act-ok" onclick="spAddTask(${phIdx})">
+          <span class="msp-act-icon">＋</span><span>Task 추가 (맨 아래)</span>
+        </button>
+        <button class="msp-act" onclick="spMovePhase(${phIdx},-1)" ${isFirst?'disabled style="opacity:.4;cursor:not-allowed;"':''}>
+          <span class="msp-act-icon">↑</span><span>Phase 위로 이동</span>
+        </button>
+        <button class="msp-act" onclick="spMovePhase(${phIdx},1)" ${isLast?'disabled style="opacity:.4;cursor:not-allowed;"':''}>
+          <span class="msp-act-icon">↓</span><span>Phase 아래로 이동</span>
+        </button>
+      </div>
+    </div>`;
+}
+
+function _renderPanelTask(phIdx, tIdx) {
+  const task = STATE.wbs[phIdx]?.tasks[tIdx];
+  if (!task) return;
+  const body   = document.getElementById('mspBody');
+
+  const locked  = isTaskLocked(task);
+  const inProg  = isTaskInProgress(task);
+  const canDel  = canDeleteTask(task);
+  const isFirst = tIdx === 0;
+  const isLast  = tIdx === STATE.wbs[phIdx].tasks.length - 1;
+  const dis     = locked ? 'disabled style="opacity:.45;pointer-events:none;"' : '';
+
+  // Footer
+  const footer = document.getElementById('mspFooter');
+  footer.style.display = 'flex';
+  document.querySelector('.msp-save').style.display = locked ? 'none' : '';
+  const delBtn = document.getElementById('mspDelBtn');
+  delBtn.style.display = '';
+  delBtn.disabled = !canDel;
+  delBtn.title = !canDel ? (locked ? '담당자 배정됨' : '진행 중인 Task는 삭제 불가') : '';
+  delBtn.dataset.armed = '0';
+  delBtn.classList.remove('del-confirm');
+  delBtn.textContent = '삭제';
+  delBtn.onclick = function() { spDeleteTask(phIdx, tIdx, this); };
+
+  const stagesHtml = STAGES.map(s => {
+    const on = task.stages && task.stages[s.key];
+    return `<label class="msp-stage${on?' on':''}${locked?' ':''}" data-key="${s.key}" ${locked?'style="opacity:.5;pointer-events:none;"':''}>
+      <input type="checkbox" ${on?'checked':''} ${locked?'disabled':''}
+        onchange="this.closest('.msp-stage').classList.toggle('on',this.checked)">
+      ${s.label} <span style="font-size:9px;opacity:.55;">${s.score}pt</span>
+    </label>`;
+  }).join('');
+
+  const phOptions = STATE.wbs.map((p, i) =>
+    `<option value="${i}" ${i===phIdx?'selected':''}>${esc(p.phase)}</option>`
+  ).join('');
+
+  const lockWarning = locked
+    ? `<div class="msp-lock-tip">🔒 담당자(${esc(task.assignee)})가 배정되어 있어 수정이 잠겨 있습니다.</div>`
+    : '';
+  const delWarning = !canDel && !locked
+    ? `<div class="msp-lock-tip">⚠ 진행 중인 Task는 삭제할 수 없습니다.</div>`
+    : '';
+
+
+  const children = task.children || [];
+  const childItems = children.map((st, stIdx) => {
+    const stProg = subtaskProgress(st);
+    const stColor = stProg === 100 ? '#3ecf8e' : stProg > 0 ? '#8361ff' : '#3a3648';
+    const canDelSt = !isTaskInProgress(st) && !isTaskLocked(st);
+    return `
+      <div class="msp-child">
+        <div class="msp-child-dot" style="background:${stColor};"></div>
+        <span class="msp-child-name" title="${esc(st.name)}">${esc(st.name)}</span>
+        <div class="msp-child-meta">
+          <span class="msp-child-prog" style="color:${stColor};">${stProg}%</span>
+        </div>
+        <button class="msp-child-btn" onclick="openSidePanel('subtask',${phIdx},${tIdx},_getSubtaskNode(${phIdx},${tIdx},${stIdx}),${stIdx})">편집</button>
+        <button class="msp-child-btn del" ${!canDelSt?'disabled title="진행 중이거나 담당자 배정됨"':''}
+          onclick="spDeleteSubtask(${phIdx},${tIdx},${stIdx},this)">삭제</button>
+      </div>`;
+  }).join('');
+
+  const stagesSection = children.length === 0 ? `
+    <div class="msp-field">
+      <span class="msp-flabel">단계 완료</span>
+      <div class="msp-stages">${stagesHtml}</div>
+    </div>` : `
+    <div class="msp-field">
+      <span class="msp-flabel">진척 (Sub-task 기반)</span>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+        <div class="mm-prog-track" style="flex:1;height:6px;"><div class="mm-prog-fill" style="width:${taskProgress(task)}%;background:var(--p);"></div></div>
+        <span style="font-size:11px;color:var(--p);">${taskProgress(task)}%</span>
+      </div>
+    </div>`;
+
+  body.innerHTML = `
+    <div class="msp-sec">
+      <div class="msp-seclbl">편집</div>
+      ${lockWarning}
+      <div class="msp-field" style="margin-top:${lockWarning?'6px':'0'};">
+        <span class="msp-flabel">작업명</span>
+        <input type="text" class="msp-input" id="msp-task-name" value="${esc(task.name)}" ${dis}>
+      </div>
+      <div class="msp-row2">
+        <div class="msp-field">
+          <span class="msp-flabel">시작일</span>
+          <input type="date" class="msp-input" id="msp-task-start" value="${task.start||''}" ${dis}>
+        </div>
+        <div class="msp-field">
+          <span class="msp-flabel">종료일</span>
+          <input type="date" class="msp-input" id="msp-task-end" value="${task.end||''}" ${dis}>
+        </div>
+      </div>
+      ${stagesSection}
+      <div class="msp-field">
+        <span class="msp-flabel">담당자 <span style="font-size:9px;color:var(--warn);">(배정 시 잠금)</span></span>
+        ${assigneeSelectHtml('msp-task-assignee', task.assignee||'')}
+      </div>
+    </div>
+    ${children.length > 0 ? `
+    <div class="msp-sec">
+      <div class="msp-seclbl">Sub-task (${children.length})</div>
+      <div class="msp-children">${childItems}</div>
+    </div>` : ''}
+    <div class="msp-sec">
+      <div class="msp-seclbl">액션</div>
+      <div class="msp-acts">
+        <button class="msp-act act-ok" onclick="spAddChild(${phIdx},${tIdx})">
+          <span class="msp-act-icon">＋</span><span>Sub-task 추가 (child)</span>
+        </button>
+        <button class="msp-act" onclick="spAddSiblingTask(${phIdx},${tIdx})">
+          <span class="msp-act-icon">＋</span><span>아래에 Task 추가 (sibling)</span>
+        </button>
+        <button class="msp-act" onclick="spMoveTask(${phIdx},${tIdx},-1)" ${isFirst?'disabled style="opacity:.4;cursor:not-allowed;"':''}>
+          <span class="msp-act-icon">↑</span><span>위로 이동</span>
+        </button>
+        <button class="msp-act" onclick="spMoveTask(${phIdx},${tIdx},1)" ${isLast?'disabled style="opacity:.4;cursor:not-allowed;"':''}>
+          <span class="msp-act-icon">↓</span><span>아래로 이동</span>
+        </button>
+        <div class="msp-field" style="margin-top:2px;">
+          <span class="msp-flabel">Phase 이동</span>
+          <select class="msp-select" id="msp-move-phase" onchange="spMoveTaskToPhase(${phIdx},${tIdx},+this.value)">
+            ${phOptions}
+          </select>
+        </div>
+        ${!canDel && !locked ? '<div class="msp-lock-tip" style="margin-top:4px;">⚠ 진행 중인 Task는 하단 삭제버튼이 비활성됩니다.</div>' : ''}
+      </div>
+    </div>`;
+}
+
+function _renderPanelSubtask(phIdx, tIdx, stIdx) {
+  const st = STATE.wbs[phIdx]?.tasks[tIdx]?.children?.[stIdx];
+  if (!st) return;
+  const body   = document.getElementById('mspBody');
+  const locked  = isTaskLocked(st);
+  const inProg  = isTaskInProgress(st);
+  const canDel  = !inProg && !locked;
+  const isFirst = stIdx === 0;
+  const isLast  = stIdx === (STATE.wbs[phIdx]?.tasks[tIdx]?.children?.length ?? 1) - 1;
+  const dis     = locked ? 'disabled style="opacity:.45;pointer-events:none;"' : '';
+
+  const footer = document.getElementById('mspFooter');
+  footer.style.display = 'flex';
+  document.querySelector('.msp-save').style.display = locked ? 'none' : '';
+  const delBtn = document.getElementById('mspDelBtn');
+  delBtn.style.display = '';
+  delBtn.disabled = !canDel;
+  delBtn.title = !canDel ? (locked ? '담당자 배정됨' : '진행 중') : '';
+  delBtn.dataset.armed = '0';
+  delBtn.classList.remove('del-confirm');
+  delBtn.textContent = '삭제';
+  delBtn.onclick = function() { spDeleteSubtask(phIdx, tIdx, stIdx, this); };
+
+  const stagesHtml = STAGES.map(s => {
+    const on = st.stages && st.stages[s.key];
+    return `<label class="msp-stage${on?' on':''}" data-key="${s.key}" ${locked?'style="opacity:.5;pointer-events:none;"':''}>
+      <input type="checkbox" ${on?'checked':''} ${locked?'disabled':''}
+        onchange="this.closest('.msp-stage').classList.toggle('on',this.checked)">
+      ${s.label} <span style="font-size:9px;opacity:.55;">${s.score}pt</span>
+    </label>`;
+  }).join('');
+
+  const lockWarning = locked
+    ? `<div class="msp-lock-tip">🔒 담당자(${esc(st.assignee)})가 배정되어 있어 수정이 잠겨 있습니다.</div>`
+    : '';
+  const parentTask = STATE.wbs[phIdx]?.tasks[tIdx];
+
+  body.innerHTML = `
+    <div class="msp-sec">
+      <div class="msp-seclbl" style="color:var(--mu);">상위: ${esc(parentTask?.name || '')}</div>
+    </div>
+    <div class="msp-sec">
+      <div class="msp-seclbl">편집</div>
+      ${lockWarning}
+      <div class="msp-field">
+        <span class="msp-flabel">작업명</span>
+        <input type="text" class="msp-input" id="msp-st-name" value="${esc(st.name)}" ${dis}>
+      </div>
+      <div class="msp-row2">
+        <div class="msp-field">
+          <span class="msp-flabel">시작일</span>
+          <input type="date" class="msp-input" id="msp-st-start" value="${st.start||''}" ${dis}>
+        </div>
+        <div class="msp-field">
+          <span class="msp-flabel">종료일</span>
+          <input type="date" class="msp-input" id="msp-st-end" value="${st.end||''}" ${dis}>
+        </div>
+      </div>
+      <div class="msp-field">
+        <span class="msp-flabel">단계 완료</span>
+        <div class="msp-stages">${stagesHtml}</div>
+      </div>
+      <div class="msp-field">
+        <span class="msp-flabel">담당자 <span style="font-size:9px;color:var(--warn);">(배정 시 잠금)</span></span>
+        ${assigneeSelectHtml('msp-st-assignee', st.assignee||'')}
+      </div>
+    </div>
+    <div class="msp-sec">
+      <div class="msp-seclbl">액션</div>
+      <div class="msp-acts">
+        <button class="msp-act act-ok" onclick="spAddSiblingSubtask(${phIdx},${tIdx},${stIdx})">
+          <span class="msp-act-icon">＋</span><span>아래에 Sub-task 추가</span>
+        </button>
+        <button class="msp-act" onclick="spMoveSubtask(${phIdx},${tIdx},${stIdx},-1)" ${isFirst?'disabled style="opacity:.4;cursor:not-allowed;"':''}>
+          <span class="msp-act-icon">↑</span><span>위로 이동</span>
+        </button>
+        <button class="msp-act" onclick="spMoveSubtask(${phIdx},${tIdx},${stIdx},1)" ${isLast?'disabled style="opacity:.4;cursor:not-allowed;"':''}>
+          <span class="msp-act-icon">↓</span><span>아래로 이동</span>
+        </button>
+      </div>
+    </div>`;
+}
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// ── 2-step delete: first click arms, second click executes ──
+let _delTimer = null;
+function _confirmStep(btn) {
+  if (!btn) return true; // called without btn = direct execute
+  if (btn.dataset.armed === '1') {
+    // Second click → execute
+    clearTimeout(_delTimer);
+    btn.dataset.armed = '0';
+    btn.classList.remove('del-confirm');
+    btn.textContent = btn.dataset.origText || '삭제';
+    return true;
+  }
+  // First click → arm
+  btn.dataset.origText = btn.textContent;
+  btn.dataset.armed = '1';
+  btn.classList.add('del-confirm');
+  btn.textContent = '한번 더 클릭';
+  _delTimer = setTimeout(() => {
+    btn.dataset.armed = '0';
+    btn.classList.remove('del-confirm');
+    btn.textContent = btn.dataset.origText || '삭제';
+  }, 3000);
+  return false;
+}
+
+// ── Lock rules ──
+function isTaskInProgress(task) {
+  return STAGES.some(s => task.stages && task.stages[s.key]);
+}
+function isTaskLocked(task) {
+  // Locked (no edit) if assignee is set
+  return !!(task.assignee && task.assignee.trim());
+}
+function canDeleteTask(task) {
+  // Can't delete if in-progress OR has assignee
+  return !isTaskInProgress(task) && !isTaskLocked(task);
+}
+function canDeletePhase(ph) {
+  // Can't delete if it has any tasks (children) or any task is in-progress
+  return ph.tasks.length === 0;
+}
+function taskDotColor(task) {
+  const prog = taskProgress(task);
+  return prog === 100 ? '#3ecf8e' : prog > 0 ? '#8361ff' : '#3a3648';
+}
+
+function _getTaskNode(phIdx, tIdx) {
+  // Find task node in canvas by counting tasks up to this phase+index
+  let count = 0;
+  for (let i = 0; i < phIdx; i++) count += STATE.wbs[i].tasks.length;
+  count += tIdx;
+  return document.querySelectorAll('.mm-task')[count] || null;
+}
+
+// ── Side panel actions ──
+function spAddPhase() {
+  STATE.wbs.push({ phase: 'New Phase', tasks: [] });
+  _saveWbsState();
+  closeSidePanel();
+  renderMindmap();
+}
+
+function _globalTaskIdx(phIdx, tIdx) {
+  let n = 0;
+  for (let i = 0; i < phIdx; i++) n += STATE.wbs[i].tasks.length;
+  return n + tIdx;
+}
+
+function _openNewTask(phIdx, tIdx) {
+  renderMindmap();
+  const globalIdx = _globalTaskIdx(phIdx, tIdx);
+  setTimeout(() => {
+    const nodes = document.querySelectorAll('.mm-task');
+    const el = nodes[globalIdx];
+    if (el) openSidePanel('task', phIdx, tIdx, el);
+  }, 50);
+}
+
+function spAddTask(phIdx) {
+  STATE.wbs[phIdx].tasks.push({
+    name:'New Task', start:'', end:'',
+    stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee:'', children:[]
+  });
+  _saveWbsState();
+  _openNewTask(phIdx, STATE.wbs[phIdx].tasks.length - 1);
+}
+
+function spAddSiblingTask(phIdx, afterIdx) {
+  const newTIdx = afterIdx + 1;
+  STATE.wbs[phIdx].tasks.splice(newTIdx, 0, {
+    name:'New Task', start:'', end:'',
+    stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee:'', children:[]
+  });
+  _saveWbsState();
+  _openNewTask(phIdx, newTIdx);
+}
+
+function spAddChild(phIdx, tIdx) {
+  const task = STATE.wbs[phIdx]?.tasks[tIdx];
+  if (!task) return;
+  if (!task.children) task.children = [];
+  task.children.push({ name:'New Sub-task', start:'', end:'',
+    stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee:'' });
+  _saveWbsState();
+  const newStIdx = task.children.length - 1;
+  renderMindmap();
+  setTimeout(() => {
+    const stEl = _getSubtaskNode(phIdx, tIdx, newStIdx);
+    if (stEl) openSidePanel('subtask', phIdx, tIdx, stEl, newStIdx);
+  }, 50);
+}
+
+function spAddSiblingSubtask(phIdx, tIdx, afterStIdx) {
+  const task = STATE.wbs[phIdx]?.tasks[tIdx];
+  if (!task) return;
+  if (!task.children) task.children = [];
+  const newStIdx = afterStIdx + 1;
+  task.children.splice(newStIdx, 0, { name:'New Sub-task', start:'', end:'',
+    stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee:'' });
+  _saveWbsState();
+  renderMindmap();
+  setTimeout(() => {
+    const stEl = _getSubtaskNode(phIdx, tIdx, newStIdx);
+    if (stEl) openSidePanel('subtask', phIdx, tIdx, stEl, newStIdx);
+  }, 50);
+}
+
+function spMoveSubtask(phIdx, tIdx, stIdx, dir) {
+  const children = STATE.wbs[phIdx]?.tasks[tIdx]?.children;
+  if (!children) return;
+  const nIdx = stIdx + dir;
+  if (nIdx < 0 || nIdx >= children.length) return;
+  [children[stIdx], children[nIdx]] = [children[nIdx], children[stIdx]];
+  _saveWbsState();
+  renderMindmap();
+  setTimeout(() => {
+    const stEl = _getSubtaskNode(phIdx, tIdx, nIdx);
+    if (stEl) openSidePanel('subtask', phIdx, tIdx, stEl, nIdx);
+  }, 50);
+}
+
+function spDeleteSubtask(phIdx, tIdx, stIdx, btn) {
+  if (!_confirmStep(btn)) return;
+  STATE.wbs[phIdx].tasks[tIdx].children.splice(stIdx, 1);
+  _saveWbsState();
+  closeSidePanel();
+  renderMindmap();
+  refreshOverallProgress();
+}
+
+function _getSubtaskNode(phIdx, tIdx, stIdx) {
+  // Find all subtask nodes grouped by parent task in canvas
+  // Subtasks are rendered as .mm-subtask; we need to find the stIdx-th subtask of this task
+  // Since tasks render subtasks in order, we count subtasks for all tasks before this one
+  let count = 0;
+  for (let pi = 0; pi <= phIdx; pi++) {
+    const tasks = STATE.wbs[pi].tasks;
+    const limit = (pi === phIdx) ? tIdx : tasks.length;
+    for (let ti = 0; ti < limit; ti++) {
+      count += (tasks[ti].children && tasks[ti].children.length) || 0;
+    }
+  }
+  count += stIdx;
+  return document.querySelectorAll('.mm-subtask')[count] || null;
+}
+
+function spMovePhase(phIdx, dir) {
+  const arr = STATE.wbs;
+  const nIdx = phIdx + dir;
+  if (nIdx < 0 || nIdx >= arr.length) return;
+  [arr[phIdx], arr[nIdx]] = [arr[nIdx], arr[phIdx]];
+  _saveWbsState();
+  renderMindmap();
+  // Re-open panel at new position
+  const phEl = document.querySelectorAll('.mm-phase')[nIdx];
+  if (phEl) openSidePanel('phase', nIdx, -1, phEl);
+}
+
+function spMoveTask(phIdx, tIdx, dir) {
+  const tasks = STATE.wbs[phIdx].tasks;
+  const nIdx  = tIdx + dir;
+  if (nIdx < 0 || nIdx >= tasks.length) return;
+  [tasks[tIdx], tasks[nIdx]] = [tasks[nIdx], tasks[tIdx]];
+  _saveWbsState();
+  renderMindmap();
+  // Re-open panel at new position
+  const tEl = _getTaskNode(phIdx, nIdx);
+  if (tEl) openSidePanel('task', phIdx, nIdx, tEl);
+}
+
+function spMoveTaskToPhase(fromPh, tIdx, toPh) {
+  if (fromPh === toPh) return;
+  const [task] = STATE.wbs[fromPh].tasks.splice(tIdx, 1);
+  STATE.wbs[toPh].tasks.push(task);
+  _saveWbsState();
+  renderMindmap();
+  closeSidePanel();
+}
+
+function spDeletePhase(phIdx, btn) {
+  if (!_confirmStep(btn)) return;
+  STATE.wbs.splice(phIdx, 1);
+  _saveWbsState();
+  closeSidePanel();
+  renderMindmap();
+  refreshOverallProgress();
+}
+
+function spDeleteTask(phIdx, tIdx, btn) {
+  if (!_confirmStep(btn)) return;
+  STATE.wbs[phIdx].tasks.splice(tIdx, 1);
+  _saveWbsState();
+  closeSidePanel();
+  renderMindmap();
+  refreshOverallProgress();
+}
+
+// Close panel on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSidePanel(); });
+
+// ──────────────────────────────────────────────
+// File upload: CSV / Excel → WBS
+// ──────────────────────────────────────────────
+function handleFileUpload(file) {
+  if (!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (ext === 'csv' || ext === 'txt') {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const wbs = parseCsvToWbs(e.target.result);
+      if (wbs) applyUploadedWbs(wbs, file.name);
+    };
+    reader.readAsText(file, 'UTF-8');
+  } else if (ext === 'xlsx' || ext === 'xls') {
+    const reader = new FileReader();
+    reader.onload = e => {
+      parseXlsxToWbs(e.target.result).then(wbs => {
+        if (wbs) applyUploadedWbs(wbs, file.name);
+      });
+    };
+    reader.readAsArrayBuffer(file);
+  } else {
+    alert('CSV(.csv) 또는 Excel(.xlsx) 파일만 지원합니다.');
+  }
+  // Reset input so same file can be re-uploaded
+  document.getElementById('wbsFileInput').value = '';
+}
+
+function applyUploadedWbs(wbs, filename) {
+  if (!wbs.length) { alert('파싱된 데이터가 없습니다. 파일 형식을 확인해주세요.'); return; }
+  const count = wbs.reduce((s, p) => s + p.tasks.length, 0);
+  // iframe 환경에서 confirm()이 차단되므로 바로 적용 (사용자가 업로드를 직접 선택한 행위로 간주)
+  STATE.wbs = wbs;
+  localStorage.setItem('ec-dashboard', JSON.stringify(STATE));
+  showView('wbs-map');
+  renderMindmap();
+  flashMsg('wbs-save-msg');
+}
+
+// ── CSV parser ──
+function parseCsvToWbs(text) {
+  const lines = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+  const rows = lines.map(line => {
+    if (!line.trim()) return null;
+    const cells = []; let inQ = false, cell = '';
+    for (const ch of line) {
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === ',' && !inQ) { cells.push(cell.trim()); cell = ''; }
+      else { cell += ch; }
+    }
+    cells.push(cell.trim());
+    return cells;
+  }).filter(Boolean);
+  if (!rows.length) return null;
+
+  // Detect header: skip rows where first cell looks like a header keyword
+  let dataStart = 0;
+  const hdr = rows[0].map(c => c.toLowerCase());
+  if (hdr.some(c => c.includes('phase') || c.includes('단계') || c.includes('task') || c.includes('업무'))) dataStart = 1;
+
+  const wbsMap = {}, order = [];
+  rows.slice(dataStart).forEach(row => {
+    const phase    = (row[0] || '').trim();
+    const taskName = (row[1] || '').trim();
+    if (!phase || !taskName) return;
+    const start    = normalizeDate(row[2]);
+    const end      = normalizeDate(row[3]);
+    const assignee = (row[4] || '').trim();
+    if (!wbsMap[phase]) { wbsMap[phase] = []; order.push(phase); }
+    wbsMap[phase].push({ name:taskName, start, end, stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee });
+  });
+  return order.map(phase => ({ phase, tasks: wbsMap[phase] }));
+}
+
+// ── xlsx parser: ZIP + XML (no external deps) ──
+async function readZipEntry(buffer, targetName) {
+  const bytes = new Uint8Array(buffer);
+  const view  = new DataView(buffer);
+  let i = 0;
+  while (i < bytes.length - 30) {
+    const sig = view.getUint32(i, true);
+    if (sig === 0x04034b50) {
+      const compression = view.getUint16(i + 8, true);
+      const compSize    = view.getUint32(i + 18, true);
+      const nameLen     = view.getUint16(i + 26, true);
+      const extraLen    = view.getUint16(i + 28, true);
+      const name = new TextDecoder().decode(bytes.slice(i + 30, i + 30 + nameLen));
+      const dataStart   = i + 30 + nameLen + extraLen;
+      if (name === targetName) {
+        const compData = bytes.slice(dataStart, dataStart + compSize);
+        if (compression === 0) return new TextDecoder().decode(compData);
+        if (compression === 8) {
+          try {
+            const ds = new DecompressionStream('deflate-raw');
+            const writer = ds.writable.getWriter();
+            const reader = ds.readable.getReader();
+            writer.write(compData); writer.close();
+            const chunks = [];
+            while (true) { const {done,value} = await reader.read(); if (done) break; chunks.push(value); }
+            const total = chunks.reduce((s,c) => s+c.length, 0);
+            const out = new Uint8Array(total); let pos = 0;
+            chunks.forEach(c => { out.set(c, pos); pos += c.length; });
+            return new TextDecoder().decode(out);
+          } catch(e) { console.error('Deflate error', e); return null; }
+        }
+        return null;
+      }
+      i = dataStart + compSize;
+    } else if (sig === 0x02014b50 || sig === 0x06054b50) {
+      break;
+    } else { i++; }
+  }
+  return null;
+}
+
+async function parseXlsxToWbs(buffer) {
+  const [sheetXml, ssXml] = await Promise.all([
+    readZipEntry(buffer, 'xl/worksheets/sheet1.xml'),
+    readZipEntry(buffer, 'xl/sharedStrings.xml'),
+  ]);
+  if (!sheetXml) { alert('xlsx 내부에서 시트를 찾을 수 없습니다.'); return null; }
+
+  // Shared strings
+  const ss = [];
+  if (ssXml) {
+    (ssXml.match(/<si>[\s\S]*?<\/si>/g) || []).forEach(si => {
+      const texts = [...si.matchAll(/<t[^>]*>([^<]*)<\/t>/g)].map(m => m[1]);
+      ss.push(texts.join('').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#(\d+);/g,(_,n)=>String.fromCharCode(+n)));
+    });
+  }
+
+  // Parse cells → rows array
+  const rows = [];
+  (sheetXml.match(/<row[^>]*>[\s\S]*?<\/row>/g) || []).forEach(rowXml => {
+    const rIdx = parseInt((rowXml.match(/\br="(\d+)"/) || ['','1'])[1]) - 1;
+    while (rows.length <= rIdx) rows.push([]);
+    (rowXml.match(/<c [^>]*>[\s\S]*?<\/c>/g) || []).forEach(cellXml => {
+      const ref  = (cellXml.match(/\br="([A-Z]+\d+)"/) || ['','A1'])[1];
+      const type = (cellXml.match(/\bt="([^"]*)"/)      || ['',''])[1];
+      const vM   = cellXml.match(/<v>([^<]*)<\/v>/);
+      let val    = vM ? vM[1] : '';
+      if (type === 's') val = ss[parseInt(val)] || '';
+      const colStr = ref.match(/[A-Z]+/)[0];
+      const colIdx = colStr.split('').reduce((s,c) => s*26+c.charCodeAt(0)-64, 0) - 1;
+      while (rows[rIdx].length <= colIdx) rows[rIdx].push('');
+      rows[rIdx][colIdx] = val;
+    });
+  });
+
+  return convertXlsxRowsToWbs(rows);
+}
+
+function convertXlsxRowsToWbs(rows) {
+  // Try to detect NH WBS format: look for "단계" in header rows
+  let headerRow = -1;
+  for (let i = 0; i < Math.min(15, rows.length); i++) {
+    const joined = rows[i].join('');
+    if (joined.includes('단계') && (joined.includes('담당') || joined.includes('업무'))) {
+      headerRow = i; break;
+    }
+  }
+
+  if (headerRow >= 0) return convertNhRows(rows, headerRow);
+
+  // Fallback: treat as simple CSV-like structure
+  return parseCsvToWbs(rows.map(r => r.join(',')).join('\n'));
+}
+
+function convertNhRows(rows, headerIdx) {
+  const hdr = rows[headerIdx];
+  // Find column indices from header
+  const colOf = key => hdr.findIndex(h => h && h.includes(key));
+  const phCol    = colOf('단계');
+  const taskCol  = [colOf('상세업무'), colOf('업무')].find(c => c >= 0) ?? 3;
+  const asCol    = colOf('담당');
+  const stCol    = colOf('시작계획일') >= 0 ? colOf('시작계획일') : colOf('시작');
+  const enCol    = colOf('종료계획일') >= 0 ? colOf('종료계획일') : colOf('종료');
+
+  const wbsMap = {}, order = [];
+
+  rows.slice(headerIdx + 1).forEach(row => {
+    if (!row.length || row.every(c => !c)) return;
+    // Task name: scan depth cols (D..I = indices 3..8) for deepest non-empty
+    let taskName = '';
+    for (let c = 8; c >= 3; c--) {
+      if (row[c] && row[c].trim()) { taskName = row[c].trim(); break; }
+    }
+    if (!taskName && taskCol >= 0) taskName = (row[taskCol] || '').trim();
+    if (!taskName) return;
+
+    const phase    = phCol >= 0 ? (row[phCol] || '기타').trim() : '기타';
+    if (!phase || phase === '단계') return;
+    const assignee = asCol >= 0 ? (row[asCol] || '').trim() : '';
+    const start    = stCol >= 0 ? normalizeDate(row[stCol]) : '';
+    const end      = enCol >= 0 ? normalizeDate(row[enCol]) : '';
+
+    if (!wbsMap[phase]) { wbsMap[phase] = []; order.push(phase); }
+    wbsMap[phase].push({ name:taskName, start, end, stages:{plan:false,design:false,pub:false,dev:false,qa:false}, assignee });
+  });
+
+  return order.map(phase => ({ phase, tasks: wbsMap[phase] }));
+}
+
+function normalizeDate(val) {
+  if (!val) return '';
+  // Already YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(val)) return val;
+  // Excel numeric date (e.g. 44379)
+  if (/^\d{5}$/.test(val)) {
+    const d = new Date(Math.round((parseFloat(val) - 25569) * 86400 * 1000));
+    return d.toISOString().split('T')[0];
+  }
+  // Korean date "06/04(금)" or "2021/06/04" or "2021.06.04"
+  const m = val.match(/(\d{4})[./-](\d{1,2})[./-](\d{1,2})/);
+  if (m) return `${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`;
+  return '';
+}
+
+// ── CSV template download ──
+function downloadCsvTemplate() {
+  const header = 'Phase,Task,Start,End,Assignee';
+  const sample = [
+    'Phase 1 — IA & 사이트맵,edencrew.com 사이트맵,2026-07-01,2026-07-10,누리',
+    'Phase 1 — IA & 사이트맵,TeamCloud 사이트맵,2026-07-01,2026-07-10,누리',
+    'Phase 2 — 페이지 제작,Home 페이지,2026-07-20,2026-07-30,누리',
+    'Phase 2 — 페이지 제작,Platform 페이지,2026-07-25,2026-08-05,누리',
+  ].join('\n');
+  const blob = new Blob([header + '\n' + sample], { type:'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'wbs-template.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// ── Drag state ──
+let dragTask = null;
+let dragPhase = null;
+
+function makePhaseBlock(ph, pi) {
+  const wrap = document.createElement('div');
+  wrap.className = 'wbs-phase';
+  wrap.dataset.pi = pi;
+
+  // Phase-level drag
+  wrap.draggable = true;
+  wrap.addEventListener('dragstart', e => {
+    if (e.target !== wrap && !e.target.classList.contains('drag-handle')) return;
+    dragPhase = wrap;
+    setTimeout(() => wrap.classList.add('dragging-phase'), 0);
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  wrap.addEventListener('dragend', () => {
+    wrap.classList.remove('dragging-phase');
+    document.querySelectorAll('.wbs-phase').forEach(p => p.classList.remove('drag-over'));
+    dragPhase = null;
+  });
+  wrap.addEventListener('dragover', e => {
+    if (!dragPhase || dragPhase === wrap) return;
+    e.preventDefault();
+    document.querySelectorAll('.wbs-phase').forEach(p => p.classList.remove('drag-over'));
+    wrap.classList.add('drag-over');
+    e.dataTransfer.dropEffect = 'move';
+  });
+  wrap.addEventListener('dragleave', () => wrap.classList.remove('drag-over'));
+  wrap.addEventListener('drop', e => {
+    e.preventDefault();
+    wrap.classList.remove('drag-over');
+    if (!dragPhase || dragPhase === wrap) return;
+    const editor = document.getElementById('wbsEditor');
+    const phases = [...editor.querySelectorAll(':scope > .wbs-phase')];
+    const fromIdx = phases.indexOf(dragPhase);
+    const toIdx   = phases.indexOf(wrap);
+    if (fromIdx < toIdx) editor.insertBefore(dragPhase, wrap.nextSibling);
+    else                  editor.insertBefore(dragPhase, wrap);
+  });
+
+  const head = document.createElement('div');
+  head.className = 'wbs-ph-head';
+  head.innerHTML = `
+    <span class="drag-handle" title="드래그해서 순서 변경">⠿⠿</span>
+    <input class="wbs-ph-name" type="text" value="${ph.phase}" placeholder="Phase 이름">
+    <button class="btn btn-del" onclick="delPhase(this)">삭제</button>
+  `;
+
+  const taskWrap = document.createElement('div');
+  taskWrap.className = 'wbs-tasks';
+
+  // column header row
+  const hdr = document.createElement('div');
+  hdr.style.cssText = 'display:grid;grid-template-columns:16px 1fr 100px 100px auto 72px 52px 52px 28px;gap:6px;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--mu);padding:0 2px 5px;border-bottom:1px solid var(--bd);margin-bottom:4px;';
+  hdr.innerHTML = `<span></span><span>작업명</span><span>시작일</span><span>종료일</span><span>단계 완료</span><span>담당자</span><span style="text-align:center">가중치</span><span style="text-align:center">진행율</span><span></span>`;
+  taskWrap.appendChild(hdr);
+
+  ph.tasks.forEach(t => taskWrap.appendChild(makeTaskRow(t)));
+
+  const addBtn = document.createElement('button');
+  addBtn.className = 'btn btn-add';
+  addBtn.style.marginTop = '4px';
+  addBtn.textContent = '+ Task 추가';
+  addBtn.onclick = () => taskWrap.insertBefore(makeTaskRow({ name:'', status:'todo', assignee:'' }), addBtn);
+
+  taskWrap.appendChild(addBtn);
+  wrap.appendChild(head);
+  wrap.appendChild(taskWrap);
+  return wrap;
+}
+
+function makeTaskRow(t) {
+  const row = document.createElement('div');
+  row.className = 'wbs-task-row';
+  row.draggable = true;
+
+  // ① 드래그 핸들
+  const handle = document.createElement('span');
+  handle.className = 'drag-handle';
+  handle.title = '드래그해서 순서 변경';
+  handle.textContent = '⠿⠿';
+
+  // ② 작업명
+  const nameInput = document.createElement('input');
+  nameInput.type = 'text'; nameInput.className = 'wbs-assignee';
+  nameInput.value = t.name || ''; nameInput.placeholder = '작업명';
+
+  // ③④ 날짜
+  const startInput = document.createElement('input');
+  startInput.type = 'date'; startInput.value = t.start || '';
+
+  const endInput = document.createElement('input');
+  endInput.type = 'date'; endInput.value = t.end || '';
+
+  // ⑤ 단계 체크박스
+  const stageWrap = document.createElement('div');
+  stageWrap.className = 'stage-checks';
+  const stageChecks = {};
+  STAGES.forEach(s => {
+    const lbl = document.createElement('label');
+    lbl.className = 'sc-item' + ((t.stages && t.stages[s.key]) ? ' sc-checked' : '');
+    lbl.title = `${s.label} (${s.score}점)`;
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = !!(t.stages && t.stages[s.key]);
+    stageChecks[s.key] = cb;
+    lbl.appendChild(cb);
+    lbl.appendChild(document.createTextNode(s.label));
+    cb.addEventListener('change', () => {
+      lbl.classList.toggle('sc-checked', cb.checked);
+      refreshTaskMeta();
+    });
+    stageWrap.appendChild(lbl);
+  });
+
+  // ⑥ 담당자
+  const assignInput = document.createElement('select');
+  assignInput.className = 'wbs-assignee';
+  _populateAssigneeSelect(assignInput, t.assignee || '');
+
+  // ⑦ 가중치 (자동)
+  const wdCell = document.createElement('div');
+  wdCell.className = 'task-wd';
+
+  // ⑧ 진행율 (자동)
+  const progWrap = document.createElement('div');
+  progWrap.className = 'task-prog-wrap';
+  const progVal  = document.createElement('div'); progVal.className = 'task-prog-val';
+  const progBar  = document.createElement('div'); progBar.className = 'task-prog-bar';
+  const progFill = document.createElement('div'); progFill.className = 'task-prog-fill';
+  progBar.appendChild(progFill);
+  progWrap.append(progVal, progBar);
+
+  // ⑨ 삭제
+  const delBtn = document.createElement('button');
+  delBtn.className = 'btn btn-del';
+  delBtn.textContent = '✕';
+  delBtn.onclick = () => { row.remove(); refreshOverallProgress(); };
+
+  // 날짜 바뀌면 가중치 재계산
+  [startInput, endInput].forEach(inp => inp.addEventListener('change', refreshTaskMeta));
+
+  function refreshTaskMeta() {
+    const s = startInput.value, e = endInput.value;
+    const wd = workingDays(s, e);
+    const totalWD = totalProjectWD();
+    const w = totalWD > 0 ? (wd / totalWD * 100).toFixed(1) : '0.0';
+    wdCell.textContent = `${wd}d / ${w}%`;
+
+    const prog = STAGES.reduce((sum, st) => sum + (stageChecks[st.key].checked ? st.score : 0), 0);
+    progVal.textContent = prog + '%';
+    progVal.style.color = prog === 100 ? 'var(--ok)' : prog > 0 ? 'var(--p)' : 'var(--mu)';
+    progFill.style.width = prog + '%';
+    refreshOverallProgress();
+  }
+
+  // 초기 렌더
+  setTimeout(refreshTaskMeta, 0);
+
+  row.append(handle, nameInput, startInput, endInput, stageWrap, assignInput, wdCell, progWrap, delBtn);
+
+  // Task drag events
+  row.addEventListener('dragstart', e => {
+    if (!e.target.classList.contains('drag-handle') && e.target !== row) { e.preventDefault(); return; }
+    dragTask = row;
+    setTimeout(() => row.classList.add('dragging-task'), 0);
+    e.dataTransfer.effectAllowed = 'move';
+    e.stopPropagation();
+  });
+  row.addEventListener('dragend', () => {
+    row.classList.remove('dragging-task');
+    document.querySelectorAll('.wbs-task-row').forEach(r => r.classList.remove('drop-above','drop-below'));
+    dragTask = null;
+  });
+  row.addEventListener('dragover', e => {
+    if (!dragTask || dragTask === row || row.querySelector('select')) {
+      // only handle task rows (not header)
+      if (!dragTask || dragTask === row) return;
+    }
+    e.preventDefault(); e.stopPropagation();
+    const mid = row.getBoundingClientRect().top + row.offsetHeight / 2;
+    document.querySelectorAll('.wbs-task-row').forEach(r => r.classList.remove('drop-above','drop-below'));
+    row.classList.add(e.clientY < mid ? 'drop-above' : 'drop-below');
+  });
+  row.addEventListener('dragleave', () => row.classList.remove('drop-above','drop-below'));
+  row.addEventListener('drop', e => {
+    e.preventDefault(); e.stopPropagation();
+    if (!dragTask || dragTask === row) return;
+    const above = row.classList.contains('drop-above');
+    row.classList.remove('drop-above','drop-below');
+    const parent = row.parentElement;
+    if (above) parent.insertBefore(dragTask, row);
+    else        parent.insertBefore(dragTask, row.nextSibling);
+  });
+
+  return row;
+}
+
+function addWbsPhase() {
+  const editor = document.getElementById('wbsEditor');
+  const newPh = { phase:`Phase ${editor.children.length+1}`, tasks:[] };
+  editor.appendChild(makePhaseBlock(newPh, editor.children.length));
+}
+function delPhase(btn) { btn.closest('.wbs-phase').remove(); }
+
+function saveWbs() {
+  const phases = document.querySelectorAll('.wbs-phase');
+  STATE.wbs = Array.from(phases).map(ph => {
+    const name = ph.querySelector('.wbs-ph-name').value;
+    const taskRows = ph.querySelectorAll('.wbs-task-row:not(:first-child):not(:last-child)');
+    const tasks = Array.from(taskRows).map(tr => {
+      const texts = tr.querySelectorAll('input[type="text"]');
+      const dates = tr.querySelectorAll('input[type="date"]');
+      const cbs   = tr.querySelectorAll('input[type="checkbox"]');
+      const assignSel = tr.querySelector('select.wbs-assignee');
+      const stages = {};
+      STAGES.forEach((s, i) => { if (cbs[i]) stages[s.key] = cbs[i].checked; });
+      const existing = STATE.wbs.find(p => p.phase === name)
+        ?.tasks.find(t => t.name === (texts[0]?.value || ''));
+      return {
+        name:     texts[0] ? texts[0].value : '',
+        start:    dates[0] ? dates[0].value : '',
+        end:      dates[1] ? dates[1].value : '',
+        stages,
+        assignee: assignSel ? assignSel.value : '',
+        children: existing?.children || [],
+      };
+    });
+    return { phase: name, tasks };
+  });
+  _saveWbsState();
+  flashMsg('wbs-msg');
+}
+
+// ──────────────────────────────────────────────
+// Overall progress refresh (live, from WBS DOM)
+// ──────────────────────────────────────────────
+function refreshOverallProgress() {
+  const allRows = document.querySelectorAll('#wbsEditor .wbs-task-row');
+  // skip header row (no checkboxes) and add-btn row
+  let totalWD = 0, weightedDone = 0;
+  allRows.forEach(tr => {
+    const dates = tr.querySelectorAll('input[type="date"]');
+    const cbs   = tr.querySelectorAll('input[type="checkbox"]');
+    if (!dates[0] || !dates[1] || cbs.length === 0) return;
+    const wd = workingDays(dates[0].value, dates[1].value);
+    if (wd === 0) return;
+    const prog = STAGES.reduce((s, st, i) => s + (cbs[i] && cbs[i].checked ? st.score : 0), 0);
+    totalWD += wd;
+    weightedDone += wd * prog / 100;
+  });
+
+  const pct = totalWD > 0 ? Math.round(weightedDone / totalWD * 100) : overallProgress();
+  const pctEl = document.getElementById('progPct');
+  const barEl = document.getElementById('progBar');
+  const subEl = document.getElementById('progSub');
+  if (pctEl) pctEl.innerHTML = `${pct}<span style="font-size:13px;color:var(--mu);">%</span>`;
+  if (barEl) barEl.style.width = pct + '%';
+  if (subEl) subEl.textContent = pct === 100 ? '완료 🎉' : pct >= 70 ? '개발 단계' : pct >= 35 ? '디자인·퍼블 단계' : 'IA·기획 단계';
+}
+
+// ──────────────────────────────────────────────
+// Helpers
+// ──────────────────────────────────────────────
+function flashMsg(id) {
+  const el = document.getElementById(id);
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+// ── Sub-project selector ──
+const SUB_PROJECTS = [
+  { id: 'edencrew', name: 'edencrew.com 리뉴얼' },
+  { id: 'teamcloud', name: 'TeamCloud' },
+  { id: 'admin', name: 'Admin Portal' },
+];
+let currentSubProj = SUB_PROJECTS[0].id;
+
+function initSubproj() {
+  if (!SUB_PROJECTS || SUB_PROJECTS.length <= 1) return;
+  const wrap = document.getElementById('sbSubproj');
+  if (wrap) wrap.style.display = '';
+  renderSubprojPopover();
+  updateSubprojTrigger();
+}
+
+function renderSubprojPopover() {
+  const pop = document.getElementById('spPopover');
+  if (!pop) return;
+  pop.innerHTML = SUB_PROJECTS.map(p => `
+    <div class="sp-item${p.id === currentSubProj ? ' active' : ''}" onclick="selectSubproj('${p.id}')">
+      <span class="sp-item-check">${p.id === currentSubProj ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ''}</span>
+      ${p.name}
+    </div>`).join('');
+}
+
+function updateSubprojTrigger() {
+  const sp = SUB_PROJECTS.find(p => p.id === currentSubProj);
+  const lbl = document.getElementById('spTriggerLabel');
+  if (lbl && sp) lbl.textContent = sp.name;
+}
+
+function selectSubproj(id) {
+  currentSubProj = id;
+  updateSubprojTrigger();
+  renderSubprojPopover();
+  closeSubprojPopover();
+}
+
+function toggleSubprojPopover() {
+  const pop = document.getElementById('spPopover');
+  const btn = document.getElementById('spTrigger');
+  if (!pop) return;
+  const isOpen = pop.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+}
+
+function closeSubprojPopover() {
+  document.getElementById('spPopover')?.classList.remove('open');
+  document.getElementById('spTrigger')?.classList.remove('open');
+}
+
+document.addEventListener('click', function(e) {
+  const wrap = document.getElementById('sbSubproj');
+  if (wrap && !wrap.contains(e.target)) closeSubprojPopover();
+});
+
+function switchMainTab(tab) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const view = document.getElementById('view-' + tab);
+  if (view) view.classList.add('active');
+  document.querySelectorAll('.tb-tab[id^="tbtab-"]').forEach(el => el.classList.remove('active'));
+  const tbtab = document.getElementById('tbtab-' + tab);
+  if (tbtab) tbtab.classList.add('active');
+  document.querySelector('.main').classList.toggle('prd-active', tab === 'prd');
+  if (tab === 'prd') initPrdView();
+}
+
+// ── PRD View ──
+function initPrdView() {
+  /* 명시적으로 '0'이 아닌 한 등록된 상태로 취급 */
+  var reg = localStorage.getItem('ec_prd_registered') !== '0';
+  document.getElementById('prdEmpty').classList.toggle('hidden', reg);
+  document.getElementById('prdDocLayout').classList.toggle('hidden', !reg);
+  if (reg) resizePrdFrame();
+}
+function togglePrdSrcPanel() {
+  document.getElementById('prdSrcPanel').classList.toggle('show');
+}
+function switchPrdSrc(src, btn) {
+  document.querySelectorAll('.prd-src-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.prd-src-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('prd-src-' + src).classList.add('active');
+}
+function handleMdFile(input) {
+  document.getElementById('prdMdFileName').textContent = input.files[0] ? input.files[0].name : '선택된 파일 없음';
+}
+function registerPrd(method) {
+  localStorage.setItem('ec_prd_registered', '1');
+  initPrdView();
+}
+
+/* iframe 로드 시 높이를 콘텐츠 전체 높이로 확장 */
+(function() {
+  var frame = document.getElementById('prdFrame');
+  if (frame) {
+    frame.addEventListener('load', resizePrdFrame);
+  }
+})();
+function resizePrdFrame() {
+  var frame = document.getElementById('prdFrame');
+  if (!frame) return;
+  try {
+    var h = frame.contentDocument.documentElement.scrollHeight;
+    frame.style.height = h + 'px';
+    var firstSection = frame.contentDocument.querySelector('.prd-section');
+    var nav = document.getElementById('prdAnchorNav');
+    if (firstSection && nav) {
+      nav.style.paddingTop = firstSection.offsetTop + 'px';
+    }
+  } catch(e) {}
+}
+
+function prdScrollTo(id, el) {
+  document.querySelectorAll('.prd-anchor-link').forEach(l => l.classList.remove('active'));
+  el.classList.add('active');
+  try {
+    var frame = document.getElementById('prdFrame');
+    var target = frame.contentDocument.getElementById(id);
+    if (!target) return;
+    var layout = document.getElementById('prdDocLayout');
+    /* target의 iframe 내부 offsetTop + iframe의 layout 내부 offsetTop */
+    var targetTop = 0;
+    var node = target;
+    while (node && node !== frame.contentDocument.body) {
+      targetTop += node.offsetTop;
+      node = node.offsetParent;
+    }
+    var iframeOffsetTop = frame.offsetTop + (frame.offsetParent ? frame.offsetParent.offsetTop : 0);
+    layout.scrollTo({ top: iframeOffsetTop + targetTop - 24, behavior: 'smooth' });
+  } catch(e) {}
+}
+
+// ── Sidebar toggle & resize ──
+function toggleSidebar() {
+  var sb = document.getElementById('sidebar');
+  var hidden = sb.classList.toggle('sb-hidden');
+  localStorage.setItem('ec_sidebar_hidden', hidden ? '1' : '0');
+}
+
+// ── Mobile tab nav ──
+function mobTab(tabId, viewName) {
+  document.querySelectorAll('.mob-tab').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('mobt-' + tabId);
+  if (btn) btn.classList.add('active');
+  showView(viewName);
+}
+
+// ── Theme ──
+function setTheme(mode) { LuumSidebar.applyTheme(mode); }
+
+// ── Init ──
+LuumSidebar.init('#sidebar', { foldable: false, showUser: false, showHeader: true });
+/* 사이드바 열림 상태 복원 */
+(function() {
+  if (localStorage.getItem('ec_sidebar_hidden') === '1') {
+    var sb = document.getElementById('sidebar');
+    if (sb) sb.classList.add('sb-hidden');
+  }
+})();
+switchMainTab('prd');
+initSubproj();
+buildGantt();
+renderOverview();
+populatePeriodForm();
+</script>
+</body>
+</html>
