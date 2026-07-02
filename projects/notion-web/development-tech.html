@@ -1,3 +1,545 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Development & Tech</title><style>
-:root{--orange:#ff6b00;--navy:#151a28;--ink:#202124;--muted:#6b7280;--line:#e9e4de;--bg:#fffaf5;--card:#fff;--soft:#fff0e4}*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,#fff 0,#fffaf5 58%,#f7f8fb 100%);line-height:1.58}.wrap{max-width:1140px;margin:0 auto;padding:0 28px}.nav{position:sticky;top:0;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);z-index:5}.navin{height:64px;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:900;letter-spacing:-.04em;color:var(--navy)}.brand span{color:var(--orange)}.nav a{font-size:14px;color:#4b5563;text-decoration:none;margin-left:18px}.hero{padding:82px 0 56px}.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}.eyebrow{display:inline-flex;padding:7px 11px;border-radius:999px;background:#fff7ef;border:1px solid #ffd8bf;color:#b84d00;font-weight:800;font-size:13px}.h1{font-size:58px;line-height:1.04;letter-spacing:-.06em;color:var(--navy);margin:18px 0}.lead{font-size:19px;color:#4b5563}.panel{background:var(--navy);color:white;border-radius:28px;padding:28px;box-shadow:0 24px 80px rgba(21,26,40,.18)}.panel h3{margin:0 0 14px;color:white}.panel p,.panel li{color:rgba(255,255,255,.72)}.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}.metric{background:white;border:1px solid var(--line);border-radius:18px;padding:20px}.metric strong{display:block;font-size:30px;color:var(--orange);letter-spacing:-.04em}section{padding:62px 0}.kicker{font-size:13px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:var(--orange)}.title{font-size:36px;line-height:1.15;letter-spacing:-.045em;color:var(--navy);margin:6px 0 18px}.desc{color:var(--muted);max-width:720px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card{background:white;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 1px 2px rgba(0,0,0,.03)}.card h3{margin:0 0 10px;color:var(--navy);letter-spacing:-.025em}.tag{display:inline-block;background:var(--soft);color:#b84d00;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900;margin-bottom:12px}.flow{display:grid;gap:12px}.step{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;gap:14px;align-items:flex-start}.num{min-width:34px;height:34px;border-radius:50%;background:var(--orange);color:white;display:grid;place-items:center;font-weight:900}.dark{background:var(--navy);color:white}.dark .title{color:white}.dark .desc{color:rgba(255,255,255,.72)}.dark .card{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);box-shadow:none}.dark .card h3{color:white}.dark .card p{color:rgba(255,255,255,.72)}.table{overflow:auto;border:1px solid var(--line);border-radius:20px;background:white}.table table{border-collapse:collapse;width:100%;min-width:720px}.table th,.table td{padding:14px 16px;border-bottom:1px solid var(--line);text-align:left}.table th{background:#fff7ef;color:#9a4300}.footer{padding:42px 0;border-top:1px solid var(--line);color:#6b7280}@media(max-width:900px){.hero-grid,.grid2,.grid3,.grid4,.metric-grid{grid-template-columns:1fr}.h1{font-size:40px}.navlinks{display:none}.wrap{padding:0 20px}}
-</style></head><body><nav class="nav"><div class="wrap navin"><div class="brand">Edencrew<span>.</span> Development & Tech</div><div class="navlinks"><a href="#stack">Technical Stack</a><a href="#auth">lucy-auth SSO</a><a href="#ops">Operations</a></div></div></nav><header class="hero"><div class="wrap hero-grid"><div><div class="eyebrow">💻 Tech Stack</div><h1 class="h1">Next.js 기반 공식 홈페이지와 SSO/결제 연동을 준비합니다.</h1><p class="lead">SEO, 다국어, CMS, Vercel 배포, lucy-auth SSO, TeamCloud API 연동까지 웹 기술 범위를 정리합니다.</p></div><div class="panel"><h3>잠정 스택</h3><ul><li>Next.js App Router</li><li>Tailwind CSS</li><li>Sanity CMS</li><li>Vercel</li><li>next-intl</li></ul></div></div></header><section id="stack"><div class="wrap"><div class="kicker">Stack</div><h2 class="title">Technical Stack</h2><p class="desc">개발자 협의 후 최종 확정이 필요한 잠정 스택입니다.</p><div class="grid4"><div class="card"><span class="tag">Frontend</span><h3>Next.js</h3><p>App Router 기반, SEO와 개발자 수급에 유리.</p></div><div class="card"><span class="tag">Styling</span><h3>Tailwind CSS</h3><p>빠른 구현과 유지보수.</p></div><div class="card"><span class="tag">CMS</span><h3>Sanity</h3><p>뉴스/블로그와 다국어 콘텐츠 관리.</p></div><div class="card"><span class="tag">Hosting</span><h3>Vercel</h3><p>Next.js 최적화 및 Git 기반 자동 배포.</p></div></div></div></section><section id="auth" class="dark"><div class="wrap"><div class="kicker">Auth</div><h2 class="title">lucy-auth SSO</h2><p class="desc">기존 인증 서버를 새로 만들지 않고 SSO 클라이언트로 연결합니다.</p><div class="grid3"><div class="card"><span class="tag">Redirect</span><h3>Sign In</h3><p>edencrew.com에서 auth.edencrew.com으로 이동.</p></div><div class="card"><span class="tag">PKCE</span><h3>Code Flow</h3><p>codeChallenge / codeVerifier 기반 토큰 교환.</p></div><div class="card"><span class="tag">Dashboard</span><h3>TeamCloud</h3><p>로그인 완료 후 app.edencrew.com 대시보드 진입.</p></div></div></div></section><section id="ops"><div class="wrap"><div class="kicker">Ops</div><h2 class="title">Operations</h2><p class="desc">런칭 전 기본 운영 환경을 갖춥니다.</p><div class="grid3"><div class="card"><span class="tag">SEO</span><h3>SEO 기본</h3><p>title, description, OG, sitemap, robots.txt.</p></div><div class="card"><span class="tag">Analytics</span><h3>GA4 / GSC</h3><p>방문자 분석과 검색 성능 모니터링.</p></div><div class="card"><span class="tag">Performance</span><h3>Lighthouse 90+</h3><p>LCP < 2.5s, CLS < 0.1, 반응형 필수.</p></div></div></div></section><footer class="footer"><div class="wrap">Edencrew Web Project · Generated from Notion workspace · 2026.07.02</div></footer></body></html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>개발 & 기술 | Edencrew Web Project</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    :root {
+      --orange: #FF6B00;
+      --orange-lt: #FFF4EE;
+      --orange-mid: #FFE4CC;
+      --navy: #1A1F2E;
+      --navy2: #252B3D;
+      --ink: #111827;
+      --mid: #374151;
+      --muted: #6B7280;
+      --line: #E5E7EB;
+      --bg: #F9FAFB;
+      --card: #FFFFFF;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0; background: var(--bg); color: var(--ink); line-height: 1.6;
+    }
+    a { text-decoration: none; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      height: 60px; background: var(--navy);
+      display: flex; align-items: center;
+      padding: 0 32px; gap: 20px;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.08);
+      overflow-x: auto;
+    }
+    nav::-webkit-scrollbar { display: none; }
+    .nav-brand { display: flex; align-items: center; gap: 10px; margin-right: 24px; flex-shrink: 0; }
+    .nav-ec    { background: var(--orange); color: #fff; font-weight: 700; font-size: 12px; padding: 4px 8px; letter-spacing: 0.5px; }
+    .nav-title { color: #fff; font-weight: 600; font-size: 14px; white-space: nowrap; }
+    nav a      { color: rgba(255,255,255,0.65); font-size: 13px; white-space: nowrap; flex-shrink: 0; }
+    nav a.active { color: var(--orange); font-weight: 700; }
+
+    /* ── Page Hero ── */
+    .page-hero { background: var(--navy); padding: 80px 32px; }
+    .page-hero-label { color: var(--orange); font-size: 12px; letter-spacing: 3px; font-weight: 600; margin-bottom: 16px; }
+    .page-hero-title { color: #fff; font-size: 48px; font-weight: 700; margin: 0 0 16px; line-height: 1.15; }
+    .page-hero-sub   { color: rgba(255,255,255,0.55); font-size: 15px; margin: 0; }
+
+    /* ── Section ── */
+    .section       { padding: 60px 32px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .bg-card  { background: var(--card); }
+    .bg-bg    { background: var(--bg); }
+    .bg-navy2 { background: var(--navy2); }
+
+    /* ── Section heading ── */
+    .sh {
+      font-size: 22px; font-weight: 700; color: var(--ink);
+      border-left: 4px solid var(--orange); padding-left: 16px; margin: 0 0 24px;
+    }
+    .sh-white {
+      font-size: 22px; font-weight: 700; color: #fff;
+      border-left: 4px solid var(--orange); padding-left: 16px; margin: 0 0 24px;
+    }
+    .sh-sub { font-size: 13px; color: var(--muted); margin: -16px 0 24px 20px; }
+
+    /* ── Tables ── */
+    .tbl-wrap { overflow-x: auto; }
+    .tbl { width: 100%; border-collapse: collapse; background: var(--card); font-size: 14px; }
+    .tbl thead tr { background: var(--navy); color: #fff; }
+    .tbl th { padding: 12px 20px; text-align: left; font-weight: 600; font-size: 13px; white-space: nowrap; }
+    .tbl td { padding: 14px 20px; color: var(--ink); border-bottom: 1px solid var(--line); vertical-align: top; }
+    .tbl tbody tr:last-child td { border-bottom: none; }
+    .tbl-label { font-weight: 600; color: var(--mid); background: var(--bg) !important; }
+
+    /* ── Badge methods ── */
+    .badge-post { background: #dcfce7; color: #166534; padding: 2px 8px; font-size: 11px; font-weight: 700; border-radius: 3px; display: inline-block; }
+    .badge-get  { background: #dbeafe; color: #1e40af; padding: 2px 8px; font-size: 11px; font-weight: 700; border-radius: 3px; display: inline-block; }
+
+    /* ── Status badges ── */
+    .badge-todo { background: var(--orange-lt); color: var(--orange); padding: 2px 8px; font-size: 11px; font-weight: 700; border-radius: 3px; display: inline-block; white-space: nowrap; }
+    .badge-done { background: #dcfce7; color: #166534; padding: 2px 8px; font-size: 11px; font-weight: 700; border-radius: 3px; display: inline-block; white-space: nowrap; }
+
+    /* ── Perf metrics ── */
+    .perf-row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .perf-card {
+      flex: 1; min-width: 180px;
+      background: var(--bg); border: 1px solid var(--line);
+      padding: 24px; text-align: center;
+    }
+    .perf-value { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+    .perf-label { font-size: 13px; color: var(--muted); }
+
+    /* ── Auth Flow ── */
+    .auth-flow {
+      display: flex; flex-wrap: wrap; align-items: center;
+      gap: 0; border: 1px solid var(--line); overflow: hidden;
+    }
+    .auth-step {
+      background: var(--card); border-right: 1px solid var(--line);
+      padding: 14px 20px; font-size: 13px; font-weight: 600; color: var(--ink);
+      flex-shrink: 0;
+    }
+    .auth-step:last-child { border-right: none; }
+    .auth-arrow { color: var(--orange); font-size: 18px; padding: 0 4px; flex-shrink: 0; }
+
+    /* ── Stripe flow ── */
+    .stripe-flow {
+      display: flex; flex-wrap: wrap; align-items: center;
+      gap: 0; margin-bottom: 32px;
+      border: 1px solid var(--line); overflow: hidden;
+    }
+    .sf-step {
+      background: var(--card); border-right: 1px solid var(--line);
+      padding: 14px 16px; font-size: 13px; font-weight: 600; color: var(--ink);
+      flex: 1; text-align: center; min-width: 100px;
+    }
+    .sf-step:last-child { border-right: none; }
+    .sf-arrow { color: var(--orange); font-size: 18px; padding: 0 2px; flex-shrink: 0; background: var(--card); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; align-items: center; }
+
+    /* ── Checklist ── */
+    .cl-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--ink); }
+    .cl-item:last-child { border-bottom: none; }
+    .cl-box  { width: 16px; height: 16px; border: 2px solid var(--line); flex-shrink: 0; background: #fff; }
+
+    /* ── Hold cards ── */
+    .hold-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+    .hold-card {
+      background: var(--orange-lt); border: 1px solid var(--orange-mid);
+      padding: 24px;
+    }
+    .hold-title { font-weight: 700; font-size: 15px; color: var(--ink); margin: 0 0 8px; }
+    .hold-desc  { font-size: 13px; color: var(--mid); margin: 0; line-height: 1.6; }
+
+    /* ── SEO cards ── */
+    .seo-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .seo-card { background: var(--card); border: 1px solid var(--line); padding: 24px; }
+    .seo-label { font-size: 11px; font-weight: 700; color: var(--orange); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+    .seo-title { font-weight: 700; font-size: 15px; color: var(--ink); margin: 0 0 10px; }
+    .seo-body  { font-size: 13px; color: var(--mid); margin: 0; line-height: 1.7; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--navy); color: var(--muted);
+      text-align: center; padding: 24px 32px;
+      font-size: 13px; margin-top: 80px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .page-hero { padding: 48px 20px; }
+      .page-hero-title { font-size: 32px; }
+      .section { padding: 40px 20px; }
+      nav { padding: 0 20px; gap: 14px; }
+      .perf-row  { gap: 12px; }
+      .perf-card { min-width: 140px; }
+      .hold-grid, .seo-grid { grid-template-columns: 1fr; }
+      .auth-flow { flex-direction: column; }
+      .auth-step { border-right: none; border-bottom: 1px solid var(--line); width: 100%; }
+      .auth-arrow { transform: rotate(90deg); }
+      .stripe-flow { flex-direction: column; }
+      .sf-step { border-right: none; border-bottom: 1px solid var(--line); }
+    }
+    @media (max-width: 480px) {
+      .page-hero-title { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <div class="nav-brand">
+    <span class="nav-ec">EC</span>
+    <span class="nav-title">Edencrew Web</span>
+  </div>
+  <a href="index.html">허브</a>
+  <a href="planning-strategy.html">기획전략</a>
+  <a href="design-branding.html">디자인</a>
+  <a href="development-tech.html" class="active">개발기술</a>
+  <a href="content-strategy.html">콘텐츠</a>
+  <a href="tasks-roadmap.html">로드맵</a>
+  <a href="admin-teamcloud.html">Admin</a>
+</nav>
+
+<!-- ── Page Hero ── -->
+<div class="page-hero">
+  <div class="page-hero-label">DEVELOPMENT &amp; TECHNOLOGY</div>
+  <h1 class="page-hero-title">개발 &amp; 기술</h1>
+  <p class="page-hero-sub">기술 스택 · 인증 구조 · API 엔드포인트 · 결제 · SEO · 미결 사항</p>
+</div>
+
+<!-- ── 1. 기술 스택 ── -->
+<div class="section bg-bg">
+  <div class="section-inner">
+    <h2 class="sh">기술 스택</h2>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>카테고리</th>
+            <th>기술</th>
+            <th>선택 이유</th>
+            <th>비고</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tbl-label">프론트엔드</td>
+            <td>Next.js (App Router)</td>
+            <td>글로벌 표준, SEO 최적화, RSC 지원</td>
+            <td>v14+</td>
+          </tr>
+          <tr>
+            <td class="tbl-label">스타일링</td>
+            <td>Tailwind CSS</td>
+            <td>빠른 개발, 유지보수 용이</td>
+            <td>v3</td>
+          </tr>
+          <tr>
+            <td class="tbl-label">CMS</td>
+            <td>Sanity</td>
+            <td>비개발자 수정 가능, 다국어 콘텐츠 관리</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="tbl-label">호스팅</td>
+            <td>Vercel</td>
+            <td>Next.js 최적화, 자동 배포</td>
+            <td>Edge Functions</td>
+          </tr>
+          <tr>
+            <td class="tbl-label">다국어</td>
+            <td>next-intl</td>
+            <td>/ko /en /ja URL 구조</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="tbl-label">분석</td>
+            <td>GA4 + Google Search Console</td>
+            <td>트래픽·검색 모니터링</td>
+            <td>미설정</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── 2. 성능 목표 ── -->
+<div class="section bg-card">
+  <div class="section-inner">
+    <h2 class="sh">성능 목표</h2>
+    <div class="perf-row">
+      <div class="perf-card">
+        <div class="perf-value" style="color:var(--orange);">90+</div>
+        <div class="perf-label">Lighthouse Score</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-value" style="color:var(--ink);">&lt; 2.5s</div>
+        <div class="perf-label">LCP (Largest Contentful Paint)</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-value" style="color:var(--ink);">&lt; 0.1</div>
+        <div class="perf-label">CLS (Cumulative Layout Shift)</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-value" style="color:var(--ink);">반응형</div>
+        <div class="perf-label">모바일 · 태블릿 · 데스크탑 필수</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 3. 인증 구조 (lucy-auth SSO) ── -->
+<div class="section bg-bg">
+  <div class="section-inner">
+    <h2 class="sh">인증 구조 — lucy-auth SSO</h2>
+    <div class="auth-flow" style="margin-bottom:32px;">
+      <div class="auth-step">edencrew.com<br><span style="font-size:11px;color:var(--muted);font-weight:400;">로그인 클릭</span></div>
+      <div class="auth-arrow">→</div>
+      <div class="auth-step">auth.edencrew.com<br><span style="font-size:11px;color:var(--muted);font-weight:400;">redirect</span></div>
+      <div class="auth-arrow">→</div>
+      <div class="auth-step">로그인 완료<br><span style="font-size:11px;color:var(--muted);font-weight:400;">이메일 + 비밀번호</span></div>
+      <div class="auth-arrow">→</div>
+      <div class="auth-step">Authorization Code<br><span style="font-size:11px;color:var(--muted);font-weight:400;">발급</span></div>
+      <div class="auth-arrow">→</div>
+      <div class="auth-step">edencrew.com<br><span style="font-size:11px;color:var(--muted);font-weight:400;">callback</span></div>
+      <div class="auth-arrow">→</div>
+      <div class="auth-step">accessToken<br><span style="font-size:11px;color:var(--muted);font-weight:400;">교환</span></div>
+      <div class="auth-arrow">→</div>
+      <div class="auth-step">/dashboard<br><span style="font-size:11px;color:var(--muted);font-weight:400;">이동</span></div>
+    </div>
+
+    <!-- ── 4. API 엔드포인트 ── -->
+    <h2 class="sh">lucy-auth API 엔드포인트</h2>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>엔드포인트</th>
+            <th>메서드</th>
+            <th>설명</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code style="font-size:13px;color:var(--navy);">/auth/login</code></td>
+            <td><span class="badge-post">POST</span></td>
+            <td>이메일 + 비밀번호 로그인</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:13px;color:var(--navy);">/auth/register</code></td>
+            <td><span class="badge-post">POST</span></td>
+            <td>회원가입</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:13px;color:var(--navy);">/auth/token</code></td>
+            <td><span class="badge-post">POST</span></td>
+            <td>Authorization Code → accessToken 교환</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:13px;color:var(--navy);">/auth/authorize-ready</code></td>
+            <td><span class="badge-get">GET</span></td>
+            <td>OAuth 플로우 시작</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:13px;color:var(--navy);">/auth/authorize-finalize</code></td>
+            <td><span class="badge-post">POST</span></td>
+            <td>OAuth 플로우 완료</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:13px;color:var(--navy);">/auth/forgot-password</code></td>
+            <td><span class="badge-post">POST</span></td>
+            <td>비밀번호 재설정 이메일 발송</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:13px;color:var(--navy);">/auth/reset-password</code></td>
+            <td><span class="badge-post">POST</span></td>
+            <td>새 비밀번호 설정</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:13px;color:var(--navy);">/auth/me</code></td>
+            <td><span class="badge-get">GET</span></td>
+            <td>현재 로그인 사용자 정보</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── 5. 결제 구조 ── -->
+<div class="section bg-card">
+  <div class="section-inner">
+    <h2 class="sh">결제 구조 — Stripe Billing</h2>
+    <div class="stripe-flow">
+      <div class="sf-step">Pricing 페이지</div>
+      <div class="sf-arrow">→</div>
+      <div class="sf-step">플랜 선택</div>
+      <div class="sf-arrow">→</div>
+      <div class="sf-step">Stripe Checkout</div>
+      <div class="sf-arrow">→</div>
+      <div class="sf-step">결제 완료</div>
+      <div class="sf-arrow">→</div>
+      <div class="sf-step">Webhook 수신</div>
+      <div class="sf-arrow">→</div>
+      <div class="sf-step">플랜 활성화</div>
+    </div>
+
+    <div style="font-weight:700;font-size:14px;color:var(--ink);margin-bottom:12px;">Stripe 연동 체크리스트</div>
+    <div class="cl-item"><div class="cl-box"></div>Stripe 계정 생성 및 API Key 발급</div>
+    <div class="cl-item"><div class="cl-box"></div>Product/Price 생성 (Free / Pro / Team / Enterprise)</div>
+    <div class="cl-item"><div class="cl-box"></div>Checkout Session 구현</div>
+    <div class="cl-item"><div class="cl-box"></div>Webhook 핸들러 구현 (subscription 상태 변경)</div>
+    <div class="cl-item"><div class="cl-box"></div>Customer Portal 연동</div>
+    <div class="cl-item"><div class="cl-box"></div>세금 처리 (Stripe Tax)</div>
+  </div>
+</div>
+
+<!-- ── 6. 외부 연동 서비스 ── -->
+<div class="section bg-bg">
+  <div class="section-inner">
+    <h2 class="sh">외부 연동 서비스</h2>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>서비스</th>
+            <th>용도</th>
+            <th>상태</th>
+            <th>비고</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tbl-label">GA4</td>
+            <td>웹 트래픽 분석</td>
+            <td><span class="badge-todo">미설정</span></td>
+            <td>Next.js gtag 연동 필요</td>
+          </tr>
+          <tr>
+            <td class="tbl-label">Search Console</td>
+            <td>검색 색인 · 키워드 분석</td>
+            <td><span class="badge-todo">미설정</span></td>
+            <td>sitemap 제출 포함</td>
+          </tr>
+          <tr>
+            <td class="tbl-label">문의폼</td>
+            <td>Lead 수집</td>
+            <td><span class="badge-todo">미설정</span></td>
+            <td>Notion API 또는 이메일 포워딩</td>
+          </tr>
+          <tr>
+            <td class="tbl-label">LinkedIn</td>
+            <td>소셜 링크</td>
+            <td><span class="badge-todo">미설정</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="tbl-label">GitHub</td>
+            <td>기술 문서 연결</td>
+            <td><span class="badge-todo">미설정</span></td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── 7. SEO 기본 설정 ── -->
+<div class="section bg-card">
+  <div class="section-inner">
+    <h2 class="sh">SEO 기본 설정</h2>
+    <div class="seo-grid">
+
+      <div class="seo-card">
+        <div class="seo-label">Keywords</div>
+        <div class="seo-title">타겟 키워드</div>
+        <p class="seo-body">Flutter 크로스플랫폼 · MTS HTS WTS 개발 · Lucy Platform · 엔터프라이즈 앱 개발 · 금융 앱 플랫폼</p>
+      </div>
+
+      <div class="seo-card">
+        <div class="seo-label">Meta Title Pattern</div>
+        <div class="seo-title">타이틀 패턴</div>
+        <p class="seo-body" style="font-family:monospace;font-size:12px;background:var(--bg);padding:10px;color:var(--mid);">[페이지명] | Lucy Platform by Edencrew</p>
+      </div>
+
+      <div class="seo-card">
+        <div class="seo-label">Meta Description</div>
+        <div class="seo-title">기본 설명</div>
+        <p class="seo-body">금융권에서 검증된 Flutter 기반 크로스플랫폼 앱 실행 플랫폼. MTS, HTS, WTS를 단일 코드베이스로 구현합니다.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── 8. v1 보류 권장 항목 ── -->
+<div class="section bg-bg">
+  <div class="section-inner">
+    <h2 class="sh">v1 보류 권장 항목</h2>
+    <p class="sh-sub">v1은 신뢰 확보 중심 — 아래 기능은 v2에서 구현</p>
+    <div class="hold-grid">
+
+      <div class="hold-card">
+        <div class="hold-title">로그인 기능</div>
+        <p class="hold-desc">신규 방문자 마찰 최소화 우선. 랜딩 전환율이 인증 플로우보다 중요한 단계.</p>
+      </div>
+
+      <div class="hold-card">
+        <div class="hold-title">Stripe 결제</div>
+        <p class="hold-desc">Pricing 페이지만 존재, 실제 결제는 이후 단계. 문의 유도가 v1 목표.</p>
+      </div>
+
+      <div class="hold-card">
+        <div class="hold-title">사용자 대시보드</div>
+        <p class="hold-desc">TeamCloud 별도 도메인(app.edencrew.com)으로 분리. 공식 홈 범위 외.</p>
+      </div>
+
+      <div class="hold-card">
+        <div class="hold-title">TeamCloud API 연동</div>
+        <p class="hold-desc">공식 홈 v1 범위 초과. API 연동은 제품 포털 단계에서 구현.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── 9. 개발팀 미결 사항 ── -->
+<div class="section bg-card">
+  <div class="section-inner">
+    <h2 class="sh">개발팀 미결 문의사항</h2>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th>내용</th>
+            <th>담당</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tbl-label">결제 수단 확정</td>
+            <td>Stripe vs Paddle 최종 선택</td>
+            <td>전략 결정 필요</td>
+          </tr>
+          <tr>
+            <td class="tbl-label">다국어 우선순위</td>
+            <td>/en은 v1 포함 여부</td>
+            <td>기획 결정 필요</td>
+          </tr>
+          <tr>
+            <td class="tbl-label">기존 edencrew.com 처리</td>
+            <td>리다이렉트 또는 병행 운영</td>
+            <td>운영 결정 필요</td>
+          </tr>
+          <tr>
+            <td class="tbl-label">Sanity 스키마 설계</td>
+            <td>다국어 콘텐츠 구조 설계 시작</td>
+            <td>개발팀</td>
+          </tr>
+          <tr>
+            <td class="tbl-label">SEO 키워드 확정</td>
+            <td>EN/JA 언어별 키워드 리스트</td>
+            <td>콘텐츠 담당</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer>
+  Edencrew Web Project · 기획 문서 · 2026.07
+</footer>
+
+</body>
+</html>
