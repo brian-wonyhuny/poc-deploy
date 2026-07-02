@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Blueprint — Edencrew</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script>
+(function(){
+  var s = localStorage.getItem('blueprint-theme');
+  var t = (s === 'dark' || s === 'light') ? s : 'light';
+  if (t === 'dark') document.documentElement.setAttribute('data-theme','dark');
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F5F5F5;
+  --card-bg: #EFEFEF;
+  --white: #FFFFFF;
+  --bd: #E9E8E8;
+  --p: #8361FF;
+  --pg: rgba(131,97,255,0.08);
+  --wh: #111827;
+  --mu: #6B7280;
+}
+
+[data-theme="dark"] {
+  --bg: #09090D;
+  --card-bg: #15151D;
+  --white: #111118;
+  --bd: rgba(255,255,255,0.07);
+  --p: #8361FF;
+  --pg: rgba(131,97,255,0.12);
+  --wh: #F0EDE8;
+  --mu: rgba(240,237,232,0.55);
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--wh);
+  font-family: 'Inter', 'Pretendard', -apple-system, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+body { padding: 0 40px; }
+
+/* Layout */
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Top Bar */
+.top-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 40px 20px;
+  flex-shrink: 0;
+  background: var(--bg);
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--wh);
+  font-family: 'Pretendard', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.tabs {
+  display: flex;
+  gap: 20px;
+}
+
+.tab {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--mu);
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+
+.tab:hover { color: var(--wh); }
+.tab.active {
+  color: var(--wh);
+  font-weight: 700;
+  background: #f0f0f0;
+  padding: 8px 18px;
+  border-radius: 8px;
+}
+
+.theme-toggle {
+  display: flex;
+  gap: 10px;
+}
+
+.theme-btn {
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: none;
+  color: var(--mu);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.1s;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.theme-btn:hover { color: var(--wh); }
+.theme-btn.active { color: var(--wh); }
+
+.theme-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 0 40px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.content-box {
+  width: 1048px;
+  display: flex;
+  gap: 48px;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: fit-content;
+  max-height: calc(100vh - 208px);
+  padding: 0;
+  border-right: none;
+}
+
+.sidebar-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 126px;
+}
+
+.sidebar-scroll::-webkit-scrollbar { width: 6px; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: #bfbfbf; border-radius: 3px; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mu);
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 4px;
+}
+
+.nav-item:hover { background: rgba(0,0,0,0.08); color: var(--wh); }
+.nav-item.active {
+  background: rgba(131,97,255,0.15);
+  color: var(--p);
+  font-weight: 600;
+}
+
+.nav-num {
+  min-width: 18px;
+  font-weight: 700;
+  color: var(--mu);
+  font-family: 'Inter', sans-serif;
+}
+
+.nav-item.active .nav-num {
+  color: var(--p);
+}
+
+/* Main */
+.main {
+  width: 800px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+.main-header {
+  flex-shrink: 0;
+  padding: 28px 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.header-left {
+  flex: 1;
+}
+
+.header-title {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--wh);
+  margin-bottom: 4px;
+  font-family: 'Pretendard', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.header-meta {
+  font-size: 12px;
+  color: var(--mu);
+  font-family: 'Inter', sans-serif;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn {
+  padding: 6px 12px;
+  border: 1px solid var(--bd);
+  border-radius: 6px;
+  background: var(--white);
+  color: var(--wh);
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.btn:hover {
+  border-color: var(--p);
+  color: var(--p);
+}
+
+.main-content {
+  flex: none;
+  padding: 0;
+}
+
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+/* Sections */
+.section {
+  background: var(--white);
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  padding: 40px;
+  margin-bottom: 20px;
+}
+
+.section:last-child {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--wh);
+  margin-bottom: 12px;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.section-content {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--mu);
+  font-family: 'Pretendard', sans-serif;
+}
+
+.section-content strong {
+  font-size: 16px;
+  color: var(--p);
+  font-weight: 600;
+}
+
+/* Audience boxes */
+.audience-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.audience-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.audience-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--wh);
+  font-family: 'Pretendard', sans-serif;
+}
+
+.audience-desc {
+  font-size: 14px;
+  color: var(--mu);
+  font-family: 'Pretendard', sans-serif;
+  line-height: 1.5;
+}
+
+/* Table */
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Pretendard', sans-serif;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--bd);
+}
+
+th {
+  background: transparent;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--mu);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+td {
+  font-size: 14px;
+}
+
+td {
+  color: var(--wh);
+}
+
+tbody tr:last-child td { border-bottom: none; }
+
+/* Spaces */
+.spaces {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.space-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--bd);
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--wh);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.15s;
+  cursor: pointer;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.space-link:hover {
+  border-color: var(--p);
+  background: rgba(131,97,255,0.08);
+  color: var(--p);
+}
+
+.space-emoji {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  color: var(--mu);
+  font-size: 11px;
+  padding: 40px 0;
+  font-family: 'Inter', sans-serif;
+}
+
+@media (max-width: 1024px) {
+  .sidebar { width: 240px; }
+  .content-wrapper { padding: 0 20px 20px; }
+}
+
+@media (max-width: 768px) {
+  .content-box { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--bd); }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <h1 class="title">이든크루 통합 웹 구축</h1>
+    <div class="controls">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('overview')">Overview</button>
+        <button class="tab" onclick="switchTab('prd')">PRD</button>
+        <button class="tab" onclick="switchTab('ecosystem')">EcoSystem</button>
+        <button class="tab" onclick="switchTab('sitemap')">Sitemap</button>
+        <button class="tab" onclick="switchTab('pagelist')">Page List</button>
+        <button class="tab" onclick="switchTab('prototype')">Prototype</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT WRAPPER -->
+  <div class="content-wrapper">
+    <div class="content-box">
+
+      <!-- SIDEBAR -->
+      <nav class="sidebar">
+        <div class="sidebar-scroll">
+          <a class="nav-item active" onclick="scrollToSection(0)">
+            <span class="nav-num">01</span>
+            <span>프로젝트 목적 & 방향</span>
+          </a>
+          <a class="nav-item" onclick="scrollToSection(1)">
+            <span class="nav-num">02</span>
+            <span>타겟 오디언스</span>
+          </a>
+          <a class="nav-item" onclick="scrollToSection(2)">
+            <span class="nav-num">03</span>
+            <span>프로젝트 일정</span>
+          </a>
+          <a class="nav-item" onclick="scrollToSection(3)">
+            <span class="nav-num">04</span>
+            <span>기획 & 전략</span>
+          </a>
+          <a class="nav-item" onclick="scrollToSection(4)">
+            <span class="nav-num">05</span>
+            <span>디자인 & 브랜딩</span>
+          </a>
+          <a class="nav-item" onclick="scrollToSection(5)">
+            <span class="nav-num">06</span>
+            <span>개발 & 기술</span>
+          </a>
+          <a class="nav-item" onclick="scrollToSection(6)">
+            <span class="nav-num">07</span>
+            <span>콘텐츠</span>
+          </a>
+          <a class="nav-item" onclick="scrollToSection(7)">
+            <span class="nav-num">08</span>
+            <span>태스크 & 일정</span>
+          </a>
+          <a class="nav-item" onclick="scrollToSection(8)">
+            <span class="nav-num">09</span>
+            <span>Admin</span>
+          </a>
+        </div>
+      </nav>
+
+      <!-- MAIN -->
+      <div class="main">
+
+        <!-- HEADER -->
+        <div class="main-header">
+          <div class="header-left">
+            <h2 class="header-title">Overview</h2>
+            <div class="header-meta">v1.0 · 2026.07.02 · edencrew.com</div>
+          </div>
+          <div class="header-actions">
+            <button class="btn">등록</button>
+            <button class="btn">편집</button>
+          </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="main-content">
+
+          <!-- Overview View -->
+          <div id="view-overview" class="view active">
+
+            <!-- 01 -->
+            <div class="section" id="sec-0">
+              <h3 class="section-title">01 사이트 목적 & 타깃</h3>
+              <div class="section-content">
+                <strong>"이든크루는, 프로젝트 경험을 플랫폼 자산으로 전환합니다"</strong><br><br>
+                Lucy Studio를 전면에 내세운 <strong>Public SaaS 홈페이지</strong> + Enterprise 영업 채널을 동시에 운영.<br>회사 신뢰도 제고 + Lucy Platform 생태계 소개를 하나의 사이트에서 커버합니다.
+              </div>
+            </div>
+
+            <!-- 02 -->
+            <div class="section" id="sec-1">
+              <h3 class="section-title">02 타겟 오디언스</h3>
+              <div class="section-content">
+                <div class="audience-list">
+                  <div class="audience-box">
+                    <div class="audience-label">🌐 Public (셀프서브 SaaS)</div>
+                    <div class="audience-desc">1차 타깃: 개발팀장·개별 개발자. 크로스플랫폼이 필요하거나, 운영비 절감이 필요한 모든 조직.</div>
+                  </div>
+                  <div class="audience-box">
+                    <div class="audience-label">🏢 Enterprise (영업 채널)</div>
+                    <div class="audience-desc">금융·공공·대기업·글로벌. Contact Sales로 연결.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 03 -->
+            <div class="section" id="sec-2">
+              <h3 class="section-title">03 프로젝트 일정</h3>
+              <div class="section-content">
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>단계</th>
+                        <th>시기</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>킥오프 · 브리핑</td>
+                        <td>2026년 7월</td>
+                      </tr>
+                      <tr>
+                        <td>기획 · 디자인 · 개발</td>
+                        <td>2026년 8~10월</td>
+                      </tr>
+                      <tr>
+                        <td>GA</td>
+                        <td>2026년 11월 초</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- 04 기획 & 전략 -->
+            <div class="section" id="sec-3">
+              <h3 class="section-title">04 기획 & 전략</h3>
+              <div class="section-content">
+                <strong>프로젝트 비전·목표·로드맵</strong><br><br>
+                • <strong>프로젝트 비전</strong>: Edencrew가 추구하는 궁극적 목표 및 가치 제안<br>
+                • <strong>타겟 사용자</strong>: 주요 사용자 페르소나, 니즈, 사용 패턴<br>
+                • <strong>시장 분석</strong>: 경쟁사 분석, 차별화 포인트, 기회 요인<br>
+                • <strong>로드맵</strong>: 1단계(현재) ~ 3단계(미래) 목표, 주요 기능 출시 일정<br>
+                • <strong>KPI</strong>: 성공 지표 (월간 활성 사용자, 전환율, 만족도 등)
+              </div>
+            </div>
+
+            <!-- 05 디자인 & 브랜딩 -->
+            <div class="section" id="sec-4">
+              <h3 class="section-title">05 디자인 & 브랜딩</h3>
+              <div class="section-content">
+                <strong>디자인 시스템·컴포넌트·가이드</strong><br><br>
+                • <strong>브랜드 아이덴티티</strong>: 로고, 컬러(#8361FF 등), 폰트(Montserrat, Inter)<br>
+                • <strong>컴포넌트 라이브러리</strong>: 버튼, 카드, 입력창 등 재사용 가능한 UI 요소<br>
+                • <strong>와이어프레임</strong>: 각 페이지의 레이아웃 및 정보 구조<br>
+                • <strong>프로토타입</strong>: 사용자 흐름, 상호작용 정의<br>
+                • <strong>다크모드</strong>: 라이트·다크 테마 디자인 사양
+              </div>
+            </div>
+
+            <!-- 06 개발 & 기술 -->
+            <div class="section" id="sec-5">
+              <h3 class="section-title">06 개발 & 기술</h3>
+              <div class="section-content">
+                <strong>기술 스택·API·개발 가이드</strong><br><br>
+                • <strong>Frontend</strong>: React/Next.js, Tailwind CSS, Vercel 배포<br>
+                • <strong>Backend</strong>: API 아키텍처, 데이터베이스 설계<br>
+                • <strong>API 명세</strong>: 엔드포인트, 요청/응답 포맷, 인증 방식<br>
+                • <strong>코딩 컨벤션</strong>: 네이밍, 폴더 구조, 커밋 메시지 규칙<br>
+                • <strong>배포·운영</strong>: CI/CD 파이프라인, 모니터링, 성능 최적화
+              </div>
+            </div>
+
+            <!-- 07 콘텐츠 -->
+            <div class="section" id="sec-6">
+              <h3 class="section-title">07 콘텐츠</h3>
+              <div class="section-content">
+                <strong>마케팅·교육·문서 콘텐츠</strong><br><br>
+                • <strong>홈페이지 카피</strong>: 히어로 섹션, 기능 설명, 가격 정보<br>
+                • <strong>블로그·뉴스</strong>: 제품 업데이트, 사용 팁, 산업 인사이트<br>
+                • <strong>온보딩 가이드</strong>: 신규 사용자를 위한 단계별 튜토리얼<br>
+                • <strong>FAQ·헬프센터</strong>: 자주 묻는 질문, 문제 해결<br>
+                • <strong>마케팅 캠페인</strong>: 이메일, SNS, 광고 메시지
+              </div>
+            </div>
+
+            <!-- 08 태스크 & 일정 -->
+            <div class="section" id="sec-7">
+              <h3 class="section-title">08 태스크 & 일정</h3>
+              <div class="section-content">
+                <strong>스프린트·마일스톤·진행도 추적</strong><br><br>
+                • <strong>프로젝트 타임라인</strong>: 프로젝트 시작~종료 날짜, 주요 체크포인트<br>
+                • <strong>마일스톤</strong>: 기획 완료, 디자인 완료, 개발 완료, 런칭 등<br>
+                • <strong>스프린트</strong>: 2주 단위 목표, 스프린트 태스크 목록<br>
+                • <strong>담당자·마감일</strong>: 각 태스크별 담당자, 예상 소요 시간<br>
+                • <strong>진행도</strong>: 완료 vs 진행중 vs 미시작 상태 추적
+              </div>
+            </div>
+
+            <!-- 09 Admin -->
+            <div class="section" id="sec-8">
+              <h3 class="section-title">09 Admin</h3>
+              <div class="section-content">
+                <strong>팀·권한·문서 관리</strong><br><br>
+                • <strong>팀 구성</strong>: 프로젝트 멤버, 역할(기획자/디자이너/개발자), 연락처<br>
+                • <strong>권한 설정</strong>: 문서 접근 권한, 수정 권한 관리<br>
+                • <strong>문서 버전 관리</strong>: PRD v1.0 → v1.1 등 버전 히스토리<br>
+                • <strong>커뮤니케이션</strong>: Slack, Notion, 회의록 저장소<br>
+                • <strong>프로젝트 설정</strong>: 공유 링크, 아카이브, 구성원 초대
+              </div>
+            </div>
+
+          </div>
+
+          <div class="footer">2026 © Edencrew Inc.</div>
+
+          <!-- PRD View -->
+          <div id="view-prd" class="view">
+            <div class="section">
+              <div class="section-content">PRD 콘텐츠가 준비 중입니다.</div>
+            </div>
+          </div>
+
+          <!-- EcoSystem View -->
+          <div id="view-ecosystem" class="view">
+            <div class="section">
+              <div class="section-content">EcoSystem 콘텐츠가 준비 중입니다.</div>
+            </div>
+          </div>
+
+          <!-- Sitemap View -->
+          <div id="view-sitemap" class="view">
+            <div class="section">
+              <div class="section-content">Sitemap 콘텐츠가 준비 중입니다.</div>
+            </div>
+          </div>
+
+          <!-- Page List View -->
+          <div id="view-pagelist" class="view">
+            <div class="section">
+              <div class="section-content">Page List 콘텐츠가 준비 중입니다.</div>
+            </div>
+          </div>
+
+          <!-- Prototype View -->
+          <div id="view-prototype" class="view">
+            <div class="section">
+              <div class="section-content">Prototype 콘텐츠가 준비 중입니다.</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+function switchTab(tabName) {
+  const views = document.querySelectorAll('.view');
+  views.forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + tabName).classList.add('active');
+
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+
+  document.querySelector('.content-wrapper').scrollTop = 0;
+}
+
+function scrollToSection(idx) {
+  const section = document.getElementById('sec-' + idx);
+  if (section) {
+    const wrapper = document.querySelector('.content-wrapper');
+    const box = document.querySelector('.content-box');
+    const offsetTop = section.offsetTop + box.offsetTop;
+    wrapper.scrollTo({ top: offsetTop - 100, behavior: 'smooth' });
+  }
+
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => item.classList.remove('active'));
+  event.target.closest('.nav-item').classList.add('active');
+}
+
+function setTheme(theme) {
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('blueprint-theme', 'dark');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('blueprint-theme', 'light');
+  }
+
+  const themeBtns = document.querySelectorAll('.theme-btn');
+  themeBtns.forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  const themeBtns = document.querySelectorAll('.theme-btn');
+  if (currentTheme === 'dark') {
+    themeBtns[1].classList.add('active');
+  } else {
+    themeBtns[0].classList.add('active');
+  }
+
+  // Intersection Observer - 스크롤 시 목차 자동 활성화
+  const sections = document.querySelectorAll('.section');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // 모든 nav-item 비활성화
+          navItems.forEach(item => item.classList.remove('active'));
+
+          // 현재 보이는 섹션에 해당하는 nav-item 활성화
+          const sectionId = entry.target.id;
+          const sectionIndex = Array.from(sections).indexOf(entry.target);
+          const matchedNav = navItems[sectionIndex];
+          if (matchedNav) {
+            matchedNav.classList.add('active');
+          }
+        }
+      });
+    },
+    {
+      rootMargin: '-30% 0px -60% 0px',
+      threshold: 0
+    }
+  );
+
+  sections.forEach(section => observer.observe(section));
+});
+</script>
+
+</body>
+</html>
