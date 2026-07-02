@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
@@ -76,7 +76,7 @@ body { padding:10px; }
   height:52px; flex-shrink:0;
   display:flex; align-items:center; gap:8px;
   padding:0 14px;
-  background:transparent; border-radius:0;
+  background:transparent; border-radius:0; border-bottom:1px solid var(--bd);
 }
 .tb-left { display:flex; align-items:center; gap:8px; flex-shrink:0; }
 .tb-fold {
@@ -299,7 +299,7 @@ body { padding:10px; }
 .btn-prd-src { padding:8px 18px; background:var(--p); color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:500; cursor:pointer; font-family:inherit; align-self:flex-end; transition:opacity .1s; }
 .btn-prd-src:hover { opacity:.85; }
 /* registered doc layout */
-.prd-doc-layout { flex:1; min-height:0; display:flex; justify-content:center; overflow-y:auto; overflow-x:hidden; padding:0 32px 24px; background:transparent; }
+.prd-doc-layout { flex:1; min-height:0; display:flex; justify-content:center; overflow-y:auto; overflow-x:hidden; padding:0 32px 24px; }
 .prd-doc-layout.hidden { display:none; }
 .prd-center-wrap { display:flex; width:100%; max-width:1120px; align-items:flex-start; gap:0; }
 .prd-anchor-nav { width:180px; flex-shrink:0; padding:4px 0; position:sticky; top:0; align-self:flex-start; display:flex; flex-direction:column; gap:2px; }
@@ -830,7 +830,7 @@ Admin <span class="nav-badge nb-wip">NEW</span>
     </div>
     <div class="tb-tabs">
       <button class="tb-tab active" id="tbtab-prd" onclick="switchMainTab('prd')">PRD <span class="tb-badge tb-badge-ver">v1.0</span></button>
-      <a class="tb-tab" href="edencrew-feature-spec.html" target="_blank">기능명세서 <span class="tb-badge tb-badge-ver">v1.0</span></a>
+      <button class="tb-tab" id="tbtab-feature-spec" onclick="switchMainTab('feature-spec')">기능명세서 <span class="tb-badge tb-badge-ver">v1.0</span></button>
       <span class="tb-tab tb-tab-dis">유저플로우 <span class="tb-badge tb-badge-sched">예정</span></span>
     </div>
     <div class="tb-right">
@@ -923,6 +923,14 @@ Admin <span class="nav-badge nb-wip">NEW</span>
         </div><!-- /prd-center-wrap -->
       </div>
 
+    </div>
+
+    </div>
+
+    <div class="view" id="view-feature-spec" style="padding:0;overflow:hidden;">
+      <div class="prd-doc-layout" id="specDocLayout" style="padding:0;max-width:none;">
+        <iframe class="prd-frame" id="specFrame" src="edencrew-feature-spec.html" title="기능명세서" style="border:none;width:100%;min-height:100vh;display:block;" onload="resizeSpecFrame()"></iframe>
+      </div>
     </div>
 
     <div class="view active" id="view-overview">
@@ -3431,8 +3439,21 @@ function switchMainTab(tab) {
   document.querySelectorAll('.tb-tab[id^="tbtab-"]').forEach(el => el.classList.remove('active'));
   const tbtab = document.getElementById('tbtab-' + tab);
   if (tbtab) tbtab.classList.add('active');
-  document.querySelector('.main').classList.toggle('prd-active', tab === 'prd');
+  document.querySelector('.main').classList.toggle('prd-active', tab === 'prd' || tab === 'feature-spec');
+  var nameMap = {'prd':'PRD','feature-spec':'기능명세서'};
+  var nm = document.getElementById('tbSubName');
+  if (nm && nameMap[tab]) nm.textContent = nameMap[tab];
   if (tab === 'prd') initPrdView();
+  if (tab === 'feature-spec') setTimeout(resizeSpecFrame, 300);
+}
+
+function resizeSpecFrame() {
+  var frame = document.getElementById('specFrame');
+  if (!frame) return;
+  try {
+    var h = frame.contentDocument.documentElement.scrollHeight;
+    if (h > 200) frame.style.height = h + 'px';
+  } catch(e) {}
 }
 
 // ── PRD View ──
@@ -3531,3 +3552,4 @@ populatePeriodForm();
 </script>
 </body>
 </html>
+
