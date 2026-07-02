@@ -729,68 +729,139 @@ tbody tr:last-child td { border-bottom: none; }
             </div>
 
             <div class="section">
-              <h3 class="section-title">Edencrew 공식 홈페이지 리뉴얼</h3>
+              <h3 class="section-title">01 사이트 목적 & 타깃 유저</h3>
               <div class="section-content">
-                AI 기반 솔루션 스타트업의 신뢰도를 시각화하고, 핵심 제품인 <strong>Lucy Studio</strong>의 조기 채택자를 확보하기 위한 영업·마케팅 채널입니다.<br><br>
-                • <strong>목적</strong>: 방문자가 제품을 이해하고 베타 신청·데모 예약까지 완료하는 전환 파이프라인<br>
-                • <strong>타겟 유저</strong>: 스타트업 창업자 & 앱 개발 담당자, 에이전시 & 프리랜서 개발자, 투자자 & 파트너사<br>
-                • <strong>성공 지표</strong>: 월 200+ 베타 신청, 월 30+ 데모 예약, 브랜드 신뢰도 향상<br>
-                • <strong>기술 스택</strong>: Next.js 15 + Tailwind CSS v4, Vercel 배포
+                <strong>사이트 목적</strong><br>
+                Edencrew 공식 홈페이지는 "AI 기반 솔루션 스타트업"의 신뢰도를 시각화하고, 핵심 제품인 Lucy Studio의 조기 채택자(얼리어답터)를 확보하기 위한 영업·마케팅 채널입니다. 단순 소개 페이지를 넘어, 방문자가 제품을 이해하고 베타 신청·데모 예약까지 완료하는 전환 파이프라인으로 설계합니다.<br><br>
+                <strong>타깃 유저</strong><br>
+                • <strong>Primary</strong>: 스타트업 창업자 & 앱 개발 담당자 — 코딩 없이 Flutter 앱을 빠르게 만들고 싶은 비개발자 또는 소규모 팀<br>
+                • <strong>Secondary</strong>: 에이전시 & 프리랜서 개발자 — 클라이언트 납품 속도를 높이려는 에이전시<br>
+                • <strong>Tertiary</strong>: 투자자 & 파트너사 — Edencrew의 기술력·제품 로드맵·팀을 검토하는 VC·엔젤·파트너십 대상<br><br>
+                <strong>전환 목표 (Conversion Goals)</strong><br>
+                • <strong>베타 신청</strong>: 월 200+ 건 — 신청 폼 제출 수<br>
+                • <strong>데모 예약</strong>: 월 30+ 건 — Calendly 예약 완료<br>
+                • <strong>제품 이해</strong>: 2분 30초 이상 — Lucy Studio 페이지 평균 체류<br>
+                • <strong>브랜드 신뢰</strong>: 전체 방문의 25%+ — 팀·About 페이지 방문율<br>
+                • <strong>투자자 관심</strong>: 월 5+ 건 — Contact 직접 문의
               </div>
             </div>
 
             <div class="section">
-              <h3 class="section-title">사이트맵</h3>
+              <h3 class="section-title">02 사이트맵 & 페이지 구조</h3>
               <div class="section-content">
-                <strong>5개 주요 페이지</strong><br><br>
-                • <strong>Home</strong> (<code>/</code>) — 히어로 + 제품 소개 + Social Proof + Bottom CTA<br>
-                • <strong>Lucy Studio</strong> (<code>/lucy-studio</code>) — 9개 피처 섹션 (완성)<br>
-                • <strong>Platform</strong> (<code>/platform</code>) — 생태계 맵 + API + 엔터프라이즈 + 파트너십<br>
-                • <strong>Pricing</strong> (<code>/pricing</code>) — 플랜 카드 + 기능 비교 + FAQ + 베타 안내<br>
-                • <strong>Resources</strong> (<code>/resources</code>) — 블로그 + 문서 + 템플릿 갤러리 + 커뮤니티
+                <strong>5개 최상위 페이지</strong><br><br>
+                • <strong>Home (/)</strong> — Hero + Product Overview + Social Proof + Platform Teaser + Bottom CTA. 이미 완성됨<br>
+                • <strong>Lucy Studio (/lucy-studio)</strong> — 9개 피처 섹션 (Visual Builder / AI Copilot / Component Library / Deploy / Team / Analytics / Integrations / Templates / Pricing Link). 완성됨<br>
+                • <strong>Platform (/platform)</strong> — Hero + 제품 생태계 맵 (Lucy Studio 중심으로 향후 제품·서비스 연결) + 개발자 API & SDK + 팀 & 엔터프라이즈 (SSO 지원 예정) + 파트너 프로그램 배너<br>
+                • <strong>Pricing (/pricing)</strong> — 플랜 카드 (Free / Starter / Pro / Enterprise, 월간/연간 토글) + 기능 비교 테이블 + FAQ (결제·환불·플랜 변경) + 베타 기간 안내 배너<br>
+                • <strong>Resources (/resources)</strong> — 블로그 / 릴리스 노트 + 문서 (Gitbook/Notion) + 템플릿 갤러리 + 커뮤니티 링크 (Discord·YouTube·뉴스레터)
               </div>
             </div>
 
             <div class="section">
-              <h3 class="section-title">CTA 전략</h3>
+              <h3 class="section-title">03 페이지별 기능 요구사항</h3>
               <div class="section-content">
-                <strong>5단계 전환 파이프라인</strong><br><br>
-                1️⃣ <strong>Home</strong> → 베타 신청하기 (Primary) + Lucy Studio 살펴보기 (Secondary)<br>
-                2️⃣ <strong>Lucy Studio</strong> → 무료로 시작하기 (Primary) + 데모 영상 보기 (Secondary)<br>
-                3️⃣ <strong>Platform</strong> → 파트너십 문의하기 (Primary) + API Waitlist (Secondary)<br>
-                4️⃣ <strong>Pricing</strong> → 플랜 시작하기 / 무료 시작 (Primary) + 엔터프라이즈 문의 (Secondary)<br>
-                5️⃣ <strong>Resources</strong> → 뉴스레터 구독 (Primary) + Discord 참여 (Secondary)
+                <strong>Platform (/platform)</strong><br>
+                • 플랫폼 생태계 다이어그램 — Lucy Studio를 중심으로 향후 제품·서비스가 연결되는 인터랙티브 맵. 각 노드 hover 시 툴팁으로 제품 설명 표시<br>
+                • API 개요 섹션 — 외부 개발자가 Lucy Studio를 임베드·확장할 수 있는 API 존재를 알림. Waitlist CTA로 연결<br>
+                • 엔터프라이즈 티어 소개 — 팀 사이즈·권한 관리·SSO·전용 지원 명시. 가격 미표기, "문의하기" CTA로 처리<br>
+                • 파트너 프로그램 배너 — 에이전시·리셀러·교육 기관 대상. 이메일 신청 폼 또는 Notion 폼 임베드<br><br>
+                <strong>Pricing (/pricing)</strong><br>
+                • 월간/연간 토글 — 토글 전환 시 가격 숫자 애니메이션. 연간 선택 시 절감 금액 배지 표시<br>
+                • 추천 플랜 강조 — Pro 플랜 카드에 "Most Popular" 배지 및 accent 보더. 나머지 카드는 동일 높이로 정렬<br>
+                • 기능 비교 테이블 — sticky 컬럼 헤더. 체크/크로스 아이콘 + 일부 셀은 수치값. 모바일에서 horizontal scroll 처리<br>
+                • FAQ 아코디언 — 질문 클릭 시 답변 펼침/닫힘. 결제 수단·환불 정책·플랜 업그레이드 절차 포함<br>
+                • 베타 기간 안내 배너 — 현재 베타 기간임을 명시 + 무료 신청 CTA<br><br>
+                <strong>Resources (/resources)</strong><br>
+                • 콘텐츠 카테고리 필터 — 블로그 / 릴리스 노트 / 튜토리얼 탭. MVP에는 "Coming Soon" 슬레이트<br>
+                • 뉴스레터 구독 폼 — 이메일 입력 + 구독 버튼. Resend 또는 Notion DB 연동<br>
+                • 템플릿 갤러리 그리드 — 앱 스크린샷 썸네일 + 카테고리 태그 + "Preview" CTA. MVP는 3–6개 샘플 템플릿<br>
+                • 커뮤니티 링크 패널 — Discord 초대 링크 / YouTube 채널 / GitHub 아이콘 카드
               </div>
             </div>
 
             <div class="section">
-              <h3 class="section-title">디자인 토큰</h3>
+              <h3 class="section-title">04 공통 컴포넌트 & 디자인 토큰</h3>
               <div class="section-content">
-                <strong>공통 디자인 언어</strong><br><br>
-                • <strong>색상</strong>: #080808 (BG) · #F0EDE8 (웜화이트) · #8361FF (액센트)<br>
+                <strong>Global Navigation Bar (GNB)</strong><br>
+                • 좌: Edencrew 워드마크 + 아이콘 (클릭 시 / 이동)<br>
+                • 중앙: Lucy Studio / Platform / Pricing / Resources 링크 (현재 페이지 active 스타일)<br>
+                • 우: 로그인(Ghost) + 베타 신청(Fill) 버튼 (스크롤 100px 이후 배경 blur 강화)<br>
+                • 모바일: 768px 이하에서 햄버거 → 풀스크린 메뉴로 전환<br>
+                • 스타일: sticky top, backdrop-blur, bdr 보더, height: 54px 고정<br><br>
+                <strong>Footer</strong><br>
+                • 브랜드: 로고 + 슬로건 1줄 + 소셜 아이콘(LinkedIn, Twitter/X, Discord)<br>
+                • 제품: Lucy Studio / Platform / Pricing 링크<br>
+                • 리소스: 블로그 / 문서 / 템플릿 / 커뮤니티<br>
+                • 회사: About / 채용 / Contact<br>
+                • 하단: © 2026 Edencrew · Privacy Policy · Terms<br><br>
+                <strong>디자인 토큰</strong><br>
+                • <strong>색상</strong>: #080808 (BG) · #F0EDE8 (웜화이트) · #8361FF (액센트) — CSS 변수 필수<br>
                 • <strong>서체</strong>: Montserrat Black (헤딩 900wt) + Inter (본문 400–600wt)<br>
-                • <strong>인터랙션</strong>: 보더 호버만 (카드 hover = bdr2 보더, 그림자·글로우 없음)<br>
+                • <strong>인터랙션</strong>: 보더 호버만 (카드 hover = bdr2 보더). 그림자·글로우 없음<br>
                 • <strong>모서리</strong>: 8–12px radius 통일 (버튼 7–10px / 카드 10–12px)
               </div>
             </div>
 
             <div class="section">
-              <h3 class="section-title">MVP 범위</h3>
+              <h3 class="section-title">05 CTA 전략 — 5단계 전환 파이프라인</h3>
               <div class="section-content">
-                <strong>1차 론칭 (2026-07-28)</strong><br><br>
-                ✅ Home + Lucy Studio + Platform (기본 5섹션) + Pricing + Resources<br>
-                ✅ GNB + Footer 공통 컴포넌트<br>
-                ✅ 베타 신청 폼 + /beta/thanks 페이지<br>
-                ✅ 반응형 (모바일 375px+ / 태블릿 768px+ / 데스크톱 1280px+)<br>
-                ✅ 기본 SEO (title/description/OG 태그)<br>
-                ✅ Vercel 배포 + 커스텀 도메인<br>
-                ✅ Google Analytics 4 연동<br><br>
-                <strong>2차 이후</strong><br>
-                📋 블로그 / 릴리스 노트 CMS<br>
-                📋 템플릿 갤러리 (실 데이터)<br>
-                📋 API 문서 페이지<br>
-                📋 다크/라이트 테마 토글<br>
-                📋 i18n (한/영 전환)
+                방문자가 Home → Lucy Studio → Pricing → 베타 신청의 깔때기를 자연스럽게 통과하도록 설계<br><br>
+                <strong>1️⃣ Home</strong> — 베타 신청하기 (Primary) + Lucy Studio 살펴보기 (Secondary)<br>
+                첫 방문자가 제품을 모르는 상태. Primary는 즉시 전환 유도, Secondary는 제품 이해 흐름으로 진입<br><br>
+                <strong>2️⃣ Lucy Studio</strong> — 무료로 시작하기 (Primary) + 데모 영상 보기 (Secondary)<br>
+                각 피처 섹션 끝마다 인라인 CTA 반복 배치. 페이지 하단 풀-블리드 배너에서 최종 전환<br><br>
+                <strong>3️⃣ Platform</strong> — 파트너십 문의하기 (Primary) + API Waitlist 신청 (Secondary)<br>
+                B2B·개발자 타깃. 즉시 결제보다 "관계 시작" 행동 유도<br><br>
+                <strong>4️⃣ Pricing</strong> — 플랜 시작하기 / 무료 시작 (Primary) + 엔터프라이즈 문의 (Secondary)<br>
+                결정 단계 방문자. 플랜 카드별 개별 CTA 배치. 베타 기간 중 "무료"를 전면에<br><br>
+                <strong>5️⃣ Resources</strong> — 뉴스레터 구독 (Primary) + Discord 참여 (Secondary)<br>
+                당장 전환하지 않는 탐색형 방문자를 커뮤니티로 유입
+              </div>
+            </div>
+
+            <div class="section">
+              <h3 class="section-title">06 반응형 요구사항</h3>
+              <div class="section-content">
+                <strong>3개 브레이크포인트 기준 (Next.js + Tailwind의 sm / md / lg)</strong><br><br>
+                <strong>Mobile (375px+)</strong><br>
+                • GNB 햄버거 메뉴 · 카드 그리드 1컬럼 · 비교 테이블 가로 스크롤 · CTA 버튼 full-width<br><br>
+                <strong>Tablet (768px+)</strong><br>
+                • GNB 링크 표시 · 카드 그리드 2컬럼 · 푸터 2컬럼 · Pricing 플랜 카드 2×2<br><br>
+                <strong>Desktop (1280px+)</strong><br>
+                • GNB 전체 링크 + CTA · 카드 그리드 3–4컬럼 · 푸터 4컬럼 · max-width: 1440px 중앙 정렬<br><br>
+                <strong>접근성 요구사항</strong><br>
+                • 터치 타깃: 최소 44×44px (WCAG 2.5.5) · 이미지: Next.js Image 컴포넌트 · 폰트: next/font로 자체 호스팅 · 애니메이션: prefers-reduced-motion 존중 · 컨트라스트: 본문 4.5:1 / 대형 텍스트 3:1
+              </div>
+            </div>
+
+            <div class="section">
+              <h3 class="section-title">07 MVP 1차 론칭 범위</h3>
+              <div class="section-content">
+                <strong>포함 사항 (2026-07-28)</strong><br>
+                • Home 페이지 (완성) · Lucy Studio 페이지 (완성) · Platform 페이지 (기본 5섹션) · Pricing 페이지 (플랜 카드 + FAQ) · Resources 페이지 (뉴스레터 + 커뮤니티)<br>
+                • GNB + Footer 공통 컴포넌트 · 베타 신청 폼 + /beta/thanks 페이지 · 반응형 (모바일·태블릿·데스크톱)<br>
+                • 기본 SEO (title/description/OG 태그) · Vercel 배포 + 커스텀 도메인 · Google Analytics 4 연동<br><br>
+                <strong>2차 이후 (포함 안 함)</strong><br>
+                • 블로그 / 릴리스 노트 CMS · 템플릿 갤러리 (실 데이터) · API 문서 페이지 · 다크/라이트 테마 토글 · i18n (한/영 전환)<br>
+                • Enterprise 견적 자동화 · 인앱 데모 임베드 · Changelog 자동 생성 · 채용 페이지<br><br>
+                <strong>마일스톤</strong><br>
+                • M1 (2026-07-07): HTML 시안 완성 — Platform · Pricing · Resources HTML 제작<br>
+                • M2 (2026-07-14): Next.js 마이그레이션 — HTML → 컴포넌트 분리, 라우팅 구성<br>
+                • M3 (2026-07-21): 기능 연동 — 베타 신청 폼, 뉴스레터, GA4<br>
+                • M4 (2026-07-28): QA & 배포 — 반응형 QA, Vercel 도메인 연결
+              </div>
+            </div>
+
+            <div class="section">
+              <h3 class="section-title">08 기술 스택 & 배포</h3>
+              <div class="section-content">
+                <strong>Framework</strong>: Next.js 15 (App Router) — 서버 컴포넌트 기본, 동적 페이지는 클라이언트로 분리<br><br>
+                <strong>Styling</strong>: Tailwind CSS v4 — CSS 변수로 디자인 토큰 정의<br><br>
+                <strong>Hosting</strong>: Vercel — Preview 배포 자동화. 도메인: edencrew.com<br><br>
+                <strong>Form Backend</strong>: Resend + Notion DB — 베타 신청 이메일은 Resend 발송. 신청 데이터는 Notion DB로 수집<br><br>
+                <strong>Analytics</strong>: Google Analytics 4 — 전환 이벤트: beta_signup · demo_book · newsletter_subscribe<br><br>
+                <strong>PoC</strong>: GitHub Pages (poc-deploy 레포) — HTML 시안 검토용
               </div>
             </div>
           </div>
