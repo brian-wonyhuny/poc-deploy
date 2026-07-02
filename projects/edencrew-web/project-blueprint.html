@@ -772,9 +772,8 @@ function scrollToSection(idx) {
   const section = document.getElementById('sec-' + idx);
   if (section) {
     const wrapper = document.querySelector('.content-wrapper');
-    const box = document.querySelector('.content-box');
-    const offsetTop = section.offsetTop + box.offsetTop;
-    wrapper.scrollTo({ top: offsetTop - 100, behavior: 'smooth' });
+    const offsetTop = section.getBoundingClientRect().top + wrapper.scrollTop - 100;
+    wrapper.scrollTo({ top: offsetTop, behavior: 'smooth' });
   }
 
   const navItems = document.querySelectorAll('.nav-item');
