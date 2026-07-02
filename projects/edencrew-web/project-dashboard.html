@@ -68,7 +68,8 @@ html,body { height:100%; background:var(--bg); color:var(--wh); font-family:'Int
 body { padding:10px; }
 
 .shell { display:flex; height:100%; gap:10px; }
-.content-row { display:flex; flex-direction:column; flex:1; min-width:0; overflow:hidden; gap:0; }
+.content-row { display:flex; flex-direction:column; flex:1; min-width:0; overflow:hidden; gap:0; background:var(--s1); border-radius:12px; }
+[data-theme="dark"] .content-row { border:1px solid var(--bd); }
 
 /* ── Top Bar ── */
 .top-bar {
@@ -261,8 +262,8 @@ body { padding:10px; }
 .nav-settings { border-bottom:none; }
 
 /* ── Main ── */
-.main { flex:1; min-width:0; overflow-y:auto; padding:0; display:flex; flex-direction:column; background:var(--s1); border-radius:12px; }
-[data-theme="dark"] .main { background:var(--s1); }
+.main { flex:1; min-width:0; overflow-y:auto; padding:0; display:flex; flex-direction:column; background:transparent; border-radius:0; }
+[data-theme="dark"] .main { background:transparent; }
 .main.prd-active { overflow:hidden; }
 
 /* views */
@@ -298,7 +299,7 @@ body { padding:10px; }
 .btn-prd-src { padding:8px 18px; background:var(--p); color:#fff; border:none; border-radius:7px; font-size:13px; font-weight:500; cursor:pointer; font-family:inherit; align-self:flex-end; transition:opacity .1s; }
 .btn-prd-src:hover { opacity:.85; }
 /* registered doc layout */
-.prd-doc-layout { flex:1; min-height:0; display:flex; justify-content:center; overflow-y:auto; overflow-x:hidden; padding:0 32px 24px; background:var(--bg); }
+.prd-doc-layout { flex:1; min-height:0; display:flex; justify-content:center; overflow-y:auto; overflow-x:hidden; padding:0 32px 24px; background:transparent; }
 .prd-doc-layout.hidden { display:none; }
 .prd-center-wrap { display:flex; width:100%; max-width:1120px; align-items:flex-start; gap:0; }
 .prd-anchor-nav { width:180px; flex-shrink:0; padding:4px 0; position:sticky; top:0; align-self:flex-start; display:flex; flex-direction:column; gap:2px; }
@@ -3472,11 +3473,6 @@ function resizePrdFrame() {
   try {
     var h = frame.contentDocument.documentElement.scrollHeight;
     frame.style.height = h + 'px';
-    var firstSection = frame.contentDocument.querySelector('.prd-section');
-    var nav = document.getElementById('prdAnchorNav');
-    if (firstSection && nav) {
-      nav.style.paddingTop = firstSection.offsetTop + 'px';
-    }
   } catch(e) {}
 }
 
